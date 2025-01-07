@@ -8,7 +8,7 @@ class ButtonsArea extends StatelessWidget {
   Widget build(BuildContext context) {
     TaskController taskController = Get.find<TaskController>();
     return TextButton(
-      onPressed: () => taskController.addTask('New Task', false, 0),
+      onPressed: () => taskController.addTask('New Task', false, 2),
       child: const Text('Add Task'),
     );
   }

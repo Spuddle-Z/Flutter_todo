@@ -24,9 +24,6 @@ class TodoPage extends StatelessWidget {
               Expanded(
                 child: TaskList(),
               ),
-              Expanded(
-                child: TaskList(),
-              ),
             ],
           )),
         ],

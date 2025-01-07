@@ -25,13 +25,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'To Do',
       theme: ThemeData(
-        scaffoldBackgroundColor: AppColors.background,
-        textTheme: const TextTheme(
-          bodySmall: TextStyle(
-            fontSize: 16,
-            color: AppColors.text,
-          ),
-        ),
         appBarTheme: const AppBarTheme(
           backgroundColor: AppColors.background,
           titleTextStyle: TextStyle(
@@ -41,7 +34,10 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: TodoPage(),
+      home: Container(
+        color: AppColors.background,
+        child: TodoPage()
+      ),
     );
   }
 }

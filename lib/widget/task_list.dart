@@ -2,41 +2,53 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../util/task_controller.dart';
 import 'task_tile.dart';
-
-// List testTaskList = [
-//   {
-//     'taskContent': 'Buy groceries',
-//     'taskDone': false,
-//     'taskPriority': 2,
-//   },
-//   {
-//     'taskContent': 'Walk the dog',
-//     'taskDone': false,
-//     'taskPriority': 1,
-//   },
-//   {
-//     'taskContent': 'Cook dinner',
-//     'taskDone': false,
-//     'taskPriority': 0,
-//   },
-// ];
+import '../theme.dart';
 
 class TaskList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Expanded(child: TasksToday()),
+        Expanded(
+          child: RecessedPanel(
+            child: TasksToday()
+          )
+        ),
+        Expanded(
+          child: RecessedPanel(
+            child: TasksNoDeadline()
+          )
+        ),
       ],
     );
   }
+}
+
+class RecessedPanel extends Container {
+  RecessedPanel({required Widget child}): super(
+    child: child,
+    decoration: BoxDecoration(
+      color: AppColors.backgroundDark,
+      borderRadius: BorderRadius.circular(8),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withAlpha(0x80),
+          spreadRadius: 1,
+          blurRadius: 2,
+          offset: const Offset(0, 1),
+        ),
+      ],
+    ),
+    margin: const EdgeInsets.all(8),
+    padding: const EdgeInsets.all(8),
+  );
 }
 
 class TasksToday extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TaskController taskController = Get.find<TaskController>();
-    return ListView.builder(
+    return Obx(() => ListView.builder(
       itemCount: taskController.tasks.length,
       itemBuilder: (context, index) {
         return TaskTile(
@@ -48,7 +60,7 @@ class TasksToday extends StatelessWidget {
           onDelete: () => taskController.deleteTask(index),
         );
       },
-    );
+    ));
   }
 }
 
@@ -56,7 +68,7 @@ class TasksNoDeadline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TaskController taskController = Get.find<TaskController>();
-    return ListView.builder(
+    return Obx(() => ListView.builder(
       itemCount: taskController.tasks.length,
       itemBuilder: (context, index) {
         return TaskTile(
@@ -68,6 +80,6 @@ class TasksNoDeadline extends StatelessWidget {
           onDelete: () => taskController.deleteTask(index),
         );
       },
-    );
+    ));
   }
 }

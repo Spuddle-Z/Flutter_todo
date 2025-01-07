@@ -48,26 +48,57 @@ class TaskTile extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Checkbox(
-              value: taskDone,
-              activeColor: tileColor,
-              onChanged: onChanged,
+            CheckboxWidget(
+              taskDone: taskDone, 
+              tileColor: tileColor, 
+              onChanged: onChanged
             ),
-            Text(
-              taskContent,
-              style: TextStyle(
-                color: tileColor,
-                fontSize: 16,
+            Expanded(
+              child:Text(
+                taskContent,
+                style: TextStyle(
+                  color: tileColor,
+                  fontSize: 16,
+                ),
               ),
             ),
             IconButton(
               icon: const Icon(Icons.delete),
               color: tileColor,
+              hoverColor: tileColor.withAlpha(0x33),
               onPressed: () => onDelete(),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class CheckboxWidget extends StatelessWidget {
+  const CheckboxWidget({
+    super.key,
+    required this.taskDone,
+    required this.tileColor,
+    required this.onChanged,
+  });
+
+  final bool taskDone;
+  final Color tileColor;
+  final Function(bool? _)? onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Checkbox(
+      value: taskDone,
+      activeColor: tileColor,
+      checkColor: AppColors.background,
+      hoverColor: tileColor.withAlpha(0x33),
+      side: BorderSide(
+        color: tileColor,
+        width: 2,
+      ),
+      onChanged: onChanged,
     );
   }
 }
