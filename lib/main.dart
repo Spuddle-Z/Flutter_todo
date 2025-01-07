@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:get/get.dart';
 import 'util/task_model.dart';
+import 'util/task_controller.dart';
 import 'theme.dart';
 import 'pages/todo_page.dart';
 
 void main() async{
+  // 调用数据库
   WidgetsFlutterBinding.ensureInitialized();
   Hive.init("data");
   Hive.registerAdapter(TaskAdapter());
+  await Hive.openBox<Task>('tasks');
+
+  // 全局注册控制器
+  Get.put(TaskController());
+
   runApp(MyApp());
 }
 

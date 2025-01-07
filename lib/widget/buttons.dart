@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../util/task_controller.dart';
 
 class ButtonsArea extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        TextButton(
-          onPressed: () {},
-          child: const Text('Today'),
-        ),
-        TextButton(
-          onPressed: () {},
-          child: const Text('Tomorrow'),
-        ),
-      ]
+    TaskController taskController = Get.find<TaskController>();
+    return TextButton(
+      onPressed: () => taskController.addTask('New Task', false, 0),
+      child: const Text('Add Task'),
     );
   }
 }

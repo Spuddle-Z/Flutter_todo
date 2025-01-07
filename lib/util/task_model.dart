@@ -5,15 +5,15 @@ part 'task_model.g.dart';
 @HiveType(typeId: 0)
 class Task {
   @HiveField(0)
-  String task_content;
+  String taskContent;
   @HiveField(1)
-  bool task_done;
+  bool taskDone;
   @HiveField(2)
-  int task_priority;
+  int taskPriority;
 
   Task({
-    required this.task_content,
-    required this.task_done,
-    required this.task_priority,
+    required this.taskContent,
+    required this.taskDone,
+    required this.taskPriority,
   });
 }

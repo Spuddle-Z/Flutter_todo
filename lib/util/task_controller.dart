@@ -14,11 +14,11 @@ class TaskController extends GetxController {
   }
 
   // 添加任务
-  void addTask(String task_content, bool task_done, int task_priority) {
+  void addTask(String taskContent, bool taskDone, int taskPriority) {
     final task = Task(
-      task_content: task_content,
-      task_done: task_done,
-      task_priority: task_priority,
+      taskContent: taskContent,
+      taskDone: taskDone,
+      taskPriority: taskPriority,
     );
     taskBox.add(task);
     tasks.add(task);
@@ -27,7 +27,7 @@ class TaskController extends GetxController {
   // 更新任务状态
   void toggleTask(int index) {
     final task = tasks[index];
-    task.task_done = !task.task_done;
+    task.taskDone = !task.taskDone;
     taskBox.putAt(index, task);
     tasks[index] = task;
   }
