@@ -9,5 +9,8 @@ class AppColors {
   static const Color text = Color(0xFFB6B8CF);
   static const Color textActive = Color(0xFFFFCB6B);
   static const Color textDark = Color(0xFF666E95);
+
+  static const Color red = Color(0xFFD04255);
+  static const Color green = Color(0xFF73BBB2);
 }
 

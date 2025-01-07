@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'util/task_model.dart';
 import 'theme.dart';
-import 'calendar.dart';
-import 'task_list.dart';
+import 'pages/todo_page.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-  await Hive.openBox("taskBox");
+  Hive.init("data");
+  Hive.registerAdapter(TaskAdapter());
   runApp(MyApp());
 }
 
@@ -34,39 +34,6 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: TodoPage(),
-    );
-  }
-}
-
-class TodoPage extends StatefulWidget {
-  @override
-  _TodoPageState createState() => _TodoPageState();
-}
-
-class _TodoPageState extends State<TodoPage> {
-  DateTime _selectedDay = DateTime.now();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('To Do'),
-      ),
-      body: Row(
-        children: [
-          Expanded(child: CalendarWidget(
-              selectedDay: _selectedDay,
-              onDaySelected: (selectedDay) {
-                setState(() {
-                  _selectedDay = selectedDay;
-                });
-              },
-            ),
-          ),
-          Expanded(child: TaskList()),
-        ],
-      ),
     );
   }
 }
