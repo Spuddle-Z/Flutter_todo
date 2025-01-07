@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
 import '../widget/calendar.dart';
 import '../widget/buttons.dart';
 import '../widget/task_list.dart';
@@ -7,14 +6,15 @@ import '../widget/task_list.dart';
 class TodoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('To Do'),
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width * 0.05,
       ),
-      body: Row(
+      child: Row(
         children: [
-          Expanded(child: CalendarWidget(),
+          Expanded(
+            flex: 2,
+            child: CalendarWidget(),
           ),
           Expanded(child: Column(
             children: [

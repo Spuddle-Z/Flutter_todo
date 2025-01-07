@@ -34,9 +34,12 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: Container(
-        color: AppColors.background,
-        child: TodoPage()
+      home: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          title: const Text('To Do'),
+        ),
+        body: TodoPage()
       ),
     );
   }
