@@ -14,3 +14,23 @@ class AppColors {
   static const Color green = Color(0xFF73BBB2);
 }
 
+ButtonStyle textButtonStyle() {
+  return ButtonStyle(
+    foregroundColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+      return AppColors.text;
+    }),
+    backgroundColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+      if (states.contains(WidgetState.pressed)) {
+        return AppColors.backgroundActive;
+      } else if (states.contains(WidgetState.hovered)) {
+        return AppColors.backgroundLight;
+      }
+      return AppColors.background;
+    }),
+    shape: WidgetStatePropertyAll(
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+    ),
+  );
+}

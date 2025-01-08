@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../util/task_controller.dart';
+import 'pop_up.dart';
+import '../theme.dart';
 
 class ButtonsArea extends StatelessWidget {
-
   @override
-  Widget build(BuildContext context) {
-    TaskController taskController = Get.find<TaskController>();
+  Widget build(BuildContext context) {    
     return TextButton(
-      onPressed: () => taskController.addTask('New Task', false, 2),
-      child: const Text('Add Task'),
+      onPressed: () {
+        Get.dialog(
+          AddTaskPopUp()
+        );
+      },
+      style: textButtonStyle(),
+      child: const Icon(
+        Icons.add,
+        color: AppColors.text,
+      ),
     );
   }
 }

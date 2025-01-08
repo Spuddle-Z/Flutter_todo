@@ -6,6 +6,13 @@ class TaskController extends GetxController {
   final Box<Task> taskBox = Hive.box<Task>('tasks');
   var tasks = <Task>[].obs;
 
+  // 暂存输入内容
+  var newTask = Task(
+    taskContent: '',
+    taskDone: false,
+    taskPriority: 0
+  ).obs;
+
   // 初始化
   @override
   void onInit() {
@@ -14,14 +21,9 @@ class TaskController extends GetxController {
   }
 
   // 添加任务
-  void addTask(String taskContent, bool taskDone, int taskPriority) {
-    final task = Task(
-      taskContent: taskContent,
-      taskDone: taskDone,
-      taskPriority: taskPriority,
-    );
-    taskBox.add(task);
-    tasks.add(task);
+  void addTask() {
+    taskBox.add(newTask.value);
+    tasks.add(newTask.value);
   }
 
   // 更新任务状态

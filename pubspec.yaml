@@ -12,8 +12,9 @@ dependencies:
   flutter:
     sdk: flutter
   table_calendar: ^3.0.0
+  time: ^2.0.0
   shared_preferences: ^2.0.11
-  get:
+  get: ^4.3.8
 
   hive: ^2.2.3
   hive_flutter: ^1.1.0

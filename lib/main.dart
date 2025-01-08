@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:get/get.dart';
+import 'dart:io';
 import 'util/task_model.dart';
 import 'util/task_controller.dart';
 import 'theme.dart';
@@ -14,6 +15,7 @@ void main() async{
   await Hive.openBox<Task>('tasks');
 
   // 全局注册控制器
+  // Get.lazyPut(() => TaskController());
   Get.put(TaskController());
 
   runApp(MyApp());
@@ -22,9 +24,10 @@ void main() async{
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'To Do',
       theme: ThemeData(
+        fontFamily: Platform.isWindows ? "微软雅黑" : null,
         appBarTheme: const AppBarTheme(
           backgroundColor: AppColors.background,
           titleTextStyle: TextStyle(

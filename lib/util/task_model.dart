@@ -10,10 +10,19 @@ class Task {
   bool taskDone;
   @HiveField(2)
   int taskPriority;
+  @HiveField(3)
+  DateTime? taskDue;
+  @HiveField(4)
+  String? taskNote;
+  @HiveField(5)
+  Duration? taskRecurrence;
 
   Task({
     required this.taskContent,
     required this.taskDone,
     required this.taskPriority,
+    this.taskDue,
+    this.taskNote,
+    this.taskRecurrence,
   });
 }
