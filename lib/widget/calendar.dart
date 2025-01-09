@@ -5,6 +5,8 @@ import '../theme.dart';
 import '../util/calendar_controller.dart';
 
 class CalendarWidget extends StatelessWidget {
+  const CalendarWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     final CalendarController calendarController = Get.put(CalendarController());

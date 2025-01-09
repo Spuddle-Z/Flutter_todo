@@ -4,6 +4,8 @@ import 'pop_up.dart';
 import '../theme.dart';
 
 class ButtonsArea extends StatelessWidget {
+  const ButtonsArea({super.key});
+
   @override
   Widget build(BuildContext context) {    
     return TextButton(

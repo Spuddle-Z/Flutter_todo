@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+// import 'package:time/time.dart';
 import 'task_model.dart';
 
 class TaskController extends GetxController {
@@ -12,6 +13,9 @@ class TaskController extends GetxController {
     taskDone: false,
     taskPriority: 0
   ).obs;
+  var year = DateTime.now().year.obs;
+  var month = DateTime.now().month.obs;
+  var day = DateTime.now().day.obs;
 
   // 初始化
   @override
@@ -22,6 +26,7 @@ class TaskController extends GetxController {
 
   // 添加任务
   void addTask() {
+    newTask.value.taskDue = DateTime(year.value, month.value, day.value);
     taskBox.add(newTask.value);
     tasks.add(newTask.value);
   }

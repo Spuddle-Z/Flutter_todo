@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../util/task_controller.dart';
+import 'input_box.dart';
 import '../theme.dart';
 
 class AddTaskPopUp extends StatelessWidget {
@@ -21,23 +22,61 @@ class AddTaskPopUp extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
-      content: Container(
+      content: SizedBox(
         width: MediaQuery.of(context).size.width * 0.5,
         height: MediaQuery.of(context).size.height * 0.5,
         child: Column(
           children: [
-            InputBox(
+            CustomTextField(
               hintText: '又有嘛任务？',
               onChanged: (input) => taskController.newTask.value.taskContent = input,
               maxLines: 1,
             ),
+            // Row(
+            //   children: [
+            //     Row(
+            //       children: [
+            //         CustomTextField(
+            //           onChanged: (input) => taskController.year.value = int.parse(input),
+            //           hintText: '',
+            //         ),
+            //         const Text(
+            //           '年 ',
+            //           style: TextStyle(
+            //             color: AppColors.text,
+            //           ),
+            //         ),
+            //         CustomTextField(
+            //           onChanged: (input) => taskController.month.value = int.parse(input),
+            //           hintText: '',
+            //         ),
+            //         const Text(
+            //           '月 ',
+            //           style: TextStyle(
+            //             color: AppColors.text,
+            //           ),
+            //         ),
+            //         CustomTextField(
+            //           onChanged: (input) => taskController.day.value = int.parse(input),
+            //           hintText: '',
+            //         ),
+            //         const Text(
+            //           '日',
+            //           style: TextStyle(
+            //             color: AppColors.text,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ],
+            // ),
             const Placeholder(
               fallbackHeight: 20,
             ),
             Expanded(
-              child: InputBox(
-                hintText: '备注',
+              child: CustomTextField(
                 onChanged: (input) => taskController.newTask.value.taskNote = input,
+                hintText: '备注',
               ),
             ),
           ],
@@ -60,65 +99,6 @@ class AddTaskPopUp extends StatelessWidget {
           child: const Text('确定'),
         ),
       ],
-    );
-  }
-}
-
-class InputBox extends StatelessWidget {
-  const InputBox({
-    super.key,
-    required this.onChanged,
-    required this.hintText,
-    this.maxLines,
-  });
-
-  final Function(String) onChanged;
-  final String hintText;
-  final int? maxLines;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: TextField(
-        expands: maxLines == null,
-        maxLines: maxLines,
-        textAlignVertical: TextAlignVertical.top,
-        style: const TextStyle(
-          color: AppColors.text,
-        ),
-        cursorColor: AppColors.text,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: const TextStyle(
-            color: AppColors.textDark,
-          ),
-          filled: true,
-          fillColor: AppColors.backgroundDark,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: AppColors.backgroundDark, 
-              width: 2
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: AppColors.primary, 
-              width: 2
-            ),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: AppColors.red,
-              width: 2
-            ),
-          ),
-        ),
-        onChanged: onChanged,
-      ),
     );
   }
 }

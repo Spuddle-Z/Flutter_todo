@@ -5,18 +5,20 @@ import 'task_tile.dart';
 import '../theme.dart';
 
 class TaskList extends StatelessWidget {
+  const TaskList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Expanded(
           child: RecessedPanel(
-            child: TasksToday()
+            child: const TasksToday()
           )
         ),
         Expanded(
           child: RecessedPanel(
-            child: TasksNoDeadline()
+            child: const TasksNoDeadline()
           )
         ),
       ],
@@ -25,7 +27,7 @@ class TaskList extends StatelessWidget {
 }
 
 class RecessedPanel extends Container {
-  RecessedPanel({required Widget child}): super(
+  RecessedPanel({super.key, required Widget child}): super(
     child: child,
     decoration: BoxDecoration(
       color: AppColors.backgroundDark,
@@ -45,6 +47,8 @@ class RecessedPanel extends Container {
 }
 
 class TasksToday extends StatelessWidget {
+  const TasksToday({super.key});
+
   @override
   Widget build(BuildContext context) {
     TaskController taskController = Get.find<TaskController>();
@@ -65,6 +69,8 @@ class TasksToday extends StatelessWidget {
 }
 
 class TasksNoDeadline extends StatelessWidget {
+  const TasksNoDeadline({super.key});
+
   @override
   Widget build(BuildContext context) {
     TaskController taskController = Get.find<TaskController>();

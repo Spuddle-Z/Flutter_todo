@@ -18,10 +18,12 @@ void main() async{
   // Get.lazyPut(() => TaskController());
   Get.put(TaskController());
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -42,7 +44,7 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text('To Do'),
         ),
-        body: TodoPage()
+        body: const TodoPage()
       ),
     );
   }

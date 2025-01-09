@@ -10,7 +10,7 @@ class CalendarController extends GetxController {
   void onInit() {
     super.onInit();
     // 启动定时器，每分钟更新一次 today's 日期
-    timer = Timer.periodic(Duration(minutes: 1), (_) {
+    timer = Timer.periodic(const Duration(minutes: 1), (_) {
       today.value = DateTime.now();
     });
   }

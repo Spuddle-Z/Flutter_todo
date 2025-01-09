@@ -10,6 +10,7 @@ class TaskTile extends StatelessWidget {
   final Function() onDelete;
 
   const TaskTile({
+    super.key, 
     required this.taskIndex,
     required this.taskContent,
     required this.taskDone,
