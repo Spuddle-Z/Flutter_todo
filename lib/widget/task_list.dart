@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../util/task_controller.dart';
+import '../util/tile_controller.dart';
 import 'task_tile.dart';
 import '../theme.dart';
 
@@ -36,7 +37,7 @@ class RecessedPanel extends Container {
         BoxShadow(
           color: Colors.black.withAlpha(0x80),
           spreadRadius: 1,
-          blurRadius: 2,
+          blurRadius: 10,
           offset: const Offset(0, 1),
         ),
       ],
@@ -52,14 +53,14 @@ class TasksToday extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TaskController taskController = Get.find<TaskController>();
+    TileController tileController = Get.find<TileController>();
+
     return Obx(() => ListView.builder(
-      itemCount: taskController.tasks.length,
+      itemCount: taskController.testTasks.length,
       itemBuilder: (context, index) {
         return TaskTile(
-          taskIndex: index,
-          taskContent: taskController.tasks[index].taskContent,
-          taskDone: taskController.tasks[index].taskDone,
-          taskPriority: taskController.tasks[index].taskPriority,
+          task: taskController.testTasks[index],
+          showId: tileController.showTodayId,
           onChanged: (value) => taskController.toggleTask(index),
           onDelete: () => taskController.deleteTask(index),
         );
@@ -74,14 +75,14 @@ class TasksNoDeadline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TaskController taskController = Get.find<TaskController>();
+    TileController tileController = Get.find<TileController>();
+
     return Obx(() => ListView.builder(
       itemCount: taskController.tasks.length,
       itemBuilder: (context, index) {
         return TaskTile(
-          taskIndex: index,
-          taskContent: taskController.tasks[index].taskContent,
-          taskDone: taskController.tasks[index].taskDone,
-          taskPriority: taskController.tasks[index].taskPriority,
+          task: taskController.tasks[index],
+          showId: tileController.showNoDeadlineId,
           onChanged: (value) => taskController.toggleTask(index),
           onDelete: () => taskController.deleteTask(index),
         );

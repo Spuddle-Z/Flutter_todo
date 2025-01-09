@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../util/task_model.dart';
 import '../theme.dart';
 
+
+// 任务单元
 class TaskTile extends StatelessWidget {
-  final int taskIndex;
-  final String taskContent;
-  final bool taskDone;
-  final int taskPriority;
+  final Task task;
+  final RxString? showId;
   final Function(bool?)? onChanged;
   final Function() onDelete;
 
   const TaskTile({
     super.key, 
-    required this.taskIndex,
-    required this.taskContent,
-    required this.taskDone,
-    required this.taskPriority,
+    required this.task,
+    this.showId,
     required this.onChanged,
     required this.onDelete,
   });
@@ -22,7 +22,7 @@ class TaskTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color tileColor;
-    switch (taskPriority) {
+    switch (task.taskPriority) {
       case 0:
         tileColor = AppColors.green;
         break;
@@ -47,28 +47,50 @@ class TaskTile extends StatelessWidget {
             top: BorderSide(color: tileColor, width: 3),
           ),
         ),
-        child: Row(
+        child: Column(
           children: [
-            CheckboxWidget(
-              taskDone: taskDone, 
-              tileColor: tileColor, 
-              onChanged: onChanged
-            ),
-            Expanded(
-              child:Text(
-                taskContent,
-                style: TextStyle(
-                  color: tileColor,
-                  fontSize: 16,
+            Row(
+              children: [
+                CheckboxWidget(
+                  taskDone: task.taskDone, 
+                  tileColor: tileColor, 
+                  onChanged: onChanged
                 ),
-              ),
+                Expanded(
+                  child:Text(
+                    task.taskContent,
+                    style: TextStyle(
+                      color: tileColor,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                // if (task.taskNote.isNotEmpty)
+                  IconButton(
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    color: tileColor,
+                    hoverColor: tileColor.withAlpha(0x33),
+                    onPressed: () => showId?.value = task.id,
+                  ),
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  color: tileColor,
+                  hoverColor: tileColor.withAlpha(0x33),
+                  onPressed: () => onDelete(),
+                ),
+              ],
             ),
-            IconButton(
-              icon: const Icon(Icons.delete),
-              color: tileColor,
-              hoverColor: tileColor.withAlpha(0x33),
-              onPressed: () => onDelete(),
-            ),
+            // if (task.id == showId?.value)
+            //   Padding(
+            //     padding: const EdgeInsets.all(8),
+            //     child: Text(
+            //       task.taskNote,
+            //       style: TextStyle(
+            //         color: tileColor,
+            //         fontSize: 14,
+            //       ),
+            //     ),
+            //   ),
           ],
         ),
       ),
@@ -76,6 +98,7 @@ class TaskTile extends StatelessWidget {
   }
 }
 
+// 勾选框
 class CheckboxWidget extends StatelessWidget {
   const CheckboxWidget({
     super.key,

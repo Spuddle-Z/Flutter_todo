@@ -1,4 +1,4 @@
-name: namer_app
+name: to_do
 description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -11,13 +11,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  table_calendar: ^3.0.0
-  time: ^2.0.0
-  shared_preferences: ^2.0.11
+  
   get: ^4.3.8
 
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+
+  table_calendar: ^3.0.0
+  time: ^2.0.0
+  uuid: ^3.0.4
+  shared_preferences: ^2.0.11
 
   english_words: ^4.0.0
   provider: ^6.0.0

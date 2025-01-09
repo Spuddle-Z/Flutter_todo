@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'dart:io';
 import 'util/task_model.dart';
 import 'util/task_controller.dart';
+import 'util/tile_controller.dart';
 import 'theme.dart';
 import 'pages/todo_page.dart';
 
@@ -15,8 +16,8 @@ void main() async{
   await Hive.openBox<Task>('tasks');
 
   // 全局注册控制器
-  // Get.lazyPut(() => TaskController());
-  Get.put(TaskController());
+  Get.lazyPut(() => TaskController());
+  Get.lazyPut(() => TileController());
 
   runApp(const MyApp());
 }
