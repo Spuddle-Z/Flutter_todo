@@ -5,8 +5,42 @@ import 'task_model.dart';
 
 class TaskController extends GetxController {
   final Box<Task> taskBox = Hive.box<Task>('tasks');
-  var tasks = <Task>[].obs;
-  var testTasks = <Task>[].obs;
+  var keyList = [].obs;
+  var testKeys = [].obs;
+
+  // 初始化
+  @override
+  void onInit() {
+    super.onInit();
+    loadTasks();
+  }
+
+  // 筛选任务
+  void loadTasks() {
+    keyList.assignAll(taskBox.keys.toList());
+    testKeys.assignAll(keyList.where((k) => taskBox.get(k)!.taskContent == 'test').toList());
+  }
+
+  // 添加任务
+  void addTask() {
+    taskBox.add(Task.copy(newTask.value));
+    clearNewTask();
+    loadTasks();
+  }
+
+  // 更新任务状态
+  void toggleTask(int key) {
+    final task = taskBox.get(key);
+    task!.taskDone = !task.taskDone;
+    taskBox.put(key, task);
+    loadTasks();
+  }
+
+  // 删除任务
+  void deleteTask(int key) {
+    taskBox.delete(key);
+    loadTasks();
+  }
 
   // 暂存输入内容
   var newTask = Task(
@@ -18,37 +52,13 @@ class TaskController extends GetxController {
   var month = DateTime.now().month.obs;
   var day = DateTime.now().day.obs;
 
-  // 初始化
-  @override
-  void onInit() {
-    super.onInit();
-    tasks.assignAll(taskBox.values.toList());
-    filterTasks();
-  }
-
-  // 筛选任务
-  void filterTasks() {
-    testTasks.assignAll(tasks.where((t) => t.taskContent == 'test').toList());
-  }
-
-  // 添加任务
-  void addTask() {
-    newTask.value.taskDue = DateTime(year.value, month.value, day.value);
-    taskBox.add(newTask.value);
-    tasks.add(newTask.value);
-  }
-
-  // 更新任务状态
-  void toggleTask(int index) {
-    final task = tasks[index];
-    task.taskDone = !task.taskDone;
-    taskBox.putAt(index, task);
-    tasks[index] = task;
-  }
-
-  // 删除任务
-  void deleteTask(int index) {
-    taskBox.deleteAt(index);
-    tasks.removeAt(index);
+  // 清空暂存内容
+  void clearNewTask() {
+    newTask.value.taskContent = 'BIG FUCKING GUN';
+    newTask.value.taskPriority = 0;
+    newTask.value.taskNote = '';
+    year.value = DateTime.now().year;
+    month.value = DateTime.now().month;
+    day.value = DateTime.now().day;
   }
 }

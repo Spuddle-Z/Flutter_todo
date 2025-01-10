@@ -2,22 +2,22 @@ import 'package:get/get.dart';
 
 
 class TileController extends GetxController {
-  RxString? showTodayId;
-  RxString? showNoDeadlineId;
+  RxInt? showTodayKey;
+  RxInt? showNoDeadlineKey;
 
-  void showToday(String id) {
-    showTodayId?.value = id;
-  }
+  // void showToday(String id) {
+  //   showTodayKey?.value = id;
+  // }
 
-  void hideToday() {
-    showTodayId = null;
-  }
+  // void hideToday() {
+  //   showTodayKey = null;
+  // }
 
-  void showNoDeadline(String id) {
-    showNoDeadlineId?.value = id;
-  }
+  // void showNoDeadline(String id) {
+  //   showNoDeadlineKey?.value = id;
+  // }
 
-  void hideNoDeadline() {
-    showNoDeadlineId = null;
-  }
+  // void hideNoDeadline() {
+  //   showNoDeadlineKey = null;
+  // }
 }

@@ -56,13 +56,14 @@ class TasksToday extends StatelessWidget {
     TileController tileController = Get.find<TileController>();
 
     return Obx(() => ListView.builder(
-      itemCount: taskController.testTasks.length,
+      itemCount: taskController.testKeys.length,
       itemBuilder: (context, index) {
         return TaskTile(
-          task: taskController.testTasks[index],
-          showId: tileController.showTodayId,
-          onChanged: (value) => taskController.toggleTask(index),
-          onDelete: () => taskController.deleteTask(index),
+          task: taskController.taskBox.get(taskController.testKeys[index])!,
+          taskKey: taskController.keyList[index],
+          showKey: tileController.showTodayKey,
+          funcToggle: taskController.toggleTask,
+          funcDelete: taskController.deleteTask,
         );
       },
     ));
@@ -78,13 +79,14 @@ class TasksNoDeadline extends StatelessWidget {
     TileController tileController = Get.find<TileController>();
 
     return Obx(() => ListView.builder(
-      itemCount: taskController.tasks.length,
+      itemCount: taskController.keyList.length,
       itemBuilder: (context, index) {
         return TaskTile(
-          task: taskController.tasks[index],
-          showId: tileController.showNoDeadlineId,
-          onChanged: (value) => taskController.toggleTask(index),
-          onDelete: () => taskController.deleteTask(index),
+          task: taskController.taskBox.get(taskController.keyList[index])!,
+          taskKey: taskController.keyList[index],
+          showKey: tileController.showNoDeadlineKey,
+          funcToggle: taskController.toggleTask,
+          funcDelete: taskController.deleteTask,
         );
       },
     ));

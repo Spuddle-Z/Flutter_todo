@@ -7,16 +7,18 @@ import '../theme.dart';
 // 任务单元
 class TaskTile extends StatelessWidget {
   final Task task;
-  final RxString? showId;
-  final Function(bool?)? onChanged;
-  final Function() onDelete;
+  final int taskKey;
+  final RxInt? showKey;
+  final dynamic funcToggle;
+  final dynamic funcDelete;
 
   const TaskTile({
     super.key, 
     required this.task,
-    this.showId,
-    required this.onChanged,
-    required this.onDelete,
+    required this.taskKey,
+    this.showKey,
+    required this.funcToggle,
+    required this.funcDelete,
   });
 
   @override
@@ -54,7 +56,7 @@ class TaskTile extends StatelessWidget {
                 CheckboxWidget(
                   taskDone: task.taskDone, 
                   tileColor: tileColor, 
-                  onChanged: onChanged
+                  onChanged: (value) => funcToggle(taskKey),
                 ),
                 Expanded(
                   child:Text(
@@ -65,18 +67,18 @@ class TaskTile extends StatelessWidget {
                     ),
                   ),
                 ),
-                // if (task.taskNote.isNotEmpty)
+                if (task.taskNote.isNotEmpty)
                   IconButton(
                     icon: const Icon(Icons.keyboard_arrow_down),
                     color: tileColor,
                     hoverColor: tileColor.withAlpha(0x33),
-                    onPressed: () => showId?.value = task.id,
+                    onPressed: () => showKey?.value = taskKey,
                   ),
                 IconButton(
                   icon: const Icon(Icons.delete),
                   color: tileColor,
                   hoverColor: tileColor.withAlpha(0x33),
-                  onPressed: () => onDelete(),
+                  onPressed: () => funcDelete(taskKey),
                 ),
               ],
             ),

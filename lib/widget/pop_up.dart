@@ -85,6 +85,7 @@ class AddTaskPopUp extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           onPressed: () {
+            taskController.clearNewTask();
             Get.back();
           },
           style: textButtonStyle(),

@@ -1,23 +1,20 @@
 import 'package:hive/hive.dart';
-import 'package:uuid/uuid.dart';
 
 part 'task_model.g.dart';
 
 @HiveType(typeId: 0)
 class Task {
   @HiveField(0)
-  String id = const Uuid().v4();
-  @HiveField(1)
   String taskContent;
-  @HiveField(2)
+  @HiveField(1)
   bool taskDone = false;
-  @HiveField(3)
+  @HiveField(2)
   int taskPriority;
-  @HiveField(4)
+  @HiveField(3)
   DateTime? taskDue;
-  @HiveField(5)
+  @HiveField(4)
   String taskNote;
-  @HiveField(6)
+  @HiveField(5)
   Duration? taskRecurrence;
 
   Task({
@@ -27,4 +24,12 @@ class Task {
     required this.taskNote,
     this.taskRecurrence,
   });
+
+  Task.copy(Task task)
+    : taskContent = task.taskContent,
+      taskDone = task.taskDone,
+      taskPriority = task.taskPriority,
+      taskDue = task.taskDue,
+      taskNote = task.taskNote,
+      taskRecurrence = task.taskRecurrence;
 }
