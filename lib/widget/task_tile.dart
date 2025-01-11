@@ -8,16 +8,20 @@ import '../theme.dart';
 class TaskTile extends StatelessWidget {
   final Task task;
   final int taskKey;
-  final RxInt? showKey;
+  final RxInt showKey;
   final dynamic funcToggle;
+  final dynamic funcExpand;
+  final dynamic funcHind;
   final dynamic funcDelete;
 
   const TaskTile({
     super.key, 
     required this.task,
     required this.taskKey,
-    this.showKey,
+    required this.showKey,
     required this.funcToggle,
+    required this.funcExpand,
+    required this.funcHind,
     required this.funcDelete,
   });
 
@@ -40,7 +44,7 @@ class TaskTile extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(4),
-      child: Container(
+      child: Obx(() => Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: tileColor.withAlpha(0x33),
@@ -72,8 +76,14 @@ class TaskTile extends StatelessWidget {
                     icon: const Icon(Icons.keyboard_arrow_down),
                     color: tileColor,
                     hoverColor: tileColor.withAlpha(0x33),
-                    onPressed: () => showKey?.value = taskKey,
+                    onPressed: () {funcExpand(taskKey);},
                   ),
+                IconButton(
+                  icon: const Icon(Icons.edit),
+                  color: tileColor,
+                  hoverColor: tileColor.withAlpha(0x33),
+                  onPressed: () => {},
+                ),
                 IconButton(
                   icon: const Icon(Icons.delete),
                   color: tileColor,
@@ -82,20 +92,21 @@ class TaskTile extends StatelessWidget {
                 ),
               ],
             ),
-            // if (task.id == showId?.value)
-            //   Padding(
-            //     padding: const EdgeInsets.all(8),
-            //     child: Text(
-            //       task.taskNote,
-            //       style: TextStyle(
-            //         color: tileColor,
-            //         fontSize: 14,
-            //       ),
-            //     ),
-            //   ),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+              height: showKey.value == taskKey ? 100 : 0,
+              child: Text(
+                task.taskNote,
+                style: TextStyle(
+                  color: tileColor,
+                  fontSize: 16,
+                ),
+              ),
+            ),
           ],
         ),
-      ),
+      ),)
     );
   }
 }
@@ -111,7 +122,7 @@ class CheckboxWidget extends StatelessWidget {
 
   final bool taskDone;
   final Color tileColor;
-  final Function(bool? _)? onChanged;
+  final void Function(bool?)? onChanged;
 
   @override
   Widget build(BuildContext context) {

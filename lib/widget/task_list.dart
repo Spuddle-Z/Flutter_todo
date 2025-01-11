@@ -63,9 +63,13 @@ class TasksToday extends StatelessWidget {
           taskKey: taskController.keyList[index],
           showKey: tileController.showTodayKey,
           funcToggle: taskController.toggleTask,
+          funcExpand: tileController.todayExpand,
+          funcHind: tileController.todayHind,
           funcDelete: taskController.deleteTask,
         );
       },
+      physics: const ClampingScrollPhysics(),
+      shrinkWrap: true,
     ));
   }
 }
@@ -86,9 +90,13 @@ class TasksNoDeadline extends StatelessWidget {
           taskKey: taskController.keyList[index],
           showKey: tileController.showNoDeadlineKey,
           funcToggle: taskController.toggleTask,
+          funcExpand: tileController.noDeadlineExpand,
+          funcHind: tileController.noDeadlineHind,
           funcDelete: taskController.deleteTask,
         );
       },
+      physics: const ClampingScrollPhysics(),
+      shrinkWrap: true,
     ));
   }
 }
