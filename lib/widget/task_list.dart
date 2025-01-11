@@ -13,11 +13,13 @@ class TaskList extends StatelessWidget {
     return Column(
       children: [
         Expanded(
+          flex: 2,
           child: RecessedPanel(
             child: const TasksToday()
           )
         ),
         Expanded(
+          flex: 3,
           child: RecessedPanel(
             child: const TasksNoDeadline()
           )

@@ -43,7 +43,7 @@ class TaskTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(4),
       child: Obx(() => Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(0),
         decoration: BoxDecoration(
           color: tileColor.withAlpha(0x33),
           borderRadius: BorderRadius.circular(8),
@@ -70,25 +70,22 @@ class TaskTile extends StatelessWidget {
                   ),
                 ),
                 if (task.taskNote.isNotEmpty)
-                  IconButton(
+                  TileButton(
                     icon: AnimatedRotation(
                       duration: const Duration(milliseconds: 300),
                       turns: showKey.value == taskKey ? 0.5 : 0,
                       child: const Icon(Icons.keyboard_arrow_down)),
                     color: tileColor,
-                    hoverColor: tileColor.withAlpha(0x33),
                     onPressed: () {funcToggleExpand(taskKey);},
                   ),
-                IconButton(
+                TileButton(
                   icon: const Icon(Icons.edit),
                   color: tileColor,
-                  hoverColor: tileColor.withAlpha(0x33),
                   onPressed: () => {},
                 ),
-                IconButton(
-                  icon: const Icon(Icons.delete),
+                TileButton(
+                  icon: const Icon(Icons.close),
                   color: tileColor,
-                  hoverColor: tileColor.withAlpha(0x33),
                   onPressed: () => funcDelete(taskKey),
                 ),
               ],
@@ -96,18 +93,29 @@ class TaskTile extends StatelessWidget {
             AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeOut,
-              height: showKey.value == taskKey ? 100 : 0,
-              child: Text(
-                task.taskNote,
-                style: TextStyle(
-                  color: tileColor,
-                  fontSize: 16,
+              height: showKey.value == taskKey ? 150 : 0,
+              padding: const EdgeInsets.all(4),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.backgroundDark,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: SelectableText(
+                    task.taskNote,
+                    style: const TextStyle(
+                      color: AppColors.text,
+                      fontSize: 12,
+                    ),
+                  ),
                 ),
               ),
             ),
           ],
         ),
-      ),)
+      ),),
     );
   }
 }
@@ -127,16 +135,40 @@ class CheckboxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Checkbox(
-      value: taskDone,
-      activeColor: tileColor,
-      checkColor: AppColors.background,
-      hoverColor: tileColor.withAlpha(0x33),
-      side: BorderSide(
-        color: tileColor,
-        width: 2,
+    return Transform.scale(
+      scale: 0.8,
+      child: Checkbox(
+        value: taskDone,
+        activeColor: tileColor,
+        checkColor: AppColors.background,
+        hoverColor: tileColor.withAlpha(0x33),
+        side: BorderSide(
+          color: tileColor,
+          width: 2,
+        ),
+        onChanged: onChanged,
       ),
-      onChanged: onChanged,
     );
   }
 }
+
+// 任务单元上的各按钮
+class TileButton extends IconButton {
+  TileButton({
+    super.key,
+    required Widget icon,
+    required Color color,
+    required void Function() onPressed,
+  }): super(
+    icon: icon,
+    color: color,
+    hoverColor: color.withAlpha(0x33),
+    iconSize: 16,
+    constraints: const BoxConstraints(
+      minWidth: 0,
+      minHeight: 0,
+    ),
+    onPressed: onPressed,
+  );
+}
+

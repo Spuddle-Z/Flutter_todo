@@ -15,7 +15,7 @@ class TodoPage extends StatelessWidget {
       child: const Row(
         children: [
           Expanded(
-            flex: 2,
+            flex: 3,
             child: CalendarWidget(),
           ),
           Expanded(child: Column(
