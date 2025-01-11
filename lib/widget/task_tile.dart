@@ -10,8 +10,7 @@ class TaskTile extends StatelessWidget {
   final int taskKey;
   final RxInt showKey;
   final dynamic funcToggle;
-  final dynamic funcExpand;
-  final dynamic funcHind;
+  final dynamic funcToggleExpand;
   final dynamic funcDelete;
 
   const TaskTile({
@@ -20,8 +19,7 @@ class TaskTile extends StatelessWidget {
     required this.taskKey,
     required this.showKey,
     required this.funcToggle,
-    required this.funcExpand,
-    required this.funcHind,
+    required this.funcToggleExpand,
     required this.funcDelete,
   });
 
@@ -73,10 +71,13 @@ class TaskTile extends StatelessWidget {
                 ),
                 if (task.taskNote.isNotEmpty)
                   IconButton(
-                    icon: const Icon(Icons.keyboard_arrow_down),
+                    icon: AnimatedRotation(
+                      duration: const Duration(milliseconds: 300),
+                      turns: showKey.value == taskKey ? 0.5 : 0,
+                      child: const Icon(Icons.keyboard_arrow_down)),
                     color: tileColor,
                     hoverColor: tileColor.withAlpha(0x33),
-                    onPressed: () {funcExpand(taskKey);},
+                    onPressed: () {funcToggleExpand(taskKey);},
                   ),
                 IconButton(
                   icon: const Icon(Icons.edit),
