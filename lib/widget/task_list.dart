@@ -62,7 +62,7 @@ class TasksToday extends StatelessWidget {
       itemBuilder: (context, index) {
         return TaskTile(
           task: taskController.taskBox.get(taskController.testKeys[index])!,
-          taskKey: taskController.keyList[index],
+          taskKey: taskController.testKeys[index],
           showKey: tileController.showTodayKey,
           funcToggle: taskController.toggleTask,
           funcToggleExpand: tileController.todayToggleExpand,

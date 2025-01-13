@@ -93,7 +93,7 @@ class TaskTile extends StatelessWidget {
             AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeOut,
-              height: showKey.value == taskKey ? 150 : 0,
+              height: showKey.value == taskKey ? null : 0,
               padding: const EdgeInsets.all(4),
               child: Container(
                 width: double.infinity,
