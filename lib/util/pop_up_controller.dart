@@ -10,9 +10,6 @@ class PopUpController extends GetxController {
     taskPriority: 0,
     taskNote: '',
   ).obs;
-  var year = DateTime.now().year.obs;
-  var month = DateTime.now().month.obs;
-  var day = DateTime.now().day.obs;
 
   // 清空暂存内容
   void clearNewTask() {
@@ -34,4 +31,10 @@ class PopUpController extends GetxController {
     selectedPriority.value = priority;
     newTask.value.taskPriority = priority;
   }
+
+  // 管理日期选择器
+  RxInt year = DateTime.now().year.obs;
+  RxInt month = DateTime.now().month.obs;
+  RxInt day = DateTime.now().day.obs;
+  RxString date = ''.obs;
 }

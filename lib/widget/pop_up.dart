@@ -28,17 +28,18 @@ class AddTaskPopUp extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.5,
         child: Column(
           children: [
-            CustomTextField(
-              hintText: '又有嘛任务？',
-              onChanged: (input) => popUpController.newTask.value.taskContent = input,
-              maxLines: 1,
+            ContentTextField(
+              popUpController: popUpController,
             ),
             Padding(
               padding: const EdgeInsets.all(8),
               child: Row(
                 children: [
-                  const Placeholder(
-                    fallbackHeight: 20,
+                  // Expanded(
+                  //   child: DateTextField(popUpController: popUpController),
+                  // ),
+                  const Expanded(
+                    child: Placeholder(fallbackHeight: 20,),
                   ),
                   Expanded(
                     child: PriorityPopUp(popUpController: popUpController),
@@ -47,9 +48,8 @@ class AddTaskPopUp extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: CustomTextField(
-                onChanged: (input) => popUpController.newTask.value.taskNote = input,
-                hintText: '备注',
+              child: NoteTextField(
+                popUpController: popUpController,
               ),
             ),
           ],
@@ -78,62 +78,80 @@ class AddTaskPopUp extends StatelessWidget {
   }
 }
 
-// 输入框
-class CustomTextField extends StatelessWidget {
-  const CustomTextField({
+
+// 输入框样式
+InputDecoration inputBoxStyle(String hintText) {
+  return InputDecoration(
+      hintText: hintText,
+      hintStyle: const TextStyle(
+        color: AppColors.textDark,
+      ),
+      filled: true,
+      fillColor: AppColors.backgroundDark,
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(
+          color: AppColors.backgroundDark, 
+          width: 2
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(
+          color: AppColors.primary, 
+          width: 2
+        ),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(
+          color: AppColors.red,
+          width: 2
+        ),
+      ),
+    );
+}
+
+// 任务内容输入框
+class ContentTextField extends StatelessWidget {
+  const ContentTextField({
     super.key,
-    required this.onChanged,
-    required this.hintText,
-    this.maxLines,
+    required this.popUpController,
   });
 
-  final Function(String) onChanged;
-  final String hintText;
-  final int? maxLines;
+  final PopUpController popUpController;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: TextField(
-        expands: maxLines == null,
-        maxLines: maxLines,
-        textAlignVertical: TextAlignVertical.top,
         style: const TextStyle(
           color: AppColors.text,
         ),
         cursorColor: AppColors.text,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: const TextStyle(
-            color: AppColors.textDark,
-          ),
-          filled: true,
-          fillColor: AppColors.backgroundDark,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: AppColors.backgroundDark, 
-              width: 2
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: AppColors.primary, 
-              width: 2
-            ),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: AppColors.red,
-              width: 2
-            ),
-          ),
-        ),
-        onChanged: onChanged,
+        decoration: inputBoxStyle('又有嘛任务？'),
+        onChanged: (input) => popUpController.newTask.value.taskContent = input,
       ),
+    );
+  }
+}
+
+// 截止日期输入框
+class DateTextField extends StatelessWidget {
+  const DateTextField({
+    super.key,
+    required this.popUpController,
+  });
+
+  final PopUpController popUpController;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      decoration: inputBoxStyle('截止日期'),
+      keyboardType: TextInputType.datetime,
+      onChanged: (input) => popUpController.date.value = input,
     );
   }
 }
@@ -152,33 +170,15 @@ class PriorityPopUp extends StatelessWidget {
     return Obx(() =>
       DropdownButtonFormField(
         // 选择框样式
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: AppColors.backgroundDark,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: AppColors.backgroundDark,
-              width: 2,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: AppColors.primary,
-              width: 2,
-            ),
-          ),
-        ),
         hint: const Text(
           '请选择优先级',
           style: TextStyle(
             color: AppColors.textDark,
           ),
         ),
+        decoration: inputBoxStyle(''),
         dropdownColor: AppColors.backgroundDark,
         elevation: 16,
-        isDense: true,
     
         // 选择框功能设置
         value: popUpController.selectedPriority.value,
@@ -207,6 +207,34 @@ class PriorityPopUp extends StatelessWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+}
+
+// 备注输入框
+class NoteTextField extends StatelessWidget {
+  const NoteTextField({
+    super.key,
+    required this.popUpController,
+  });
+
+  final PopUpController popUpController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: TextField(
+        expands: true,
+        maxLines: null,
+        textAlignVertical: TextAlignVertical.top,
+        style: const TextStyle(
+          color: AppColors.text,
+        ),
+        cursorColor: AppColors.text,
+        decoration: inputBoxStyle('备注：'),
+        onChanged: (input) => popUpController.newTask.value.taskNote = input,
       ),
     );
   }
