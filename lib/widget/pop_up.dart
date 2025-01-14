@@ -80,7 +80,7 @@ class AddTaskPopUp extends StatelessWidget {
 
 
 // 输入框样式
-InputDecoration inputBoxStyle(String hintText) {
+InputDecoration inputBoxStyle(String hintText, [String? errorText]) {
   return InputDecoration(
       hintText: hintText,
       hintStyle: const TextStyle(
@@ -102,6 +102,7 @@ InputDecoration inputBoxStyle(String hintText) {
           width: 2
         ),
       ),
+      errorText: errorText,
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
         borderSide: const BorderSide(
@@ -125,13 +126,28 @@ class ContentTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8),
-      child: TextField(
-        style: const TextStyle(
-          color: AppColors.text,
+      child: Obx(() =>
+        TextFormField(
+          // 样式设置
+          style: const TextStyle(
+            color: AppColors.text,
+          ),
+          cursorColor: AppColors.text,
+          decoration: inputBoxStyle(
+            '又有嘛任务？',
+            popUpController.contentError.value,
+          ),
+
+          // 功能设置
+          onChanged: (input) {
+            popUpController.newTask.value.taskContent = input;
+            popUpController.checkContent();
+          },
+          onEditingComplete: () {
+            FocusScope.of(context).nextFocus();
+            popUpController.checkContent();
+          },
         ),
-        cursorColor: AppColors.text,
-        decoration: inputBoxStyle('又有嘛任务？'),
-        onChanged: (input) => popUpController.newTask.value.taskContent = input,
       ),
     );
   }
@@ -149,7 +165,10 @@ class DateTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      decoration: inputBoxStyle('截止日期'),
+      decoration: inputBoxStyle(
+        '截止日期',
+        '请输入有效的日期',
+      ),
       keyboardType: TextInputType.datetime,
       onChanged: (input) => popUpController.date.value = input,
     );

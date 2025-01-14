@@ -37,4 +37,14 @@ class PopUpController extends GetxController {
   RxInt month = DateTime.now().month.obs;
   RxInt day = DateTime.now().day.obs;
   RxString date = ''.obs;
+
+  // 检查任务内容
+  RxnString contentError = RxnString();
+  void checkContent() {
+    if (newTask.value.taskContent.isEmpty) {
+      contentError.value = '任务内容不能为空';
+    } else {
+      contentError.value = null;
+    }
+  }
 }
