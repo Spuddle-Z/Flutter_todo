@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../util/task_controller.dart';
 import '../util/pop_up_controller.dart';
@@ -35,9 +36,9 @@ class AddTaskPopUp extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               child: Row(
                 children: [
-                  // Expanded(
-                  //   child: DateTextField(popUpController: popUpController),
-                  // ),
+                  Expanded(
+                    child: DateTextField(popUpController: popUpController),
+                  ),
                   const Expanded(
                     child: Placeholder(fallbackHeight: 20,),
                   ),
@@ -66,9 +67,11 @@ class AddTaskPopUp extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            taskController.addTask(popUpController.newTask.value);
-            popUpController.clearNewTask();
-            Get.back();
+            if (popUpController.checkContent() && popUpController.checkDate()) {
+              taskController.addTask(popUpController.newTask.value);
+              popUpController.clearNewTask();
+              Get.back();
+            }
           },
           style: textButtonStyle(),
           child: const Text('确定'),
@@ -127,7 +130,7 @@ class ContentTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Obx(() =>
-        TextFormField(
+        TextField(
           // 样式设置
           style: const TextStyle(
             color: AppColors.text,
@@ -165,12 +168,27 @@ class DateTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      decoration: inputBoxStyle(
-        '截止日期',
-        '请输入有效的日期',
-      ),
-      keyboardType: TextInputType.datetime,
-      onChanged: (input) => popUpController.date.value = input,
+        // 样式设置
+        style: const TextStyle(
+          color: AppColors.text,
+        ),
+        cursorColor: AppColors.text,
+        decoration: inputBoxStyle(
+          '截止日期',
+          popUpController.dateError.value,
+        ),
+      
+        // 功能设置
+        controller: TextEditingController(text: popUpController.dateString.value),
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+          LengthLimitingTextInputFormatter(8),
+        ],
+        onChanged: (input) => popUpController.dateString.value = input,
+        onEditingComplete: () {
+          FocusScope.of(context).nextFocus();
+          popUpController.checkDate();
+        },
     );
   }
 }
@@ -188,7 +206,7 @@ class PriorityPopUp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() =>
       DropdownButtonFormField(
-        // 选择框样式
+        // 样式设置
         hint: const Text(
           '请选择优先级',
           style: TextStyle(
@@ -199,7 +217,7 @@ class PriorityPopUp extends StatelessWidget {
         dropdownColor: AppColors.backgroundDark,
         elevation: 16,
     
-        // 选择框功能设置
+        // 功能设置
         value: popUpController.selectedPriority.value,
         onChanged: (value) {
           if (value != null) {
