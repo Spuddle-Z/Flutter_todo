@@ -15,14 +15,14 @@ class Task {
   @HiveField(4)
   String taskNote;
   @HiveField(5)
-  Duration? taskRecurrence;
+  String taskRecurrence;
 
   Task({
     required this.taskContent,
     required this.taskPriority,
     this.taskDue,
     required this.taskNote,
-    this.taskRecurrence,
+    required this.taskRecurrence,
   });
 
   Task.copy(Task task)

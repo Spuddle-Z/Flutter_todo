@@ -21,7 +21,7 @@ class TaskAdapter extends TypeAdapter<Task> {
       taskPriority: fields[2] as int,
       taskDue: fields[3] as DateTime?,
       taskNote: fields[4] as String,
-      taskRecurrence: fields[5] as Duration?,
+      taskRecurrence: fields[5] as String,
     )..taskDone = fields[1] as bool;
   }
 

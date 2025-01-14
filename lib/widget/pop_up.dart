@@ -39,9 +39,11 @@ class AddTaskPopUp extends StatelessWidget {
                   Expanded(
                     child: DateTextField(popUpController: popUpController),
                   ),
-                  const Expanded(
-                    child: Placeholder(fallbackHeight: 20,),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: RecurrenceField(popUpController: popUpController),
                   ),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: PriorityPopUp(popUpController: popUpController),
                   ),
@@ -189,6 +191,54 @@ class DateTextField extends StatelessWidget {
           FocusScope.of(context).nextFocus();
           popUpController.checkDate();
         },
+    );
+  }
+}
+
+// 重复周期输入框
+class RecurrenceField extends StatelessWidget {
+  const RecurrenceField({
+    super.key,
+    required this.popUpController,
+  });
+
+  final PopUpController popUpController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() =>
+      DropdownButtonFormField(
+        // 样式设置
+        hint: const Text(
+          '请选择周期',
+          style: TextStyle(
+            color: AppColors.textDark,
+          ),
+        ),
+        decoration: inputBoxStyle(''),
+        dropdownColor: AppColors.backgroundDark,
+        elevation: 16,
+
+        // 功能设置
+        value: popUpController.selectedRecurrence.value,
+        onChanged: (value) {
+          if (value != null) {
+            popUpController.updateRecurrence(value);
+          }
+        },
+        items: [
+          for (int i = 0; i < popUpController.recurrenceList.length; i++)
+            DropdownMenuItem(
+              value: i,
+              child: Text(
+                popUpController.recurrenceList[i],
+                style: const TextStyle(
+                  color: AppColors.text,
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

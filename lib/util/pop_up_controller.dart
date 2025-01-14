@@ -9,6 +9,7 @@ class PopUpController extends GetxController {
     taskContent: '',
     taskPriority: 0,
     taskNote: '',
+    taskRecurrence: '不重复',
   ).obs;
 
   // 清空暂存内容
@@ -16,14 +17,32 @@ class PopUpController extends GetxController {
     newTask.value.taskContent = 'BIG FUCKING GUN';
     newTask.value.taskPriority = 0;
     newTask.value.taskNote = '';
+    newTask.value.taskRecurrence = '不重复';
 
     dateString.value = 
       '${DateTime.now().year}'
       '${DateTime.now().month.toString().padLeft(2, '0')}'
       '${DateTime.now().day.toString().padLeft(2, '0')}';
     selectedPriority.value = 0;
+    selectedRecurrence.value = null;
 
     contentError.value = null;
+    dateError.value = null;
+  }
+
+  // 管理日期输入
+  RxString dateString = RxString(
+    '${DateTime.now().year}'
+    '${DateTime.now().month.toString().padLeft(2, '0')}'
+    '${DateTime.now().day.toString().padLeft(2, '0')}'
+  );
+
+  // 管理周期输入
+  List<String> recurrenceList = ['不重复', '每天', '每周', '每月'];
+  RxnInt selectedRecurrence = RxnInt(0);
+  void updateRecurrence(int recurrence) {
+    selectedRecurrence.value = recurrence;
+    newTask.value.taskRecurrence = recurrenceList[recurrence];
   }
 
   // 管理优先级选择器
@@ -35,13 +54,6 @@ class PopUpController extends GetxController {
     selectedPriority.value = priority;
     newTask.value.taskPriority = priority;
   }
-
-  // 管理日期输入
-  RxString dateString = RxString(
-    '${DateTime.now().year}'
-    '${DateTime.now().month.toString().padLeft(2, '0')}'
-    '${DateTime.now().day.toString().padLeft(2, '0')}'
-  );
 
   // 检查任务内容
   RxnString contentError = RxnString();
