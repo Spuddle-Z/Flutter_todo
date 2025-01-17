@@ -17,7 +17,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
 
-  table_calendar: ^3.0.0
+  syncfusion_flutter_calendar: ^28.1.39
   time: ^2.1.0
   shared_preferences: ^2.0.11
 

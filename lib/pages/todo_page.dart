@@ -12,13 +12,13 @@ class TodoPage extends StatelessWidget {
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * 0.05,
       ),
-      child: const Row(
+      child: Row(
         children: [
           Expanded(
             flex: 3,
             child: CalendarWidget(),
           ),
-          Expanded(child: Column(
+          const Expanded(child: Column(
             children: [
               ButtonsArea(),
               Expanded(

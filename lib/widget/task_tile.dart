@@ -42,80 +42,82 @@ class TaskTile extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(4),
-      child: Obx(() => Container(
-        padding: const EdgeInsets.all(0),
-        decoration: BoxDecoration(
-          color: tileColor.withAlpha(0x33),
-          borderRadius: BorderRadius.circular(8),
-          border: Border(
-            top: BorderSide(color: tileColor, width: 3),
+      child: Obx(() => 
+        Container(
+          padding: const EdgeInsets.all(0),
+          decoration: BoxDecoration(
+            color: tileColor.withAlpha(0x33),
+            borderRadius: BorderRadius.circular(8),
+            border: Border(
+              top: BorderSide(color: tileColor, width: 3),
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                CheckboxWidget(
-                  taskDone: task.taskDone, 
-                  tileColor: tileColor, 
-                  onChanged: (value) => funcToggle(taskKey),
-                ),
-                Expanded(
-                  child:Text(
-                    task.taskContent,
-                    style: TextStyle(
-                      color: tileColor,
-                      fontSize: 16,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  CheckboxWidget(
+                    taskDone: task.taskDone, 
+                    tileColor: tileColor, 
+                    onChanged: (value) => funcToggle(taskKey),
+                  ),
+                  Expanded(
+                    child:Text(
+                      task.taskContent,
+                      style: TextStyle(
+                        color: tileColor,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
-                ),
-                if (task.taskNote.isNotEmpty)
+                  if (task.taskNote.isNotEmpty)
+                    TileButton(
+                      icon: AnimatedRotation(
+                        duration: const Duration(milliseconds: 300),
+                        turns: showKey.value == taskKey ? 0.5 : 0,
+                        child: const Icon(Icons.keyboard_arrow_down)),
+                      color: tileColor,
+                      onPressed: () {funcToggleExpand(taskKey);},
+                    ),
                   TileButton(
-                    icon: AnimatedRotation(
-                      duration: const Duration(milliseconds: 300),
-                      turns: showKey.value == taskKey ? 0.5 : 0,
-                      child: const Icon(Icons.keyboard_arrow_down)),
+                    icon: const Icon(Icons.edit),
                     color: tileColor,
-                    onPressed: () {funcToggleExpand(taskKey);},
+                    onPressed: () => {},
                   ),
-                TileButton(
-                  icon: const Icon(Icons.edit),
-                  color: tileColor,
-                  onPressed: () => {},
-                ),
-                TileButton(
-                  icon: const Icon(Icons.close),
-                  color: tileColor,
-                  onPressed: () => funcDelete(taskKey),
-                ),
-              ],
-            ),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut,
-              height: showKey.value == taskKey ? null : 0,
-              padding: const EdgeInsets.all(4),
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: AppColors.backgroundDark,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: SelectableText(
-                    task.taskNote,
-                    style: const TextStyle(
-                      color: AppColors.text,
-                      fontSize: 12,
+                  TileButton(
+                    icon: const Icon(Icons.close),
+                    color: tileColor,
+                    onPressed: () => funcDelete(taskKey),
+                  ),
+                ],
+              ),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOut,
+                height: showKey.value == taskKey ? null : 0,
+                padding: const EdgeInsets.all(4),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.backgroundDark,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: SelectableText(
+                      task.taskNote,
+                      style: const TextStyle(
+                        color: AppColors.text,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),),
+      ),
     );
   }
 }
