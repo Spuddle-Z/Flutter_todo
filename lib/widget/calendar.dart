@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../util/task_model.dart';
 import '../util/calendar_controller.dart';
+import '../util/task_controller.dart';
 import 'recessed_panel.dart';
 import '../theme.dart';
 
@@ -9,6 +11,7 @@ class CalendarWidget extends StatelessWidget {
   CalendarWidget({super.key});
 
   final CalendarController calendarController = Get.find<CalendarController>();
+  final TaskController taskController = Get.find<TaskController>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,10 @@ class CalendarWidget extends StatelessWidget {
         children: [
           CalendarHeader(calendarController: calendarController,),
           const WeekdayHeader(),
-          AdaptiveGrid(calendarController: calendarController),
+          AdaptiveGrid(
+            calendarController: calendarController,
+            taskController: taskController,
+          ),
         ],
       ),
     );
@@ -110,9 +116,11 @@ class AdaptiveGrid extends StatelessWidget {
   const AdaptiveGrid({
     super.key,
     required this.calendarController,
+    required this.taskController,
   });
 
   final CalendarController calendarController;
+  final TaskController taskController;
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +143,7 @@ class AdaptiveGrid extends StatelessWidget {
               return DayCell(
                 index: index,
                 calendarController: calendarController,
+                taskController: taskController,
               );
             },
           );
@@ -150,10 +159,12 @@ class DayCell extends StatelessWidget {
     super.key,
     required this.index,
     required this.calendarController,
+    required this.taskController,
   });
 
   final int index;
   final CalendarController calendarController;
+  final TaskController taskController;
 
   @override
   Widget build(BuildContext context) {
@@ -168,13 +179,167 @@ class DayCell extends StatelessWidget {
       margin: const EdgeInsets.all(2),
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: isToday ? AppColors.backgroundLight : isCurrentMonth ? AppColors.background : AppColors.backgroundDark,
+        color: isCurrentMonth ? AppColors.background : AppColors.backgroundDark,
+        border: Border.all(
+          color: isToday ? AppColors.textDark : AppColors.backgroundDark,
+          width: 2,
+        ),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Text(
-        '${date.day}',
-        style: TextStyle(
-          color: isToday ? AppColors.textActive : isWeekend ? AppColors.textDark : AppColors.text,
+      child: Column(
+        children: [
+          Text(
+            '${date.day}',
+            style: TextStyle(
+              color: isToday ? AppColors.textActive : isWeekend ? AppColors.textDark : AppColors.text,
+            ),
+          ),
+          Expanded(
+            child: SmallTaskList(
+              taskController: taskController,
+              funcFilter: (k) {
+                DateTime? taskDate = taskController.taskBox.value.get(k)!.taskDate;
+                return taskDate != null &&
+                  taskDate.year == date.year &&
+                  taskDate.month == date.month &&
+                  taskDate.day == date.day;
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+// 日期单元格内的任务列表
+class SmallTaskList extends StatelessWidget {
+  const SmallTaskList({
+    super.key,
+    required this.taskController,
+    required this.funcFilter,
+  });
+
+  final TaskController taskController;
+  final bool Function(dynamic) funcFilter;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final RxList<dynamic> keys = taskController.taskBox.value.keys.where(funcFilter).toList().obs;
+
+      return ListView.builder(
+        itemCount: keys.length,
+        itemBuilder: (context, index) {
+          return SmallTaskTile(
+            task: taskController.taskBox.value.get(keys[index])!,
+            taskKey: keys[index],
+            funcToggle: taskController.toggleTask,
+          );
+        },
+        physics: const ClampingScrollPhysics(),
+        shrinkWrap: true,
+      );
+    });
+  }
+}
+
+// 任务单元
+class SmallTaskTile extends StatelessWidget {
+  final Task task;
+  final int taskKey;
+  final dynamic funcToggle;
+
+  const SmallTaskTile({
+    super.key, 
+    required this.task,
+    required this.taskKey,
+    required this.funcToggle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Color tileColor;
+    switch (task.taskPriority) {
+      case 0:
+        tileColor = AppColors.green;
+        break;
+      case 1:
+        tileColor = AppColors.primary;
+        break;
+      case 2:
+        tileColor = AppColors.red;
+        break;
+      default:
+        tileColor = AppColors.textActive;
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(2),
+      child: Container(
+        decoration: BoxDecoration(
+          color: tileColor.withAlpha(0x33),
+          borderRadius: BorderRadius.circular(4),
+          border: Border(
+            top: BorderSide(color: tileColor, width: 2),
+          ),
+        ),
+        child: Row(
+          children: [
+            // 勾选框
+            CheckboxWidget(
+              taskDone: task.taskDone, 
+              tileColor: tileColor, 
+              onChanged: (value) => funcToggle(taskKey),
+            ),
+        
+            // 任务内容
+            Text(
+              task.taskContent,
+              style: TextStyle(
+                color: tileColor,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// 勾选框
+class CheckboxWidget extends StatelessWidget {
+  const CheckboxWidget({
+    super.key,
+    required this.taskDone,
+    required this.tileColor,
+    required this.onChanged,
+  });
+
+  final bool taskDone;
+  final Color tileColor;
+  final void Function(bool?)? onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    const double scale = 0.6;
+
+    return SizedBox(
+      width: 30 * scale,
+      height: 30 * scale,
+      child: Transform.scale(
+        scale: scale,
+        child: Checkbox(
+          value: taskDone,
+          activeColor: tileColor,
+          checkColor: AppColors.background,
+          hoverColor: tileColor.withAlpha(0x33),
+          side: BorderSide(
+            color: tileColor,
+            width: 2,
+          ),
+          onChanged: onChanged,
         ),
       ),
     );

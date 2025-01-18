@@ -28,7 +28,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'To Do',
       theme: ThemeData(
         fontFamily: Platform.isWindows ? "微软雅黑" : null,
         appBarTheme: const AppBarTheme(
@@ -40,12 +39,9 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: Scaffold(
+      home: const Scaffold(
         backgroundColor: AppColors.background,
-        appBar: AppBar(
-          title: const Text('To Do'),
-        ),
-        body: const TodoPage()
+        body: TodoPage()
       ),
     );
   }
