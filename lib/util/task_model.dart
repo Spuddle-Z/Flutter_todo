@@ -11,7 +11,7 @@ class Task {
   @HiveField(2)
   int taskPriority;
   @HiveField(3)
-  DateTime? taskDue;
+  DateTime? taskDate;
   @HiveField(4)
   String taskNote;
   @HiveField(5)
@@ -20,7 +20,7 @@ class Task {
   Task({
     required this.taskContent,
     required this.taskPriority,
-    this.taskDue,
+    this.taskDate,
     required this.taskNote,
     required this.taskRecurrence,
   });
@@ -29,7 +29,7 @@ class Task {
     : taskContent = task.taskContent,
       taskDone = task.taskDone,
       taskPriority = task.taskPriority,
-      taskDue = task.taskDue,
+      taskDate = task.taskDate,
       taskNote = task.taskNote,
       taskRecurrence = task.taskRecurrence;
 }

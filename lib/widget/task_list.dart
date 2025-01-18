@@ -1,28 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../util/task_controller.dart';
-import '../util/tile_controller.dart';
 import 'recessed_panel.dart';
 import 'task_tile.dart';
 
 
-class TaskList extends StatelessWidget {
-  const TaskList({super.key});
+class TaskLists extends StatelessWidget {
+  TaskLists({super.key});
+
+  final TaskController taskController = Get.find<TaskController>();
 
   @override
   Widget build(BuildContext context) {
+    bool todayFilter(k) {
+      DateTime? date = taskController.taskBox.value.get(k)!.taskDate;
+      return date != null && 
+        date.year == DateTime.now().year &&
+        date.month == DateTime.now().month &&
+        date.day == DateTime.now().day;
+    }
+    bool noDeadlineFilter(k) {
+      return true;
+    }
+    // bool noDeadlineFilter(k) {
+    //   DateTime? date = taskController.taskBox.value.get(k)!.taskDate;
+    //   return date == null;
+    // }
+
     return Column(
       children: [
         Expanded(
           flex: 2,
           child: RecessedPanel(
-            child: const TasksToday()
+            child: TaskList(
+              taskController: taskController,
+              funcFilter: todayFilter,
+            )
           )
         ),
         Expanded(
           flex: 3,
           child: RecessedPanel(
-            child: const TasksNoDeadline()
+            child: TaskList(
+              taskController: taskController,
+              funcFilter: noDeadlineFilter,
+            )
           )
         ),
       ],
@@ -30,58 +52,36 @@ class TaskList extends StatelessWidget {
   }
 }
 
-class TasksToday extends StatelessWidget {
-  const TasksToday({super.key});
+class TaskList extends StatelessWidget {
+  const TaskList({
+    super.key,
+    required this.taskController,
+    required this.funcFilter,
+  });
+
+  final TaskController taskController;
+  final bool Function(dynamic) funcFilter;
 
   @override
   Widget build(BuildContext context) {
-    TaskController taskController = Get.find<TaskController>();
-    TileController tileController = Get.find<TileController>();
+    return Obx(() {
+      final RxList<dynamic> keys = taskController.taskBox.value.keys.where(funcFilter).toList().obs;
+      RxInt expandedKey = (-1).obs;
 
-    return Obx(() => 
-      ListView.builder(
-        itemCount: taskController.testKeys.length,
+      return ListView.builder(
+        itemCount: keys.length,
         itemBuilder: (context, index) {
           return TaskTile(
-            task: taskController.taskBox.get(taskController.testKeys[index])!,
-            taskKey: taskController.testKeys[index],
-            showKey: tileController.showTodayKey,
+            task: taskController.taskBox.value.get(keys[index])!,
+            taskKey: keys[index],
             funcToggle: taskController.toggleTask,
-            funcToggleExpand: tileController.todayToggleExpand,
             funcDelete: taskController.deleteTask,
+            expandedKey: expandedKey,
           );
         },
         physics: const ClampingScrollPhysics(),
         shrinkWrap: true,
-      )
-    );
-  }
-}
-
-class TasksNoDeadline extends StatelessWidget {
-  const TasksNoDeadline({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    TaskController taskController = Get.find<TaskController>();
-    TileController tileController = Get.find<TileController>();
-
-    return Obx(() => 
-      ListView.builder(
-        itemCount: taskController.keyList.length,
-        itemBuilder: (context, index) {
-          return TaskTile(
-            task: taskController.taskBox.get(taskController.keyList[index])!,
-            taskKey: taskController.keyList[index],
-            showKey: tileController.showNoDeadlineKey,
-            funcToggle: taskController.toggleTask,
-            funcToggleExpand: tileController.noDeadlineToggleExpand,
-            funcDelete: taskController.deleteTask,
-          );
-        },
-        physics: const ClampingScrollPhysics(),
-        shrinkWrap: true,
-      )
-    );
+      );
+    });
   }
 }

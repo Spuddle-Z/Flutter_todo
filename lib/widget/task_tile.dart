@@ -8,19 +8,17 @@ import '../theme.dart';
 class TaskTile extends StatelessWidget {
   final Task task;
   final int taskKey;
-  final RxInt showKey;
   final dynamic funcToggle;
-  final dynamic funcToggleExpand;
   final dynamic funcDelete;
+  final RxInt expandedKey;
 
   const TaskTile({
     super.key, 
     required this.task,
     required this.taskKey,
-    required this.showKey,
     required this.funcToggle,
-    required this.funcToggleExpand,
     required this.funcDelete,
+    required this.expandedKey,
   });
 
   @override
@@ -56,11 +54,14 @@ class TaskTile extends StatelessWidget {
             children: [
               Row(
                 children: [
+                  // 勾选框
                   CheckboxWidget(
                     taskDone: task.taskDone, 
                     tileColor: tileColor, 
                     onChanged: (value) => funcToggle(taskKey),
                   ),
+
+                  // 任务内容
                   Expanded(
                     child:Text(
                       task.taskContent,
@@ -70,20 +71,26 @@ class TaskTile extends StatelessWidget {
                       ),
                     ),
                   ),
+
+                  // 展开备注按钮
                   if (task.taskNote.isNotEmpty)
                     TileButton(
                       icon: AnimatedRotation(
                         duration: const Duration(milliseconds: 300),
-                        turns: showKey.value == taskKey ? 0.5 : 0,
+                        turns: expandedKey.value == taskKey ? 0.5 : 0,
                         child: const Icon(Icons.keyboard_arrow_down)),
                       color: tileColor,
-                      onPressed: () {funcToggleExpand(taskKey);},
+                      onPressed: () {expandedKey.value = expandedKey.value == taskKey ? -1 : taskKey;},
                     ),
+
+                  // 编辑按钮
                   TileButton(
                     icon: const Icon(Icons.edit),
                     color: tileColor,
                     onPressed: () => {},
                   ),
+                  
+                  // 删除按钮
                   TileButton(
                     icon: const Icon(Icons.close),
                     color: tileColor,
@@ -94,7 +101,7 @@ class TaskTile extends StatelessWidget {
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeOut,
-                height: showKey.value == taskKey ? null : 0,
+                height: expandedKey.value == taskKey ? null : 0,
                 padding: const EdgeInsets.all(4),
                 child: Container(
                   width: double.infinity,

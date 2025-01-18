@@ -5,7 +5,6 @@ import 'dart:io';
 import 'util/task_model.dart';
 import 'util/calendar_controller.dart';
 import 'util/task_controller.dart';
-import 'util/tile_controller.dart';
 import 'theme.dart';
 import 'pages/todo_page.dart';
 
@@ -19,7 +18,6 @@ void main() async{
   // 全局注册控制器
   Get.lazyPut(() => CalendarController());
   Get.lazyPut(() => TaskController());
-  Get.lazyPut(() => TileController());
 
   runApp(const MyApp());
 }

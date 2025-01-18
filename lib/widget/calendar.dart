@@ -146,7 +146,7 @@ class AdaptiveGrid extends StatelessWidget {
 
 // 日历单元格
 class DayCell extends StatelessWidget {
-  DayCell({
+  const DayCell({
     super.key,
     required this.index,
     required this.calendarController,

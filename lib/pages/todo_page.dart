@@ -18,11 +18,11 @@ class TodoPage extends StatelessWidget {
             flex: 3,
             child: CalendarWidget(),
           ),
-          const Expanded(child: Column(
+          Expanded(child: Column(
             children: [
-              ButtonsArea(),
+              const ButtonsArea(),
               Expanded(
-                child: TaskList(),
+                child: TaskLists(),
               ),
             ],
           )),
