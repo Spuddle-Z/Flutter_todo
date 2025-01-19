@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../util/task_model.dart';
 import '../util/calendar_controller.dart';
 import '../util/task_controller.dart';
-import 'recessed_panel.dart';
+
+import '../modules/pop_up.dart';
+import '../widget/recessed_panel.dart';
+import '../widget/checkbox.dart';
 import '../theme.dart';
 
 
@@ -290,56 +294,41 @@ class SmallTaskTile extends StatelessWidget {
             CheckboxWidget(
               taskDone: task.taskDone, 
               tileColor: tileColor, 
+              scale: 0.6,
               onChanged: (value) => funcToggle(taskKey),
             ),
         
             // 任务内容
-            Text(
-              task.taskContent,
-              style: TextStyle(
+            Expanded(
+              child: Text(
+                task.taskContent,
+                style: TextStyle(
+                  color: tileColor,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+
+            // 更多按钮
+            SizedBox(
+              width: 18,
+              height: 18,
+              child: IconButton(
+                icon: const Icon(Icons.more_vert),
                 color: tileColor,
-                fontSize: 12,
+                iconSize: 12,
+                padding: const EdgeInsets.all(0),
+                onPressed: () {
+                  Get.dialog(
+                    InformationPopUp(
+                      task: task,
+                      realToggle: () => funcToggle(taskKey),
+                    ),
+                  );
+                },
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-// 勾选框
-class CheckboxWidget extends StatelessWidget {
-  const CheckboxWidget({
-    super.key,
-    required this.taskDone,
-    required this.tileColor,
-    required this.onChanged,
-  });
-
-  final bool taskDone;
-  final Color tileColor;
-  final void Function(bool?)? onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    const double scale = 0.6;
-
-    return SizedBox(
-      width: 30 * scale,
-      height: 30 * scale,
-      child: Transform.scale(
-        scale: scale,
-        child: Checkbox(
-          value: taskDone,
-          activeColor: tileColor,
-          checkColor: AppColors.background,
-          hoverColor: tileColor.withAlpha(0x33),
-          side: BorderSide(
-            color: tileColor,
-            width: 2,
-          ),
-          onChanged: onChanged,
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'pop_up.dart';
+
+import '../modules/pop_up.dart';
 import '../theme.dart';
 
 class ButtonsArea extends StatelessWidget {

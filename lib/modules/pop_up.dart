@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+
+import '../util/task_model.dart';
 import '../util/task_controller.dart';
 import '../util/pop_up_controller.dart';
+
+import '../widget/checkbox.dart';
 import '../theme.dart';
 
+
+// 添加任务弹出框
 class AddTaskPopUp extends StatelessWidget {
   AddTaskPopUp({super.key});
 
@@ -77,6 +83,158 @@ class AddTaskPopUp extends StatelessWidget {
           },
           style: textButtonStyle(),
           child: const Text('确定'),
+        ),
+      ],
+    );
+  }
+}
+
+// 任务详细信息弹出框
+class InformationPopUp extends StatelessWidget {
+  const InformationPopUp({
+    super.key,
+    required this.task,
+    required this.realToggle,
+  });
+
+  final Task task;
+  final void Function() realToggle;
+
+  @override
+  Widget build(BuildContext context) {
+    Color priorityColor;
+    IconData priorityIcon;
+    switch (task.taskPriority) {
+      case 0:
+        priorityColor = AppColors.green;
+        priorityIcon = Icons.coffee;
+        break;
+      case 1: 
+        priorityColor = AppColors.primary;
+        priorityIcon = Icons.event_note;
+        break;
+      case 2:
+        priorityColor = AppColors.red;
+        priorityIcon = Icons.error_outline;
+        break;
+      default:
+        priorityColor = AppColors.textActive;
+        priorityIcon = Icons.event_busy;
+    }
+    RxBool fakeDone = task.taskDone.obs;
+
+    return AlertDialog(
+      title: Row(
+        children: [
+          Obx(() =>
+            CheckboxWidget(
+              taskDone: fakeDone.value,
+              tileColor: priorityColor,
+              scale: 1,
+              onChanged: (value) {
+                fakeDone.value = !fakeDone.value;
+                realToggle();
+              },
+            ),
+          ),
+          const Text(
+            'Task Information',
+            style: TextStyle(
+              color: AppColors.primary,
+            ),
+          ),
+        ],
+      ),
+      backgroundColor: AppColors.background,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      content: SizedBox(
+        width: 300,
+        height: 200,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Content: ${task.taskContent}',
+                      style: const TextStyle(
+                        color: AppColors.text,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Deadline: ${task.taskDate}',
+                      style: const TextStyle(
+                        color: AppColors.text,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Recurrence: ${task.taskRecurrence}',
+                      style: const TextStyle(
+                        color: AppColors.text,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Priority: ${task.taskPriority}',
+                      style: const TextStyle(
+                        color: AppColors.text,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  'Note: ${task.taskNote}',
+                  style: const TextStyle(
+                    color: AppColors.text,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Get.back();
+          },
+          style: textButtonStyle(),
+          child: const Text('OK'),
         ),
       ],
     );

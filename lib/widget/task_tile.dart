@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../util/task_model.dart';
+
+import 'checkbox.dart';
 import '../theme.dart';
 
 
@@ -58,6 +61,7 @@ class TaskTile extends StatelessWidget {
                   CheckboxWidget(
                     taskDone: task.taskDone, 
                     tileColor: tileColor, 
+                    scale: 1,
                     onChanged: (value) => funcToggle(taskKey),
                   ),
 
@@ -129,38 +133,6 @@ class TaskTile extends StatelessWidget {
   }
 }
 
-// 勾选框
-class CheckboxWidget extends StatelessWidget {
-  const CheckboxWidget({
-    super.key,
-    required this.taskDone,
-    required this.tileColor,
-    required this.onChanged,
-  });
-
-  final bool taskDone;
-  final Color tileColor;
-  final void Function(bool?)? onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Transform.scale(
-      scale: 0.8,
-      child: Checkbox(
-        value: taskDone,
-        activeColor: tileColor,
-        checkColor: AppColors.background,
-        hoverColor: tileColor.withAlpha(0x33),
-        side: BorderSide(
-          color: tileColor,
-          width: 2,
-        ),
-        onChanged: onChanged,
-      ),
-    );
-  }
-}
-
 // 任务单元上的各按钮
 class TileButton extends IconButton {
   TileButton({
@@ -180,4 +152,3 @@ class TileButton extends IconButton {
     onPressed: onPressed,
   );
 }
-
