@@ -21,6 +21,7 @@ class TaskList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       final RxList<dynamic> keys = taskController.taskBox.value.keys.where(funcFilter).toList().obs;
+      keys.sort((a, b) => taskController.sortTask(a, b));
       RxInt expandedKey = (-1).obs;
 
       return ListView.builder(

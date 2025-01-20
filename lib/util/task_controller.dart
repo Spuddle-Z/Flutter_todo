@@ -11,6 +11,7 @@ class TaskController extends GetxController {
     generateTask();
   }
 
+  // 生成下个周期性任务
   void generateTask() {
     // 计算周期性任务的下个截止日期
     DateTime getNextDate(DateTime date, String recurrence) {
@@ -40,6 +41,22 @@ class TaskController extends GetxController {
         task.taskDate = getNextDate(task.taskDate!, task.taskRecurrence);
       }
     }
+  }
+
+  // 任务排序
+  int sortTask(int a, int b) {
+    Task taskA = taskBox.value.get(a)!;
+    Task taskB = taskBox.value.get(b)!;
+    // 未完成的任务排在前面
+    if (taskA.taskDone != taskB.taskDone) {
+      return taskA.taskDone ? 1 : -1;
+    }
+    // 按截止日期排序
+    if (taskA.taskDate != null && taskB.taskDate != null) {
+      return taskA.taskDate!.compareTo(taskB.taskDate!);
+    }
+    // 按优先级排序
+    return taskB.taskPriority.compareTo(taskA.taskPriority);
   }
 
   // 添加任务
