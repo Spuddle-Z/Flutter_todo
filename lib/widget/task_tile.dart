@@ -13,6 +13,7 @@ class TaskTile extends StatelessWidget {
   final int taskKey;
   final dynamic funcToggle;
   final dynamic funcDelete;
+  final Color tileColor;
   final RxInt expandedKey;
 
   const TaskTile({
@@ -21,26 +22,12 @@ class TaskTile extends StatelessWidget {
     required this.taskKey,
     required this.funcToggle,
     required this.funcDelete,
+    required this.tileColor,
     required this.expandedKey,
   });
 
   @override
   Widget build(BuildContext context) {
-    Color tileColor;
-    switch (task.taskPriority) {
-      case 0:
-        tileColor = AppColors.green;
-        break;
-      case 1:
-        tileColor = AppColors.primary;
-        break;
-      case 2:
-        tileColor = AppColors.red;
-        break;
-      default:
-        tileColor = AppColors.textActive;
-    }
-
     return Padding(
       padding: const EdgeInsets.all(4),
       child: Obx(() => 
@@ -65,6 +52,25 @@ class TaskTile extends StatelessWidget {
                     onChanged: (value) => funcToggle(taskKey),
                   ),
 
+                // 超时天数
+                if (tileColor == AppColors.textActive)
+                  Container(
+                    margin: const EdgeInsets.only(right: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 2),
+                    decoration: BoxDecoration(
+                      color: AppColors.textActive,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      "${-task.taskDate!.difference(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)).inDays}天前",
+                      style: TextStyle(
+                        color: AppColors.background.withAlpha(0xaa),
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+
                   // 任务内容
                   Expanded(
                     child:Text(
@@ -72,6 +78,9 @@ class TaskTile extends StatelessWidget {
                       style: TextStyle(
                         color: tileColor,
                         fontSize: 16,
+                        decoration: task.taskDone ? TextDecoration.lineThrough : TextDecoration.none,
+                        decorationColor: tileColor,
+                        decorationThickness: 2,
                       ),
                     ),
                   ),

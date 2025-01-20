@@ -32,6 +32,7 @@ class TaskList extends StatelessWidget {
             taskKey: keys[index],
             funcToggle: taskController.toggleTask,
             funcDelete: taskController.deleteTask,
+            tileColor: taskController.getTaskColor(keys[index], true),
             expandedKey: expandedKey,
           );
         },

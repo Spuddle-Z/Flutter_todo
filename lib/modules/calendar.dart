@@ -172,12 +172,24 @@ class DayCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime date = calendarController.getCellDate(index);
-    final bool isToday = date.day == calendarController.today.value.day &&
-      date.month == calendarController.today.value.month &&
-      date.year == calendarController.today.value.year;
-    final bool isCurrentMonth = date.month == calendarController.viewMonth.value.month;
-    final bool isWeekend = date.weekday == 7 || date.weekday == 6;
+    DateTime cellDate = calendarController.getCellDate(index);
+    final bool isToday = cellDate.day == calendarController.today.value.day &&
+      cellDate.month == calendarController.today.value.month &&
+      cellDate.year == calendarController.today.value.year;
+    final bool isCurrentMonth = cellDate.month == calendarController.viewMonth.value.month;
+    final bool isWeekend = cellDate.weekday == 7 || cellDate.weekday == 6;
+    bool funcFilter(k) {
+      bool taskDone = taskController.taskBox.value.get(k)!.taskDone;
+      DateTime? taskDate = taskController.taskBox.value.get(k)!.taskDate;
+      if (isToday) {
+        return taskDate != null && (
+          (!taskDone && taskDate.isBefore(cellDate)) ||
+          taskDate.isAtSameMomentAs(cellDate));
+      } else {
+        return taskDate != null &&
+          taskDate.isAtSameMomentAs(cellDate);
+      }
+    };
 
     return Container(
       margin: const EdgeInsets.all(2),
@@ -193,7 +205,7 @@ class DayCell extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            '${date.day}',
+            '${cellDate.day}',
             style: TextStyle(
               color: isToday ? AppColors.textActive : isWeekend ? AppColors.textDark : AppColors.text,
             ),
@@ -201,13 +213,8 @@ class DayCell extends StatelessWidget {
           Expanded(
             child: SmallTaskList(
               taskController: taskController,
-              funcFilter: (k) {
-                DateTime? taskDate = taskController.taskBox.value.get(k)!.taskDate;
-                return taskDate != null &&
-                  taskDate.year == date.year &&
-                  taskDate.month == date.month &&
-                  taskDate.day == date.day;
-              },
+              funcFilter: funcFilter,
+              isToday: isToday,
             ),
           )
         ],
@@ -222,10 +229,12 @@ class SmallTaskList extends StatelessWidget {
     super.key,
     required this.taskController,
     required this.funcFilter,
+    required this.isToday,
   });
 
   final TaskController taskController;
   final bool Function(dynamic) funcFilter;
+  final bool isToday;
 
   @override
   Widget build(BuildContext context) {
@@ -240,6 +249,7 @@ class SmallTaskList extends StatelessWidget {
             task: taskController.taskBox.value.get(keys[index])!,
             taskKey: keys[index],
             funcToggle: taskController.toggleTask,
+            tileColor: taskController.getTaskColor(keys[index], isToday),
           );
         },
         physics: const ClampingScrollPhysics(),
@@ -254,30 +264,18 @@ class SmallTaskTile extends StatelessWidget {
   final Task task;
   final int taskKey;
   final dynamic funcToggle;
+  final Color tileColor;
 
   const SmallTaskTile({
     super.key, 
     required this.task,
     required this.taskKey,
     required this.funcToggle,
+    required this.tileColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    Color tileColor;
-    switch (task.taskPriority) {
-      case 0:
-        tileColor = AppColors.green;
-        break;
-      case 1:
-        tileColor = AppColors.primary;
-        break;
-      case 2:
-        tileColor = AppColors.red;
-        break;
-      default:
-        tileColor = AppColors.textActive;
-    }
 
     return Padding(
       padding: const EdgeInsets.all(2),
@@ -298,7 +296,7 @@ class SmallTaskTile extends StatelessWidget {
               scale: 0.6,
               onChanged: (value) => funcToggle(taskKey),
             ),
-        
+
             // 任务内容
             Expanded(
               child: Text(
@@ -306,9 +304,30 @@ class SmallTaskTile extends StatelessWidget {
                 style: TextStyle(
                   color: tileColor,
                   fontSize: 12,
+                  decoration: task.taskDone ? TextDecoration.lineThrough : TextDecoration.none,
+                  decorationColor: tileColor,
+                  decorationThickness: 2,
                 ),
               ),
             ),
+
+            // 超时天数
+            if (tileColor == AppColors.textActive)
+              Container(
+                padding: const EdgeInsets.all(1),
+                decoration: BoxDecoration(
+                  color: AppColors.textActive,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  "${-task.taskDate!.difference(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)).inDays}天前",
+                  style: TextStyle(
+                    color: AppColors.background.withAlpha(0xaa),
+                    fontSize: 8,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
 
             // 更多按钮
             SizedBox(

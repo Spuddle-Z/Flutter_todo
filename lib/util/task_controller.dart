@@ -1,6 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+
 import 'task_model.dart';
+
+import '../theme.dart';
+
 
 class TaskController extends GetxController {
   Rx<Box<Task>> taskBox = Hive.box<Task>('tasks').obs;
@@ -79,5 +84,26 @@ class TaskController extends GetxController {
   void deleteTask(int key) {
     taskBox.value.delete(key);
     taskBox.refresh();
+  }
+
+  // 确定任务颜色
+  Color getTaskColor(int key, bool isToday) {
+    Task task = taskBox.value.get(key)!;
+    if (task.taskDone) {
+      return AppColors.textDark;
+    }
+    if (isToday && task.taskDate != null && task.taskDate!.isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
+      return AppColors.textActive;
+    }
+    switch (task.taskPriority) {
+      case 0:
+        return AppColors.green;
+      case 1:
+        return AppColors.primary;
+      case 2:
+        return AppColors.red;
+      default:
+        return AppColors.textActive;
+    }
   }
 }

@@ -16,10 +16,7 @@ class TaskLists extends StatelessWidget {
   Widget build(BuildContext context) {
     bool todayFilter(k) {
       DateTime? date = taskController.taskBox.value.get(k)!.taskDate;
-      return date != null && 
-        date.year == DateTime.now().year &&
-        date.month == DateTime.now().month &&
-        date.day == DateTime.now().day;
+      return date != null && date.isBefore(DateTime.now());
     }
     bool noDeadlineFilter(k) {
       return true;
