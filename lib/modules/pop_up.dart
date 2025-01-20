@@ -10,7 +10,7 @@ import '../widget/checkbox.dart';
 import '../theme.dart';
 
 
-// 添加任务弹出框
+// ===== 添加任务弹出框 =====
 class AddTaskPopUp extends StatelessWidget {
   AddTaskPopUp({super.key});
 
@@ -88,159 +88,6 @@ class AddTaskPopUp extends StatelessWidget {
     );
   }
 }
-
-// 任务详细信息弹出框
-class InformationPopUp extends StatelessWidget {
-  const InformationPopUp({
-    super.key,
-    required this.task,
-    required this.realToggle,
-  });
-
-  final Task task;
-  final void Function() realToggle;
-
-  @override
-  Widget build(BuildContext context) {
-    Color priorityColor;
-    IconData priorityIcon;
-    switch (task.taskPriority) {
-      case 0:
-        priorityColor = AppColors.green;
-        priorityIcon = Icons.coffee;
-        break;
-      case 1: 
-        priorityColor = AppColors.primary;
-        priorityIcon = Icons.event_note;
-        break;
-      case 2:
-        priorityColor = AppColors.red;
-        priorityIcon = Icons.error_outline;
-        break;
-      default:
-        priorityColor = AppColors.textActive;
-        priorityIcon = Icons.event_busy;
-    }
-    RxBool fakeDone = task.taskDone.obs;
-
-    return AlertDialog(
-      title: Row(
-        children: [
-          Obx(() =>
-            CheckboxWidget(
-              taskDone: fakeDone.value,
-              tileColor: priorityColor,
-              scale: 1,
-              onChanged: (value) {
-                fakeDone.value = !fakeDone.value;
-                realToggle();
-              },
-            ),
-          ),
-          const Text(
-            'Task Information',
-            style: TextStyle(
-              color: AppColors.primary,
-            ),
-          ),
-        ],
-      ),
-      backgroundColor: AppColors.background,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      content: SizedBox(
-        width: 300,
-        height: 200,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Content: ${task.taskContent}',
-                      style: const TextStyle(
-                        color: AppColors.text,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Deadline: ${task.taskDate}',
-                      style: const TextStyle(
-                        color: AppColors.text,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Recurrence: ${task.taskRecurrence}',
-                      style: const TextStyle(
-                        color: AppColors.text,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Priority: ${task.taskPriority}',
-                      style: const TextStyle(
-                        color: AppColors.text,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  'Note: ${task.taskNote}',
-                  style: const TextStyle(
-                    color: AppColors.text,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            Get.back();
-          },
-          style: textButtonStyle(),
-          child: const Text('OK'),
-        ),
-      ],
-    );
-  }
-}
-
 
 // 输入框样式
 InputDecoration inputBoxStyle(String hintText, [String? errorText]) {
@@ -481,6 +328,261 @@ class NoteTextField extends StatelessWidget {
         decoration: inputBoxStyle('备注：'),
         onChanged: (input) => popUpController.newTask.value.taskNote = input,
       ),
+    );
+  }
+}
+
+
+// ===== 任务详细信息弹出框 =====
+class InformationPopUp extends StatelessWidget {
+  const InformationPopUp({
+    super.key,
+    required this.task,
+    required this.realToggle,
+  });
+
+  final Task task;
+  final void Function() realToggle;
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> priorityList = ['闲白儿', '正事儿', '急茬儿'];
+    List<Color> priorityColors = [AppColors.green, AppColors.primary, AppColors.red];
+    List<IconData> priorityIcons = [Icons.coffee, Icons.event_note, Icons.error_outline];
+    RxBool fakeDone = task.taskDone.obs;
+
+    return AlertDialog(
+      title: Row(
+        children: [
+          Obx(() =>
+            CheckboxWidget(
+              taskDone: fakeDone.value,
+              tileColor: AppColors.primary,
+              scale: 1,
+              onChanged: (value) {
+                fakeDone.value = !fakeDone.value;
+                realToggle();
+              },
+            ),
+          ),
+          Text(
+            task.taskContent,
+            style: const TextStyle(
+              color: AppColors.primary,
+            ),
+          ),
+        ],
+      ),
+      backgroundColor: AppColors.background,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      content: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.4,
+        height: MediaQuery.of(context).size.height * 0.3,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: ShowDeadline(task: task),
+                ),
+                Expanded(
+                  child: ShowPriority(
+                    priorityColors: priorityColors,
+                    task: task,
+                    priorityIcons: priorityIcons,
+                    priorityList: priorityList,
+                  ),
+                ),
+              ],
+            ),
+            Expanded(
+              child: ShowNote(task: task),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Get.back();
+          },
+          style: textButtonStyle(),
+          child: const Text('OK'),
+        ),
+      ],
+    );
+  }
+}
+
+// 截止日期显示栏
+class ShowDeadline extends StatelessWidget {
+  const ShowDeadline({
+    super.key,
+    required this.task,
+  });
+
+  final Task task;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          margin: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(8),
+          width: 90,
+          child: const Text(
+            'Deadline ',
+            style: TextStyle(
+              color: AppColors.text,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.right,
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: AppColors.backgroundDark,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Text(
+            '${task.taskDate!.year} 年 ${task.taskDate!.month} 月 ${task.taskDate!.day} 日',
+            textAlign: TextAlign.left,
+            style: const TextStyle(
+              color: AppColors.text,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// 优先级显示栏
+class ShowPriority extends StatelessWidget {
+  const ShowPriority({
+    super.key,
+    required this.priorityColors,
+    required this.task,
+    required this.priorityIcons,
+    required this.priorityList,
+  });
+
+  final List<Color> priorityColors;
+  final Task task;
+  final List<IconData> priorityIcons;
+  final List<String> priorityList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          margin: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(8),
+          width: 90,
+          child: const Text(
+            'Priority ',
+            style: TextStyle(
+              color: AppColors.text,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.right,
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color: priorityColors[task.taskPriority].withAlpha(0x33),
+            borderRadius: BorderRadius.circular(8),
+            border: Border(
+              top: BorderSide(
+                color: priorityColors[task.taskPriority],
+                width: 3,
+              ),
+            ),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                priorityIcons[task.taskPriority],
+                color: priorityColors[task.taskPriority],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Text(
+                  priorityList[task.taskPriority],
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    color: priorityColors[task.taskPriority],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// 备注显示栏
+class ShowNote extends StatelessWidget {
+  const ShowNote({
+    super.key,
+    required this.task,
+  });
+
+  final Task task;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(4),
+              padding: const EdgeInsets.all(8),
+              width: 90,
+              height: constraints.maxHeight,
+              child: const Text(
+                'Note ',
+                style: TextStyle(
+                  color: AppColors.text,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.right,
+              ),
+            ),
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.all(4),
+                padding: const EdgeInsets.all(8),
+                height: constraints.maxHeight,
+                decoration: BoxDecoration(
+                  color: AppColors.backgroundDark,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: SingleChildScrollView(
+                  child: Text(
+                    task.taskNote,
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                      color: AppColors.text,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

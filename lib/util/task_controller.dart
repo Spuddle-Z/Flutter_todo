@@ -57,7 +57,7 @@ class TaskController extends GetxController {
       return taskA.taskDone ? 1 : -1;
     }
     // 按截止日期排序
-    if (taskA.taskDate != null && taskB.taskDate != null) {
+    if (taskA.taskDate != null && taskB.taskDate != null && taskA.taskDate! != taskB.taskDate!) {
       return taskA.taskDate!.compareTo(taskB.taskDate!);
     }
     // 按优先级排序
