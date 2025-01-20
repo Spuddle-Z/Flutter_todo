@@ -242,18 +242,21 @@ class SmallTaskList extends StatelessWidget {
       final RxList<dynamic> keys = taskController.taskBox.value.keys.where(funcFilter).toList().obs;
       keys.sort((a, b) => taskController.sortTask(a, b));
 
-      return ListView.builder(
-        itemCount: keys.length,
-        itemBuilder: (context, index) {
-          return SmallTaskTile(
-            task: taskController.taskBox.value.get(keys[index])!,
-            taskKey: keys[index],
-            funcToggle: taskController.toggleTask,
-            tileColor: taskController.getTaskColor(keys[index], isToday),
-          );
-        },
-        physics: const ClampingScrollPhysics(),
-        shrinkWrap: true,
+      return ScrollConfiguration(
+        behavior: const MaterialScrollBehavior().copyWith(scrollbars: false),
+        child: ListView.builder(
+          itemCount: keys.length,
+          itemBuilder: (context, index) {
+            return SmallTaskTile(
+              task: taskController.taskBox.value.get(keys[index])!,
+              taskKey: keys[index],
+              funcToggle: taskController.toggleTask,
+              tileColor: taskController.getTaskColor(keys[index], isToday),
+            );
+          },
+          physics: const ClampingScrollPhysics(),
+          shrinkWrap: true,
+        ),
       );
     });
   }

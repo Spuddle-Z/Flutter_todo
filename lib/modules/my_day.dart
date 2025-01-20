@@ -18,13 +18,13 @@ class TaskLists extends StatelessWidget {
       DateTime? date = taskController.taskBox.value.get(k)!.taskDate;
       return date != null && date.isBefore(DateTime.now());
     }
-    bool noDeadlineFilter(k) {
-      return true;
-    }
     // bool noDeadlineFilter(k) {
-    //   DateTime? date = taskController.taskBox.value.get(k)!.taskDate;
-    //   return date == null;
+    //   return true;
     // }
+    bool noDeadlineFilter(k) {
+      DateTime? date = taskController.taskBox.value.get(k)!.taskDate;
+      return date == null;
+    }
 
     return Column(
       children: [

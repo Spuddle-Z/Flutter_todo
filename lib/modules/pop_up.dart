@@ -358,17 +358,20 @@ class InformationPopUp extends StatelessWidget {
             CheckboxWidget(
               taskDone: fakeDone.value,
               tileColor: AppColors.primary,
-              scale: 1,
+              scale: 1.2,
               onChanged: (value) {
                 fakeDone.value = !fakeDone.value;
                 realToggle();
               },
             ),
           ),
-          Text(
-            task.taskContent,
-            style: const TextStyle(
-              color: AppColors.primary,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              task.taskContent,
+              style: const TextStyle(
+                color: AppColors.primary,
+              ),
             ),
           ),
         ],
