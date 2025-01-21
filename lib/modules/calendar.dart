@@ -259,6 +259,7 @@ class SmallTaskList extends StatelessWidget {
               task: taskController.taskBox.value.get(keys[index])!,
               taskKey: keys[index],
               funcToggle: taskController.toggleTask,
+              funcDelete: taskController.deleteTask,
               tileColor: taskController.getTaskColor(keys[index], isToday),
             );
           },
@@ -275,6 +276,7 @@ class SmallTaskTile extends StatelessWidget {
   final Task task;
   final int taskKey;
   final dynamic funcToggle;
+  final dynamic funcDelete;
   final Color tileColor;
 
   const SmallTaskTile({
@@ -282,6 +284,7 @@ class SmallTaskTile extends StatelessWidget {
     required this.task,
     required this.taskKey,
     required this.funcToggle,
+    required this.funcDelete,
     required this.tileColor,
   });
 
@@ -353,7 +356,9 @@ class SmallTaskTile extends StatelessWidget {
                   Get.dialog(
                     InformationPopUp(
                       task: task,
+                      taskKey: taskKey,
                       realToggle: () => funcToggle(taskKey),
+                      funcDelete: () => funcDelete(taskKey),
                     ),
                   );
                 },

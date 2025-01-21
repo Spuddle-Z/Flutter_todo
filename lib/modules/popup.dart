@@ -427,11 +427,15 @@ class InformationPopUp extends StatelessWidget {
   const InformationPopUp({
     super.key,
     required this.task,
+    required this.taskKey,
     required this.realToggle,
+    required this.funcDelete,
   });
 
   final Task task;
+  final int taskKey;
   final void Function() realToggle;
+  final void Function() funcDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -496,6 +500,24 @@ class InformationPopUp extends StatelessWidget {
         ),
       ),
       actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            funcDelete();
+            Get.back();
+          },
+          style: textButtonStyle(),
+          child: const Text('Delete'),
+        ),
+        TextButton(
+          onPressed: () {
+            Get.back();
+            Get.dialog(
+              EditTaskPopup(taskKey: taskKey),
+            );
+          },
+          style: textButtonStyle(),
+          child: const Text('Edit'),
+        ),
         TextButton(
           onPressed: () {
             Get.back();
