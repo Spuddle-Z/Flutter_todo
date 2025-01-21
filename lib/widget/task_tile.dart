@@ -104,6 +104,7 @@ class TaskTile extends StatelessWidget {
                     onPressed: () => {
                       Get.dialog(
                         EditTaskPopup(taskKey: taskKey),
+                        barrierDismissible: false,
                       )
                     },
                   ),

@@ -514,6 +514,7 @@ class InformationPopUp extends StatelessWidget {
             Get.back();
             Get.dialog(
               EditTaskPopup(taskKey: taskKey),
+              barrierDismissible: false,
             );
           },
           style: textButtonStyle(),

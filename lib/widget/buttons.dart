@@ -12,7 +12,8 @@ class ButtonsArea extends StatelessWidget {
     return TextButton(
       onPressed: () {
         Get.dialog(
-          AddTaskPopup()
+          AddTaskPopup(),
+          barrierDismissible: false,
         );
       },
       style: textButtonStyle(),

@@ -5,6 +5,7 @@ import '../util/task_controller.dart';
 
 import '../widget/recessed_panel.dart';
 import '../widget/task_list.dart';
+import '../theme.dart';
 
 
 class TaskLists extends StatelessWidget {
@@ -31,18 +32,48 @@ class TaskLists extends StatelessWidget {
         Expanded(
           flex: 2,
           child: RecessedPanel(
-            child: TaskList(
-              taskController: taskController,
-              funcFilter: todayFilter,
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Today',
+                    style: TextStyle(
+                      color: AppColors.primary,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                TaskList(
+                  taskController: taskController,
+                  funcFilter: todayFilter,
+                ),
+              ],
             )
           )
         ),
         Expanded(
           flex: 3,
           child: RecessedPanel(
-            child: TaskList(
-              taskController: taskController,
-              funcFilter: noDeadlineFilter,
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'No Deadline',
+                    style: TextStyle(
+                      color: AppColors.primary,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                TaskList(
+                  taskController: taskController,
+                  funcFilter: noDeadlineFilter,
+                ),
+              ],
             )
           )
         ),
