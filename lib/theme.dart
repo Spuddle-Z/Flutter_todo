@@ -32,5 +32,11 @@ ButtonStyle textButtonStyle() {
         borderRadius: BorderRadius.circular(8),
       ),
     ),
+    textStyle: WidgetStateProperty.resolveWith<TextStyle>((Set<WidgetState> states) {
+      return const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      );
+    }),
   );
 }

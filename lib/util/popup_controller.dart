@@ -12,6 +12,17 @@ class PopUpController extends GetxController {
     taskRecurrence: '不重复',
   ).obs;
 
+  // 加载任务
+  void loadTask(Task task) {
+    newTask.value = Task.copy(task);
+    dateString.value = (task.taskDate != null)
+      ? '${task.taskDate!.year}'
+        '${task.taskDate!.month.toString().padLeft(2, '0')}'
+        '${task.taskDate!.day.toString().padLeft(2, '0')}'
+      : '';
+    selectedPriority.value = task.taskPriority;
+  }
+
   // 清空暂存内容
   void clearNewTask() {
     newTask.value.taskContent = 'BIG FUCKING GUN';

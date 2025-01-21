@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../modules/pop_up.dart';
+import '../modules/popup.dart';
 import '../theme.dart';
 
 class ButtonsArea extends StatelessWidget {
@@ -12,7 +12,7 @@ class ButtonsArea extends StatelessWidget {
     return TextButton(
       onPressed: () {
         Get.dialog(
-          AddTaskPopUp()
+          AddTaskPopup()
         );
       },
       style: textButtonStyle(),

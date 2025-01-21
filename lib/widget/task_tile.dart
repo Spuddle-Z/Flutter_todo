@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:to_do/modules/popup.dart';
 
 import '../util/task_model.dart';
 
@@ -100,7 +101,11 @@ class TaskTile extends StatelessWidget {
                   TileButton(
                     icon: const Icon(Icons.edit),
                     color: tileColor,
-                    onPressed: () => {},
+                    onPressed: () => {
+                      Get.dialog(
+                        EditTaskPopup(taskKey: taskKey),
+                      )
+                    },
                   ),
                   
                   // 删除按钮

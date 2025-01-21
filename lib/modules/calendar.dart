@@ -5,7 +5,7 @@ import '../util/task_model.dart';
 import '../util/calendar_controller.dart';
 import '../util/task_controller.dart';
 
-import '../modules/pop_up.dart';
+import 'popup.dart';
 import '../widget/recessed_panel.dart';
 import '../widget/checkbox.dart';
 import '../theme.dart';
@@ -246,25 +246,27 @@ class SmallTaskList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final RxList<dynamic> keys = taskController.taskBox.value.keys.where(funcFilter).toList().obs;
-    keys.sort((a, b) => taskController.sortTask(a, b));
+    return Obx(() {
+      final RxList<dynamic> keys = taskController.taskBox.value.keys.where(funcFilter).toList().obs;
+      keys.sort((a, b) => taskController.sortTask(a, b));
 
-    return ScrollConfiguration(
-      behavior: const MaterialScrollBehavior().copyWith(scrollbars: false),
-      child: ListView.builder(
-        itemCount: keys.length,
-        itemBuilder: (context, index) {
-          return SmallTaskTile(
-            task: taskController.taskBox.value.get(keys[index])!,
-            taskKey: keys[index],
-            funcToggle: taskController.toggleTask,
-            tileColor: taskController.getTaskColor(keys[index], isToday),
-          );
-        },
-        physics: const ClampingScrollPhysics(),
-        shrinkWrap: true,
-      ),
-    );
+      return ScrollConfiguration(
+        behavior: const MaterialScrollBehavior().copyWith(scrollbars: false),
+        child: ListView.builder(
+          itemCount: keys.length,
+          itemBuilder: (context, index) {
+            return SmallTaskTile(
+              task: taskController.taskBox.value.get(keys[index])!,
+              taskKey: keys[index],
+              funcToggle: taskController.toggleTask,
+              tileColor: taskController.getTaskColor(keys[index], isToday),
+            );
+          },
+          physics: const ClampingScrollPhysics(),
+          shrinkWrap: true,
+        ),
+      );
+    });
   }
 }
 

@@ -4,15 +4,15 @@ import 'package:get/get.dart';
 
 import '../util/task_model.dart';
 import '../util/task_controller.dart';
-import '../util/pop_up_controller.dart';
+import '../util/popup_controller.dart';
 
 import '../widget/checkbox.dart';
 import '../theme.dart';
 
 
 // ===== 添加任务弹出框 =====
-class AddTaskPopUp extends StatelessWidget {
-  AddTaskPopUp({super.key});
+class AddTaskPopup extends StatelessWidget {
+  AddTaskPopup({super.key});
 
   final PopUpController popUpController = Get.put(PopUpController());
   final TaskController taskController = Get.find<TaskController>();
@@ -71,7 +71,7 @@ class AddTaskPopUp extends StatelessWidget {
             Get.back();
           },
           style: textButtonStyle(),
-          child: const Text('取消'),
+          child: const Text('Cancel'),
         ),
         TextButton(
           onPressed: () {
@@ -82,7 +82,91 @@ class AddTaskPopUp extends StatelessWidget {
             }
           },
           style: textButtonStyle(),
-          child: const Text('确定'),
+          child: const Text('Add'),
+        ),
+      ],
+    );
+  }
+}
+
+class EditTaskPopup extends StatelessWidget {
+  EditTaskPopup({
+    super.key,
+    required this.taskKey
+  });
+
+  final int taskKey;
+  final PopUpController popUpController = Get.put(PopUpController());
+  final TaskController taskController = Get.find<TaskController>();
+
+  @override
+  Widget build(BuildContext context) {
+    popUpController.loadTask(taskController.taskBox.value.get(taskKey)!);
+
+    return AlertDialog(
+      title: const Text(
+        'Edit Task',
+        style: TextStyle(
+          color: AppColors.primary,
+        ),
+      ),
+      backgroundColor: AppColors.background,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      content: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.5,
+        height: MediaQuery.of(context).size.height * 0.5,
+        child: Column(
+          children: [
+            ContentTextField(
+              popUpController: popUpController,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: DateTextField(popUpController: popUpController),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: RecurrenceField(popUpController: popUpController),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: PriorityPopUp(popUpController: popUpController),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: NoteTextField(
+                popUpController: popUpController,
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            popUpController.clearNewTask();
+            Get.back();
+          },
+          style: textButtonStyle(),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () {
+            if (popUpController.checkContent() && popUpController.checkDate()) {
+              taskController.updateTask(taskKey, popUpController.newTask.value);
+              popUpController.clearNewTask();
+              Get.back();
+            }
+          },
+          style: textButtonStyle(),
+          child: const Text('Edit'),
         ),
       ],
     );
@@ -149,6 +233,7 @@ class ContentTextField extends StatelessWidget {
           ),
 
           // 功能设置
+          controller: TextEditingController(text: popUpController.newTask.value.taskContent),
           onChanged: (input) {
             popUpController.newTask.value.taskContent = input;
             popUpController.checkContent();
@@ -318,6 +403,7 @@ class NoteTextField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: TextField(
+        // 样式设置
         expands: true,
         maxLines: null,
         textAlignVertical: TextAlignVertical.top,
@@ -326,6 +412,9 @@ class NoteTextField extends StatelessWidget {
         ),
         cursorColor: AppColors.text,
         decoration: inputBoxStyle('备注：'),
+
+        // 功能设置
+        controller: TextEditingController(text: popUpController.newTask.value.taskNote),
         onChanged: (input) => popUpController.newTask.value.taskNote = input,
       ),
     );
@@ -573,7 +662,7 @@ class ShowNote extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: SingleChildScrollView(
-                  child: Text(
+                  child: SelectableText(
                     task.taskNote,
                     textAlign: TextAlign.left,
                     style: const TextStyle(

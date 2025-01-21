@@ -71,7 +71,14 @@ class TaskController extends GetxController {
     taskBox.refresh();
   }
 
-  // 更新任务状态
+  // 更新任务
+  void updateTask(int key, Task newTask) {
+    taskBox.value.put(key, Task.copy(newTask));
+    generateTask();
+    taskBox.refresh();
+  }
+
+  // 切换任务完成状态
   void toggleTask(int key) {
     final task = taskBox.value.get(key);
     task!.taskDone = !task.taskDone;
