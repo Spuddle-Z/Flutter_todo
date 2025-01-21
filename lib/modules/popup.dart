@@ -166,7 +166,7 @@ class EditTaskPopup extends StatelessWidget {
             }
           },
           style: textButtonStyle(),
-          child: const Text('Edit'),
+          child: const Text('Save'),
         ),
       ],
     );

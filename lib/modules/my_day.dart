@@ -19,9 +19,6 @@ class TaskLists extends StatelessWidget {
       DateTime? date = taskController.taskBox.value.get(k)!.taskDate;
       return date != null && date.isBefore(DateTime.now());
     }
-    // bool noDeadlineFilter(k) {
-    //   return true;
-    // }
     bool noDeadlineFilter(k) {
       DateTime? date = taskController.taskBox.value.get(k)!.taskDate;
       return date == null;
@@ -45,9 +42,11 @@ class TaskLists extends StatelessWidget {
                     ),
                   ),
                 ),
-                TaskList(
-                  taskController: taskController,
-                  funcFilter: todayFilter,
+                Expanded(
+                  child: TaskList(
+                    taskController: taskController,
+                    funcFilter: todayFilter,
+                  ),
                 ),
               ],
             )
@@ -69,9 +68,11 @@ class TaskLists extends StatelessWidget {
                     ),
                   ),
                 ),
-                TaskList(
-                  taskController: taskController,
-                  funcFilter: noDeadlineFilter,
+                Expanded(
+                  child: TaskList(
+                    taskController: taskController,
+                    funcFilter: noDeadlineFilter,
+                  ),
                 ),
               ],
             )
