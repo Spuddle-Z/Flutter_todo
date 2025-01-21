@@ -49,22 +49,26 @@ class CalendarHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
-          onPressed: () => {},
+          onPressed: () => calendarController.updateViewMonth(-1),
           icon: const Icon(Icons.keyboard_arrow_left),
           color: AppColors.text,
         ),
-        Obx(() => 
-          Text(
-            calendarController.viewMonthString.value,
-            style: const TextStyle(
-              color: AppColors.primary,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+        Container(
+          width: 200,
+          alignment: Alignment.center,
+          child: Obx(() => 
+            Text(
+              calendarController.viewMonthString.value,
+              style: const TextStyle(
+                color: AppColors.primary,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
         IconButton(
-          onPressed: () => {},
+          onPressed: () => calendarController.updateViewMonth(1),
           icon: const Icon(Icons.keyboard_arrow_right),
           color: AppColors.text,
         ),
@@ -172,54 +176,58 @@ class DayCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime cellDate = calendarController.getCellDate(index);
-    final bool isToday = cellDate.day == calendarController.today.value.day &&
-      cellDate.month == calendarController.today.value.month &&
-      cellDate.year == calendarController.today.value.year;
-    final bool isCurrentMonth = cellDate.month == calendarController.viewMonth.value.month;
-    final bool isWeekend = cellDate.weekday == 7 || cellDate.weekday == 6;
-    bool funcFilter(k) {
-      bool taskDone = taskController.taskBox.value.get(k)!.taskDone;
-      DateTime? taskDate = taskController.taskBox.value.get(k)!.taskDate;
-      if (isToday) {
-        return taskDate != null && (
-          (!taskDone && taskDate.isBefore(cellDate)) ||
-          taskDate.isAtSameMomentAs(cellDate));
-      } else {
-        return taskDate != null &&
-          taskDate.isAtSameMomentAs(cellDate);
-      }
-    };
+    return Obx(() {
+      Rx<DateTime> cellDate = calendarController.getCellDate(index).obs;
+      final bool isToday = cellDate.value.day == calendarController.today.value.day &&
+        cellDate.value.month == calendarController.today.value.month &&
+        cellDate.value.year == calendarController.today.value.year;
+      final bool isCurrentMonth = cellDate.value.month == calendarController.viewMonth.value.month;
+      final bool isWeekend = cellDate.value.weekday == 7 || cellDate.value.weekday == 6;
+      bool funcFilter(k) {
+        bool taskDone = taskController.taskBox.value.get(k)!.taskDone;
+        DateTime? taskDate = taskController.taskBox.value.get(k)!.taskDate;
+        if (isToday) {
+          return taskDate != null && (
+            (!taskDone && taskDate.isBefore(cellDate.value)) ||
+            taskDate.isAtSameMomentAs(cellDate.value));
+        } else {
+          return taskDate != null &&
+            taskDate.isAtSameMomentAs(cellDate.value);
+        }
+      };
 
-    return Container(
-      margin: const EdgeInsets.all(2),
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: isCurrentMonth ? AppColors.background : AppColors.backgroundDark,
-        border: Border.all(
-          color: isToday ? AppColors.textDark : AppColors.backgroundDark,
-          width: 2,
-        ),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        children: [
-          Text(
-            '${cellDate.day}',
-            style: TextStyle(
-              color: isToday ? AppColors.textActive : isWeekend ? AppColors.textDark : AppColors.text,
-            ),
+      return Container(
+        margin: const EdgeInsets.all(2),
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          color: isCurrentMonth ? AppColors.background : AppColors.backgroundDark,
+          border: Border.all(
+            color: isToday ? AppColors.textDark : AppColors.backgroundDark,
+            width: 2,
           ),
-          Expanded(
-            child: SmallTaskList(
-              taskController: taskController,
-              funcFilter: funcFilter,
-              isToday: isToday,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          children: [
+            Obx(() =>
+              Text(
+                '${cellDate.value.day}',
+                style: TextStyle(
+                  color: isToday ? AppColors.textActive : isWeekend ? AppColors.textDark : AppColors.text,
+                ),
+              ),
             ),
-          )
-        ],
-      ),
-    );
+            Expanded(
+              child: SmallTaskList(
+                taskController: taskController,
+                funcFilter: funcFilter,
+                isToday: isToday,
+              ),
+            )
+          ],
+        ),
+      );
+    });
   }
 }
 
@@ -238,27 +246,25 @@ class SmallTaskList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      final RxList<dynamic> keys = taskController.taskBox.value.keys.where(funcFilter).toList().obs;
-      keys.sort((a, b) => taskController.sortTask(a, b));
+    final RxList<dynamic> keys = taskController.taskBox.value.keys.where(funcFilter).toList().obs;
+    keys.sort((a, b) => taskController.sortTask(a, b));
 
-      return ScrollConfiguration(
-        behavior: const MaterialScrollBehavior().copyWith(scrollbars: false),
-        child: ListView.builder(
-          itemCount: keys.length,
-          itemBuilder: (context, index) {
-            return SmallTaskTile(
-              task: taskController.taskBox.value.get(keys[index])!,
-              taskKey: keys[index],
-              funcToggle: taskController.toggleTask,
-              tileColor: taskController.getTaskColor(keys[index], isToday),
-            );
-          },
-          physics: const ClampingScrollPhysics(),
-          shrinkWrap: true,
-        ),
-      );
-    });
+    return ScrollConfiguration(
+      behavior: const MaterialScrollBehavior().copyWith(scrollbars: false),
+      child: ListView.builder(
+        itemCount: keys.length,
+        itemBuilder: (context, index) {
+          return SmallTaskTile(
+            task: taskController.taskBox.value.get(keys[index])!,
+            taskKey: keys[index],
+            funcToggle: taskController.toggleTask,
+            tileColor: taskController.getTaskColor(keys[index], isToday),
+          );
+        },
+        physics: const ClampingScrollPhysics(),
+        shrinkWrap: true,
+      ),
+    );
   }
 }
 
