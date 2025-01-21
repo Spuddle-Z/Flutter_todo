@@ -236,7 +236,6 @@ class ContentTextField extends StatelessWidget {
           controller: TextEditingController(text: popUpController.newTask.value.taskContent),
           onChanged: (input) {
             popUpController.newTask.value.taskContent = input;
-            popUpController.checkContent();
           },
           onEditingComplete: () {
             FocusScope.of(context).nextFocus();
@@ -297,7 +296,7 @@ class RecurrenceField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() =>
-      DropdownButtonFormField(
+      DropdownButtonFormField<int>(
         // 样式设置
         hint: const Text(
           '请选择周期',
@@ -311,11 +310,13 @@ class RecurrenceField extends StatelessWidget {
 
         // 功能设置
         value: popUpController.selectedRecurrence.value,
-        onChanged: (value) {
-          if (value != null) {
-            popUpController.updateRecurrence(value);
-          }
-        },
+        onChanged: popUpController.dateString.isEmpty
+          ? null
+          : (value) {
+            if (value != null) {
+              popUpController.updateRecurrence(value);
+            }
+          },
         items: [
           for (int i = 0; i < popUpController.recurrenceList.length; i++)
             DropdownMenuItem(
