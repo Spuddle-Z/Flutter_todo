@@ -20,12 +20,13 @@ class PopUpController extends GetxController {
         '${task.taskDate!.month.toString().padLeft(2, '0')}'
         '${task.taskDate!.day.toString().padLeft(2, '0')}'
       : '';
+    selectedRecurrence.value = recurrenceList.indexOf(task.taskRecurrence);
     selectedPriority.value = task.taskPriority;
   }
 
   // 清空暂存内容
   void clearNewTask() {
-    newTask.value.taskContent = 'BIG FUCKING GUN';
+    newTask.value.taskContent = '';
     newTask.value.taskPriority = 0;
     newTask.value.taskNote = '';
     newTask.value.taskRecurrence = '不重复';
@@ -35,7 +36,7 @@ class PopUpController extends GetxController {
       '${DateTime.now().month.toString().padLeft(2, '0')}'
       '${DateTime.now().day.toString().padLeft(2, '0')}';
     selectedPriority.value = 0;
-    selectedRecurrence.value = null;
+    selectedRecurrence.value = 0;
 
     contentError.value = null;
     dateError.value = null;

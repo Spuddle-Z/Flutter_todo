@@ -474,14 +474,15 @@ class InformationPopUp extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       content: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.4,
-        height: MediaQuery.of(context).size.height * 0.3,
+        width: MediaQuery.of(context).size.width * 0.3,
+        height: MediaQuery.of(context).size.height * 0.4,
         child: Column(
           children: [
+            ShowDeadline(task: task),
             Row(
               children: [
                 Expanded(
-                  child: ShowDeadline(task: task),
+                  child: ShowRecurrence(task: task),
                 ),
                 Expanded(
                   child: ShowPriority(
@@ -530,6 +531,33 @@ class InformationPopUp extends StatelessWidget {
   }
 }
 
+// 任务信息表头
+class InformationHead extends StatelessWidget {
+  const InformationHead({
+    super.key,
+    required this.text,
+  });
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(8),
+      width: 100,
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: AppColors.text,
+          fontWeight: FontWeight.bold,
+        ),
+        textAlign: TextAlign.right,
+      ),
+    );
+  }
+}
+
 // 截止日期显示栏
 class ShowDeadline extends StatelessWidget {
   const ShowDeadline({
@@ -543,19 +571,7 @@ class ShowDeadline extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
-          margin: const EdgeInsets.all(4),
-          padding: const EdgeInsets.all(8),
-          width: 90,
-          child: const Text(
-            'Deadline ',
-            style: TextStyle(
-              color: AppColors.text,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.right,
-          ),
-        ),
+        const InformationHead(text: 'Deadline'),
         Container(
           margin: const EdgeInsets.all(4),
           padding: const EdgeInsets.all(8),
@@ -595,19 +611,7 @@ class ShowPriority extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
-          margin: const EdgeInsets.all(4),
-          padding: const EdgeInsets.all(8),
-          width: 90,
-          child: const Text(
-            'Priority ',
-            style: TextStyle(
-              color: AppColors.text,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.right,
-          ),
-        ),
+        const InformationHead(text: 'Priority'),
         Container(
           margin: const EdgeInsets.all(4),
           padding: const EdgeInsets.all(4),
@@ -645,6 +649,40 @@ class ShowPriority extends StatelessWidget {
   }
 }
 
+// 周期性显示栏
+class ShowRecurrence extends StatelessWidget {
+  const ShowRecurrence({
+    super.key,
+    required this.task,
+  });
+
+  final Task task;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const InformationHead(text: 'Recurrence'),
+        Container(
+          margin: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: AppColors.backgroundDark,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Text(
+            task.taskRecurrence,
+            textAlign: TextAlign.left,
+            style: const TextStyle(
+              color: AppColors.text,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 // 备注显示栏
 class ShowNote extends StatelessWidget {
   const ShowNote({
@@ -663,10 +701,10 @@ class ShowNote extends StatelessWidget {
             Container(
               margin: const EdgeInsets.all(4),
               padding: const EdgeInsets.all(8),
-              width: 90,
+              width: 100,
               height: constraints.maxHeight,
               child: const Text(
-                'Note ',
+                'Note',
                 style: TextStyle(
                   color: AppColors.text,
                   fontWeight: FontWeight.bold,
