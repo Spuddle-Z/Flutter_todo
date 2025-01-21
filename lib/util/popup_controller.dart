@@ -83,6 +83,7 @@ class PopUpController extends GetxController {
   RxnString dateError = RxnString();
   bool checkDate() {
     if (dateString.value.isEmpty) {
+      newTask.value.taskDate = null;
       return true;
     } else if (dateString.value.length != 8) {
       dateError.value = '请按照 YYYYMMDD 的格式输入日期';
