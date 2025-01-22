@@ -341,6 +341,8 @@ class SmallTaskTile extends StatelessWidget {
                   decorationColor: tileColor,
                   decorationThickness: 2,
                 ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
               ),
             ),
 
