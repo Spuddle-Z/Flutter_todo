@@ -5,6 +5,7 @@ import '../util/task_controller.dart';
 
 import '../widget/recessed_panel.dart';
 import '../widget/task_list.dart';
+import '../widget/random_task.dart';
 import '../theme.dart';
 
 
@@ -66,6 +67,17 @@ class TaskLists extends StatelessWidget {
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
+                  ),
+                ),
+                RandomTask(taskController: taskController),
+                Container(
+                  height: 1,
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 8,
+                  ),
+                  decoration: const BoxDecoration(
+                    color: AppColors.textDark,
                   ),
                 ),
                 Expanded(
