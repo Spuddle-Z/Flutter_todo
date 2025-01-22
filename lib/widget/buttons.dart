@@ -17,9 +17,21 @@ class ButtonsArea extends StatelessWidget {
         );
       },
       style: textButtonStyle(),
-      child: const Icon(
-        Icons.add,
-        color: AppColors.text,
+      child: const Row(
+        children: [
+          Icon(
+            Icons.add,
+            color: AppColors.text,
+          ),
+          Text(
+            'Add Task',
+            style: TextStyle(
+              color: AppColors.text,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../modules/calendar.dart';
 import '../modules/my_day.dart';
-import '../widget/buttons.dart';
 
 
 class TodoPage extends StatelessWidget {
@@ -20,14 +19,7 @@ class TodoPage extends StatelessWidget {
             flex: 3,
             child: CalendarWidget(),
           ),
-          Expanded(child: Column(
-            children: [
-              const ButtonsArea(),
-              Expanded(
-                child: TaskLists(),
-              ),
-            ],
-          )),
+          Expanded(child: TaskLists()),
         ],
       ),
     );

@@ -265,7 +265,7 @@ class DateTextField extends StatelessWidget {
         ),
         cursorColor: AppColors.text,
         decoration: inputBoxStyle(
-          '截止日期',
+          '无截止日期',
           popUpController.dateError.value,
         ),
       

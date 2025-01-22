@@ -6,6 +6,7 @@ import '../util/calendar_controller.dart';
 import '../util/task_controller.dart';
 
 import 'popup.dart';
+import '../widget/buttons.dart';
 import '../widget/recessed_panel.dart';
 import '../widget/checkbox.dart';
 import '../theme.dart';
@@ -48,29 +49,47 @@ class CalendarHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        IconButton(
-          onPressed: () => calendarController.updateViewMonth(-1),
-          icon: const Icon(Icons.keyboard_arrow_left),
-          color: AppColors.text,
-        ),
-        Container(
-          width: 200,
-          alignment: Alignment.center,
-          child: Obx(() => 
-            Text(
-              calendarController.viewMonthString.value,
-              style: const TextStyle(
-                color: AppColors.primary,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+        const Spacer(),
+        Center(
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: () => calendarController.updateViewMonth(-1),
+                icon: const Icon(Icons.keyboard_arrow_left),
+                color: AppColors.text,
               ),
-            ),
+              Container(
+                width: 200,
+                alignment: Alignment.center,
+                child: Obx(() => 
+                  Text(
+                    calendarController.viewMonthString.value,
+                    style: const TextStyle(
+                      color: AppColors.primary,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              IconButton(
+                onPressed: () => calendarController.updateViewMonth(1),
+                icon: const Icon(Icons.keyboard_arrow_right),
+                color: AppColors.text,
+              ),
+            ],
           ),
         ),
-        IconButton(
-          onPressed: () => calendarController.updateViewMonth(1),
-          icon: const Icon(Icons.keyboard_arrow_right),
-          color: AppColors.text,
+        const Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(4),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ButtonsArea(),
+              ],
+            ),
+          ),
         ),
       ],
     );
