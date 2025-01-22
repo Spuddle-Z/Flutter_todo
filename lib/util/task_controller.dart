@@ -41,10 +41,11 @@ class TaskController extends GetxController {
       Task task = taskBox.value.get(keys[i])!;
       while (ifGenerate(task.taskDone, task.taskDate!)) {
         Task newTask = Task.copy(task);
-        newTask.taskRecurrence = '不重复';
+        newTask.taskDone = false;
+        newTask.taskDate = getNextDate(task.taskDate!, task.taskRecurrence);
         taskBox.value.add(newTask);
-        task.taskDone = false;
-        task.taskDate = getNextDate(task.taskDate!, task.taskRecurrence);
+        task.taskRecurrence = '不重复';
+        task = newTask;
       }
     }
   }
