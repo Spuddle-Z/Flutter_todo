@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:get/get.dart';
+import 'package:window_manager/window_manager.dart';
 import 'dart:io';
 
 import 'util/task_model.dart';
@@ -17,6 +18,14 @@ void main() async{
   Hive.init("data");
   Hive.registerAdapter(TaskAdapter());
   await Hive.openBox<Task>('tasks');
+
+  // 默认全屏
+  await windowManager.ensureInitialized();
+  WindowOptions windowOptions = const WindowOptions(fullScreen: true);
+  await windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.setFullScreen(true);
+    await windowManager.show();
+  });
 
   // 全局注册控制器
   Get.lazyPut(() => CalendarController());
