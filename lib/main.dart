@@ -4,11 +4,10 @@ import 'package:get/get.dart';
 import 'package:window_manager/window_manager.dart';
 import 'dart:io';
 
-import 'util/task_model.dart';
-import 'util/calendar_controller.dart';
-import 'util/task_controller.dart';
+import 'package:to_do/util/bindings.dart';
+import 'package:to_do/util/routes.dart';
+import 'package:to_do/util/task_model.dart';
 
-import 'pages/todo_page.dart';
 import 'theme.dart';
 
 
@@ -26,10 +25,6 @@ void main() async{
     await windowManager.setFullScreen(true);
     await windowManager.show();
   });
-
-  // 全局注册控制器
-  Get.lazyPut(() => CalendarController());
-  Get.lazyPut(() => TaskController());
 
   runApp(const MyApp());
 }
@@ -51,10 +46,9 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const Scaffold(
-        backgroundColor: AppColors.background,
-        body: TodoPage()
-      ),
+      initialBinding: MainBinding(),
+      initialRoute: Routes.main,
+      getPages: RoutePages.pages,
     );
   }
 }
