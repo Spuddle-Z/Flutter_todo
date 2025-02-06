@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:to_do/util/bindings.dart';
 
-import 'package:to_do/pages/main_page.dart';
 import 'package:to_do/pages/todo_page.dart';
 import 'package:to_do/pages/life_page.dart';
 
@@ -13,23 +13,19 @@ abstract class Routes {
   static const life = '/life';
 }
 
-class RoutePages {
-  static final pages = [
-    GetPage(
-      name: Routes.main,
-      page: () => MainPage(),
-      binding: MainBinding(),
-      children: [
-        GetPage(
-          name: Routes.todo,
-          page: () => const TodoPage(),
-          binding: TodoBinding(),
-        ),
-        GetPage(
-          name: Routes.life,
-          page: () => const LifePage()
-        ),
-      ],
-    ),
-  ];
+Route<dynamic>? onGenerateRoute(settings) {
+  if (settings.name == Routes.todo) {
+    return GetPageRoute(
+      settings: settings,
+      page: () => const TodoPage(),
+      binding: TodoBinding(),
+      transition: Transition.noTransition,
+    );
+  } else if (settings.name == Routes.life) {
+    return GetPageRoute(
+      settings: settings,
+      page: () => const LifePage(),
+      transition: Transition.noTransition,
+    );
+  } else { return null; }
 }

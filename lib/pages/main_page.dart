@@ -10,7 +10,7 @@ import 'package:to_do/theme.dart';
 class MainPage extends StatelessWidget {
   MainPage({super.key});
 
-  final NavigationController controller = Get.find();
+  final NavigationController controller = Get.put(NavigationController());
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +20,18 @@ class MainPage extends StatelessWidget {
         children: [
           navigationBar(),
           Expanded(
-            child: GetRouterOutlet(
+            child: Navigator(
               key: Get.nestedKey(1),
               initialRoute: Routes.todo,
-              anchorRoute: Routes.main,
+              onGenerateRoute: onGenerateRoute
             ),
           ),
         ],
       ),
     );
   }
+
+  
 
   // 导航栏
   Widget navigationBar() {

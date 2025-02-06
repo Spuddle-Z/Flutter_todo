@@ -4,9 +4,8 @@ import 'package:get/get.dart';
 import 'package:window_manager/window_manager.dart';
 import 'dart:io';
 
-import 'package:to_do/util/bindings.dart';
-import 'package:to_do/util/routes.dart';
 import 'package:to_do/util/task_model.dart';
+import 'package:to_do/pages/main_page.dart';
 
 import 'theme.dart';
 
@@ -46,9 +45,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      initialBinding: MainBinding(),
-      initialRoute: Routes.main,
-      getPages: RoutePages.pages,
+      home: MainPage(),
     );
   }
 }

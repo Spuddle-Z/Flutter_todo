@@ -14,7 +14,6 @@ class NavigationController extends GetxController {
         break;
       case 1:
         Get.offNamed(Routes.life, id: 1);
-        print(Get.routing.route);
         break;
     }
   }
