@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:to_do/util/bindings.dart';
+import 'package:to_do/share/utils/bindings.dart';
 
-import 'package:to_do/pages/todo_page.dart';
-import 'package:to_do/pages/life_page.dart';
+import 'package:to_do/pages/todo/todo_page.dart';
+import 'package:to_do/pages/life/life_page.dart';
 
 
 abstract class Routes {

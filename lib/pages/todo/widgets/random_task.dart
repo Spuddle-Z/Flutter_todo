@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:math';
 
-import '../util/task_controller.dart';
+import 'package:to_do/pages/todo/controller/task_controller.dart';
 
-import '../widget/task_tile.dart';
-import '../theme.dart';
+import 'task_tile.dart';
+import 'package:to_do/share/theme.dart';
 
 
 // 随机任务抽取

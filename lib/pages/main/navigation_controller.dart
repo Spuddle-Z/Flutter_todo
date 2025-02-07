@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import 'package:to_do/util/routes.dart';
+import 'package:to_do/share/utils/routes.dart';
 
 
 class NavigationController extends GetxController {

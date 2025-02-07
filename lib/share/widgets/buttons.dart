@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../modules/popup.dart';
-import '../theme.dart';
+import 'package:to_do/pages/todo/modules/popup.dart';
+import 'package:to_do/share/theme.dart';
+
 
 class ButtonsArea extends StatelessWidget {
   const ButtonsArea({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:to_do/util/routes.dart';
-import 'package:to_do/util/navigation_controller.dart';
+import 'package:to_do/share/utils/routes.dart';
+import 'package:to_do/pages/main/navigation_controller.dart';
 
-import 'package:to_do/theme.dart';
+import 'package:to_do/share/theme.dart';
 
 
 class MainPage extends StatelessWidget {

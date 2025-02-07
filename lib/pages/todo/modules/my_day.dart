@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../util/task_controller.dart';
+import 'package:to_do/pages/todo/controller/task_controller.dart';
 
-import '../widget/recessed_panel.dart';
-import '../widget/task_list.dart';
-import '../widget/random_task.dart';
-import '../theme.dart';
+import 'package:to_do/share/widgets/recessed_panel.dart';
+import 'package:to_do/pages/todo/widgets/task_list.dart';
+import 'package:to_do/pages/todo/widgets/random_task.dart';
+import 'package:to_do/share/theme.dart';
 
 
 class TaskLists extends StatelessWidget {

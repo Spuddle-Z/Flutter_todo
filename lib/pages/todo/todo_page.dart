@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../modules/calendar.dart';
-import '../modules/my_day.dart';
+import 'modules/calendar.dart';
+import 'modules/my_day.dart';
 
 
 class TodoPage extends StatelessWidget {

@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 import 'package:window_manager/window_manager.dart';
 import 'dart:io';
 
-import 'package:to_do/util/task_model.dart';
-import 'package:to_do/pages/main_page.dart';
+import 'package:to_do/pages/todo/utils/task_model.dart';
+import 'package:to_do/pages/main/main_page.dart';
 
-import 'theme.dart';
+import 'package:to_do/share/theme.dart';
 
 
 void main() async{

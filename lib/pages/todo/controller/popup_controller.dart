@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'task_model.dart';
-import '../theme.dart';
+
+import 'package:to_do/pages/todo/utils/task_model.dart';
+
+import 'package:to_do/share/theme.dart';
+
 
 class PopUpController extends GetxController {
   // 暂存输入内容

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../util/task_model.dart';
-import '../util/calendar_controller.dart';
-import '../util/task_controller.dart';
+import 'package:to_do/pages/todo/utils/task_model.dart';
+import 'package:to_do/pages/todo/controller/calendar_controller.dart';
+import 'package:to_do/pages/todo/controller/task_controller.dart';
 
 import 'popup.dart';
-import '../widget/buttons.dart';
-import '../widget/recessed_panel.dart';
-import '../widget/checkbox.dart';
-import '../theme.dart';
+import 'package:to_do/share/widgets/buttons.dart';
+import 'package:to_do/share/widgets/recessed_panel.dart';
+import 'package:to_do/share/widgets/checkbox.dart';
+import 'package:to_do/share/theme.dart';
 
 
 class CalendarWidget extends StatelessWidget {
@@ -213,7 +213,7 @@ class DayCell extends StatelessWidget {
           return taskDate != null &&
             taskDate.isAtSameMomentAs(cellDate.value);
         }
-      };
+      }
 
       return Container(
         margin: const EdgeInsets.all(2),

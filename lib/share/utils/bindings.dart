@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
-import 'package:to_do/util/calendar_controller.dart';
-import 'package:to_do/util/task_controller.dart';
+
+import 'package:to_do/pages/todo/controller/calendar_controller.dart';
+import 'package:to_do/pages/todo/controller/task_controller.dart';
 
 
 class TodoBinding implements Bindings {
