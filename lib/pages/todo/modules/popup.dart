@@ -204,6 +204,13 @@ InputDecoration inputBoxStyle(String hintText, [String? errorText]) {
           width: 2
         ),
       ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(
+          color: AppColors.red,
+          width: 2
+        ),
+      ),
     );
 }
 
