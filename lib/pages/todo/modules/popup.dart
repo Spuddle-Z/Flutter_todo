@@ -216,15 +216,17 @@ InputDecoration inputBoxStyle(String hintText, [String? errorText]) {
 
 // 任务内容输入框
 class ContentTextField extends StatelessWidget {
-  const ContentTextField({
+  ContentTextField({
     super.key,
     required this.popUpController,
   });
 
   final PopUpController popUpController;
+  final TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    textController.text = popUpController.newTask.value.taskContent;
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Obx(() =>
@@ -240,13 +242,13 @@ class ContentTextField extends StatelessWidget {
           ),
 
           // 功能设置
-          controller: TextEditingController(text: popUpController.newTask.value.taskContent),
+          controller: textController,
           onChanged: (input) {
             popUpController.newTask.value.taskContent = input;
+            popUpController.checkContent();
           },
           onEditingComplete: () {
             FocusScope.of(context).nextFocus();
-            popUpController.checkContent();
           },
         ),
       ),
@@ -256,15 +258,17 @@ class ContentTextField extends StatelessWidget {
 
 // 截止日期输入框
 class DateTextField extends StatelessWidget {
-  const DateTextField({
+  DateTextField({
     super.key,
     required this.popUpController,
   });
 
   final PopUpController popUpController;
+  final TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    textController.text = popUpController.dateString.value;
     return TextField(
         // 样式设置
         style: const TextStyle(
@@ -277,15 +281,17 @@ class DateTextField extends StatelessWidget {
         ),
       
         // 功能设置
-        controller: TextEditingController(text: popUpController.dateString.value),
+        controller: textController,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
           LengthLimitingTextInputFormatter(8),
         ],
-        onChanged: (input) => popUpController.dateString.value = input,
+        onChanged: (input) {
+          popUpController.dateString.value = input;
+          popUpController.checkDate();
+        },
         onEditingComplete: () {
           FocusScope.of(context).nextFocus();
-          popUpController.checkDate();
         },
     );
   }
@@ -399,15 +405,17 @@ class PriorityPopUp extends StatelessWidget {
 
 // 备注输入框
 class NoteTextField extends StatelessWidget {
-  const NoteTextField({
+  NoteTextField({
     super.key,
     required this.popUpController,
   });
 
   final PopUpController popUpController;
+  final TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    textController.text = popUpController.newTask.value.taskNote;
     return Padding(
       padding: const EdgeInsets.all(8),
       child: TextField(
@@ -422,7 +430,7 @@ class NoteTextField extends StatelessWidget {
         decoration: inputBoxStyle('备注：'),
 
         // 功能设置
-        controller: TextEditingController(text: popUpController.newTask.value.taskNote),
+        controller: textController,
         onChanged: (input) => popUpController.newTask.value.taskNote = input,
       ),
     );
