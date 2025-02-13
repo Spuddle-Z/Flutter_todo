@@ -16,58 +16,9 @@ class HobbiesWidget extends StatelessWidget {
       child: Column(
         children: [
           HobbiesHeader(hobbiesController: hobbiesController),
-          NewWidget(hobbiesController: hobbiesController),
+          HobbySports(hobbiesController: hobbiesController),
         ],
       ),
-    );
-  }
-}
-
-class NewWidget extends StatelessWidget {
-  const NewWidget({
-    super.key,
-    required this.hobbiesController,
-  });
-
-  final HobbiesController hobbiesController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          alignment: Alignment.centerLeft,
-          child: const Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 10,
-            ),
-            child: Text(
-              'Sport',
-              style: TextStyle(
-                color: AppColors.primary,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          width: double.infinity,
-          height: 120,
-          child: Row(
-            children: [
-              const Expanded(
-                flex: 1,
-                child: WeekdayHeader()),
-              Expanded(
-                flex: 16,
-                child: SportHotMap(hobbiesController: hobbiesController)
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
@@ -158,9 +109,59 @@ class WeekdayHeader extends StatelessWidget {
   }
 }
 
-// 适应父组件大小的网格
-class SportHotMap extends StatelessWidget {
-  const SportHotMap({
+// 运动模块
+class HobbySports extends StatelessWidget {
+  const HobbySports({
+    super.key,
+    required this.hobbiesController,
+  });
+
+  final HobbiesController hobbiesController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          alignment: Alignment.centerLeft,
+          child: const Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 10,
+            ),
+            child: Text(
+              'Sports',
+              style: TextStyle(
+                color: AppColors.primary,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: double.infinity,
+          height: 120,
+          child: Row(
+            children: [
+              const Expanded(
+                flex: 1,
+                child: WeekdayHeader()),
+              Expanded(
+                flex: 16,
+                child: SportsHotMap(hobbiesController: hobbiesController)
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// 运动热力图
+class SportsHotMap extends StatelessWidget {
+  const SportsHotMap({
     super.key,
     required this.hobbiesController,
   });
@@ -192,13 +193,15 @@ class SportHotMap extends StatelessWidget {
               
               return Container(
                 margin: const EdgeInsets.all(2),
-                padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   color: isCurrentYear ? isMonthOdd ? AppColors.backgroundLight : AppColors.background : AppColors.backgroundDark,
                   border: Border.all(
                     color: isToday ? AppColors.textActive : Colors.transparent,
                   ),
                   borderRadius: BorderRadius.circular(2),
+                ),
+                child: Container(
+                  color: hobbiesController.getSportsColor(cellDate.value),
                 ),
               );
             });

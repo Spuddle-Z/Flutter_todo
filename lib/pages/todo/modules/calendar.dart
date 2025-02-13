@@ -8,7 +8,7 @@ import 'package:to_do/pages/todo/controller/task_controller.dart';
 import 'popup.dart';
 import 'package:to_do/share/widgets/buttons.dart';
 import 'package:to_do/share/widgets/recessed_panel.dart';
-import 'package:to_do/share/widgets/checkbox.dart';
+import 'package:to_do/pages/todo/widgets/checkbox.dart';
 import 'package:to_do/share/theme.dart';
 
 

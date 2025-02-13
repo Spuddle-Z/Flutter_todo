@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:to_do/pages/life/hobbies.dart';
+import 'package:to_do/pages/life/modules/hobbies.dart';
+import 'package:to_do/pages/life/modules/motto.dart';
 
 
 class LifePage extends StatelessWidget {
@@ -18,9 +19,9 @@ class LifePage extends StatelessWidget {
             flex: 2,
             child: HobbiesWidget()
           ),
-          const Expanded(
+          Expanded(
             flex: 1,
-            child: Placeholder()
+            child: MottoWidget(),
           ),
         ],
       ),

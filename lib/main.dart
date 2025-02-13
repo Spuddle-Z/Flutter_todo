@@ -16,6 +16,7 @@ void main() async{
   Hive.init("data");
   Hive.registerAdapter(TaskAdapter());
   await Hive.openBox<Task>('tasks');
+  await Hive.openBox<bool>('sports');
 
   // 默认全屏
   await windowManager.ensureInitialized();

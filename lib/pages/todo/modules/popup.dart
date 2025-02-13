@@ -6,7 +6,7 @@ import 'package:to_do/pages/todo/controller/task_controller.dart';
 import 'package:to_do/pages/todo/controller/popup_controller.dart';
 import 'package:to_do/pages/todo/utils/task_model.dart';
 
-import 'package:to_do/share/widgets/checkbox.dart';
+import 'package:to_do/pages/todo/widgets/checkbox.dart';
 import 'package:to_do/share/theme.dart';
 
 

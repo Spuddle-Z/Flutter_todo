@@ -1,8 +1,13 @@
 import 'dart:async';
+import 'package:date_format/date_format.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:to_do/share/theme.dart';
 
 class HobbiesController extends GetxController {
   Rx<DateTime> today = DateTime.now().obs;
+  Rx<Box<bool>> sportsBox = Hive.box<bool>('sports').obs;
   Timer? timer;
 
   @override
@@ -52,5 +57,27 @@ class HobbiesController extends GetxController {
   }
   bool isMonthOdd(DateTime date) {
     return date.month % 2 == 1;
+  }
+
+  // 查找日期对应的数据
+  bool getSportsState(DateTime date) {
+    String key = formatDate(date, [yyyy, mm, dd]);
+    return sportsBox.value.get(key) != null;
+  }
+
+  // 判断单元格状态
+  Color getSportsColor(DateTime date) {
+    return getSportsState(date) ? AppColors.primary : Colors.transparent;
+  }
+
+  // 更新单元格状态
+  void toggleSportsState(DateTime date) {
+    String key = formatDate(date, [yyyy, mm, dd]);
+    if (getSportsState(date)) {
+      sportsBox.value.delete(key);
+    } else {
+      sportsBox.value.put(key, true);
+    }
+    sportsBox.refresh();
   }
 }
