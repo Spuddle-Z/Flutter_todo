@@ -25,6 +25,7 @@ Route<dynamic>? onGenerateRoute(settings) {
     return GetPageRoute(
       settings: settings,
       page: () => const LifePage(),
+      binding: LifeBinding(),
       transition: Transition.noTransition,
     );
   } else { return null; }

@@ -98,9 +98,7 @@ class CalendarHeader extends StatelessWidget {
 
 // 星期标题栏
 class WeekdayHeader extends StatelessWidget {
-  const WeekdayHeader({
-    super.key,
-  });
+  const WeekdayHeader({super.key});
 
   @override
   Widget build(BuildContext context) {

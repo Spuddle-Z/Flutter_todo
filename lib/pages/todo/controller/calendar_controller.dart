@@ -4,15 +4,15 @@ import 'package:get/get.dart';
 
 class CalendarController extends GetxController {
   Rx<DateTime> today = DateTime.now().obs;
-  RxnInt todayIndex = RxnInt();
   Timer? timer;
 
   @override
   void onInit() {
     super.onInit();
-    timer = Timer.periodic(const Duration(minutes: 1), (_) {
-      today.value = DateTime.now();
-    });
+    timer = Timer.periodic(
+      const Duration(minutes: 1),
+      (_) { today.value = DateTime.now(); }
+    );
     firstDayIndex.value = DateTime(viewMonth.value.year, viewMonth.value.month, 1).weekday % 7;
     viewMonthString.value = '${viewMonth.value.year} - ${months[viewMonth.value.month - 1]}';
   }

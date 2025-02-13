@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do/pages/life/hobbies.dart';
 
 
 class LifePage extends StatelessWidget {
@@ -11,7 +12,18 @@ class LifePage extends StatelessWidget {
         horizontal: MediaQuery.of(context).size.width * 0.05,
         vertical: MediaQuery.of(context).size.height * 0.02,
       ),
-      child: const Placeholder(),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: HobbiesWidget()
+          ),
+          const Expanded(
+            flex: 1,
+            child: Placeholder()
+          ),
+        ],
+      ),
     );
   }
 }
