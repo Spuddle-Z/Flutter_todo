@@ -13,6 +13,7 @@ class AppColors {
 
   static const Color red = Color(0xFFD04255);
   static const Color green = Color(0xFF73BBB2);
+  static const Color purple = Color(0xFF9E86C8);
 }
 
 ButtonStyle textButtonStyle() {

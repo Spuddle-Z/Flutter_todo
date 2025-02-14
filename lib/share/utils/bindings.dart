@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:to_do/pages/life/controller/hobbies_controller.dart';
+import 'package:to_do/pages/life/controller/hot_map_controller.dart';
 import 'package:to_do/pages/todo/controller/calendar_controller.dart';
 import 'package:to_do/pages/todo/controller/task_controller.dart';
 
@@ -16,5 +17,6 @@ class LifeBinding implements Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => HobbiesController());
+    Get.lazyPut(() => HotMapController());
   }
 }
