@@ -8,6 +8,7 @@ import 'package:to_do/app/data/models/task_model.dart';
 
 import 'package:to_do/app/shared/widgets/checkbox.dart';
 import 'package:to_do/app/shared/widgets/date_text_field.dart';
+import 'package:to_do/app/shared/widgets/dropdown_selector.dart';
 import 'package:to_do/core/theme.dart';
 
 // 添加任务弹出框
@@ -46,8 +47,28 @@ class AddTaskPopup extends StatelessWidget {
                     child: DateTextField(popUpController: popUpController),
                   ),
                   const SizedBox(width: 8),
+                  // 重复周期输入框
                   Expanded(
-                    child: RecurrenceField(popUpController: popUpController),
+                    child: Obx(() {
+                      return DropdownSelector(
+                        value: popUpController.selectedRecurrence.value,
+                        isEnabled: popUpController.dateString.isNotEmpty,
+                        onChanged: (value) {
+                          if (value != null) {
+                            popUpController.updateRecurrence(value);
+                          }
+                        },
+                        optionList: popUpController.recurrenceList
+                            .map((recurrence) => Text(
+                                  recurrence,
+                                  style: const TextStyle(
+                                    color: AppColors.text,
+                                  ),
+                                ))
+                            .toList(),
+                        hintText: '请选择周期',
+                      );
+                    }),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -127,8 +148,28 @@ class EditTaskPopup extends StatelessWidget {
                     child: DateTextField(popUpController: popUpController),
                   ),
                   const SizedBox(width: 8),
+                  // 重复周期输入框
                   Expanded(
-                    child: RecurrenceField(popUpController: popUpController),
+                    child: Obx(() {
+                      return DropdownSelector(
+                        value: popUpController.selectedRecurrence.value,
+                        isEnabled: popUpController.dateString.isNotEmpty,
+                        onChanged: (value) {
+                          if (value != null) {
+                            popUpController.updateRecurrence(value);
+                          }
+                        },
+                        optionList: popUpController.recurrenceList
+                            .map((recurrence) => Text(
+                                  recurrence,
+                                  style: const TextStyle(
+                                    color: AppColors.text,
+                                  ),
+                                ))
+                            .toList(),
+                        hintText: '请选择周期',
+                      );
+                    }),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -207,56 +248,6 @@ class ContentTextField extends StatelessWidget {
             FocusScope.of(context).nextFocus();
           },
         ),
-      ),
-    );
-  }
-}
-
-// 重复周期输入框
-class RecurrenceField extends StatelessWidget {
-  const RecurrenceField({
-    super.key,
-    required this.popUpController,
-  });
-
-  final PopUpController popUpController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => DropdownButtonFormField<int>(
-        // 样式设置
-        hint: const Text(
-          '请选择周期',
-          style: TextStyle(
-            color: AppColors.textDark,
-          ),
-        ),
-        decoration: textFieldStyle(''),
-        dropdownColor: AppColors.backgroundDark,
-        elevation: 16,
-
-        // 功能设置
-        value: popUpController.selectedRecurrence.value,
-        onChanged: popUpController.dateString.isEmpty
-            ? null
-            : (value) {
-                if (value != null) {
-                  popUpController.updateRecurrence(value);
-                }
-              },
-        items: [
-          for (int i = 0; i < popUpController.recurrenceList.length; i++)
-            DropdownMenuItem(
-              value: i,
-              child: Text(
-                popUpController.recurrenceList[i],
-                style: const TextStyle(
-                  color: AppColors.text,
-                ),
-              ),
-            ),
-        ],
       ),
     );
   }
