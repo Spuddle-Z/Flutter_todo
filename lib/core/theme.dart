@@ -47,7 +47,10 @@ ButtonStyle textButtonStyle() {
 }
 
 // 输入框样式
-InputDecoration textFieldStyle(String hintText, [String? errorText]) {
+InputDecoration textFieldStyle({
+  required String hintText,
+  String? errorText,
+}) {
   return InputDecoration(
     hintText: hintText,
     hintStyle: const TextStyle(

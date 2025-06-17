@@ -26,10 +26,10 @@ class Task {
   });
 
   Task.copy(Task task)
-    : taskContent = task.taskContent,
-      taskDone = task.taskDone,
-      taskPriority = task.taskPriority,
-      taskDate = task.taskDate,
-      taskNote = task.taskNote,
-      taskRecurrence = task.taskRecurrence;
+      : taskContent = task.taskContent,
+        taskDone = task.taskDone,
+        taskPriority = task.taskPriority,
+        taskDate = task.taskDate,
+        taskNote = task.taskNote,
+        taskRecurrence = task.taskRecurrence;
 }

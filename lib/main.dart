@@ -1,14 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:get/get.dart';
-import 'package:to_do/app/routes/route_path.dart';
-import 'package:window_manager/window_manager.dart';
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'package:to_do/app/data/models/task_model.dart';
 import 'package:to_do/app/routes/route_pages.dart';
-
-import 'package:to_do/core/theme.dart';
+import 'package:to_do/app/routes/route_path.dart';
 
 void main() async {
   // 调用数据库
@@ -40,14 +38,6 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(
         fontFamily: Platform.isWindows ? "微软雅黑" : null,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: AppColors.background,
-          titleTextStyle: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primary,
-          ),
-        ),
       ),
       initialRoute: RoutePath.main,
       getPages: RoutePages.pages,

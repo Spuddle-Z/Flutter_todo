@@ -50,7 +50,13 @@ class TodoController extends GetxController {
         '${viewMonth.value.year} - ${months[viewMonth.value.month - 1]}';
   }
 
-  // 计算单元格对应的日期
+  /// 计算单元格对应的日期。
+  ///
+  /// 输入参数：
+  /// - `index` 单元格的索引，从0开始。
+  ///
+  /// 返回值：
+  /// - 对应的日期。
   DateTime getCellDate(int index) {
     if (index < firstDayIndex.value) {
       final DateTime lastMonth =

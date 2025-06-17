@@ -10,7 +10,7 @@ class DropdownSelector extends StatelessWidget {
     required this.onChanged,
     required this.optionList,
     this.hintText = '',
-    this.errorText = '',
+    this.errorText,
   });
 
   final int? value;
@@ -18,7 +18,7 @@ class DropdownSelector extends StatelessWidget {
   final void Function(int?)? onChanged;
   final List<Widget> optionList;
   final String hintText;
-  final String errorText;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -30,20 +30,23 @@ class DropdownSelector extends StatelessWidget {
           color: AppColors.textDark,
         ),
       ),
-      decoration: textFieldStyle(errorText),
+      decoration: textFieldStyle(
+        hintText: hintText,
+        errorText: errorText,
+      ),
       dropdownColor: AppColors.backgroundDark,
       elevation: 16,
 
       // 功能设置
       value: value,
       onChanged: isEnabled ? onChanged : null,
-      items: [
-        for (int i = 0; i < optionList.length; i++)
-          DropdownMenuItem(
-            value: i,
-            child: optionList[i],
-          ),
-      ],
+      items: List<DropdownMenuItem<int>>.generate(
+        optionList.length,
+        (index) => DropdownMenuItem<int>(
+          value: index,
+          child: optionList[index],
+        ),
+      ),
     );
   }
 }

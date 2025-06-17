@@ -15,8 +15,8 @@ class MainView extends StatelessWidget {
 
   // 子页面
   final List<Widget> pages = [
-    TodoView(),
-    LifeView(),
+    const TodoView(),
+    const LifeView(),
   ];
 
   @override

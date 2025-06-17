@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'package:to_do/app/pages/todo/controller/task_controller.dart';
@@ -9,106 +8,8 @@ import 'package:to_do/app/data/models/task_model.dart';
 import 'package:to_do/app/shared/widgets/checkbox.dart';
 import 'package:to_do/app/shared/widgets/date_text_field.dart';
 import 'package:to_do/app/shared/widgets/dropdown_selector.dart';
+import 'package:to_do/app/shared/widgets/text_field.dart';
 import 'package:to_do/core/theme.dart';
-
-// 添加任务弹出框
-class AddTaskPopup extends StatelessWidget {
-  AddTaskPopup({super.key});
-
-  final PopUpController popUpController = Get.put(PopUpController());
-  final TaskController taskController = Get.find<TaskController>();
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text(
-        'New Task',
-        style: TextStyle(
-          color: AppColors.primary,
-        ),
-      ),
-      backgroundColor: AppColors.background,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      content: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.5,
-        height: MediaQuery.of(context).size.height * 0.5,
-        child: Column(
-          children: [
-            ContentTextField(
-              popUpController: popUpController,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: DateTextField(popUpController: popUpController),
-                  ),
-                  const SizedBox(width: 8),
-                  // 重复周期输入框
-                  Expanded(
-                    child: Obx(() {
-                      return DropdownSelector(
-                        value: popUpController.selectedRecurrence.value,
-                        isEnabled: popUpController.dateString.isNotEmpty,
-                        onChanged: (value) {
-                          if (value != null) {
-                            popUpController.updateRecurrence(value);
-                          }
-                        },
-                        optionList: popUpController.recurrenceList
-                            .map((recurrence) => Text(
-                                  recurrence,
-                                  style: const TextStyle(
-                                    color: AppColors.text,
-                                  ),
-                                ))
-                            .toList(),
-                        hintText: '请选择周期',
-                      );
-                    }),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: PriorityPopUp(popUpController: popUpController),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: NoteTextField(
-                popUpController: popUpController,
-              ),
-            ),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            popUpController.clearNewTask();
-            Get.back();
-          },
-          style: textButtonStyle(),
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () {
-            if (popUpController.checkContent() && popUpController.checkDate()) {
-              taskController.addTask(popUpController.newTask.value);
-              popUpController.clearNewTask();
-              Get.back();
-            }
-          },
-          style: textButtonStyle(),
-          child: const Text('Add'),
-        ),
-      ],
-    );
-  }
-}
 
 class EditTaskPopup extends StatelessWidget {
   EditTaskPopup({super.key, required this.taskKey});
@@ -137,15 +38,18 @@ class EditTaskPopup extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.5,
         child: Column(
           children: [
-            ContentTextField(
-              popUpController: popUpController,
-            ),
+            // ContentTextField(
+            //   popUpController: popUpController,
+            // ),
             Padding(
               padding: const EdgeInsets.all(8),
               child: Row(
                 children: [
                   Expanded(
-                    child: DateTextField(popUpController: popUpController),
+                    child: DateTextField(
+                      dateText: popUpController.dateText.value,
+                      onChanged: (value, isValid) {},
+                    ),
                   ),
                   const SizedBox(width: 8),
                   // 重复周期输入框
@@ -153,7 +57,7 @@ class EditTaskPopup extends StatelessWidget {
                     child: Obx(() {
                       return DropdownSelector(
                         value: popUpController.selectedRecurrence.value,
-                        isEnabled: popUpController.dateString.isNotEmpty,
+                        isEnabled: popUpController.dateText.isNotEmpty,
                         onChanged: (value) {
                           if (value != null) {
                             popUpController.updateRecurrence(value);
@@ -178,11 +82,11 @@ class EditTaskPopup extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
-              child: NoteTextField(
-                popUpController: popUpController,
-              ),
-            ),
+            // Expanded(
+            //   child: NoteTextField(
+            //     popUpController: popUpController,
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -211,48 +115,6 @@ class EditTaskPopup extends StatelessWidget {
   }
 }
 
-// 任务内容输入框
-class ContentTextField extends StatelessWidget {
-  ContentTextField({
-    super.key,
-    required this.popUpController,
-  });
-
-  final PopUpController popUpController;
-  final TextEditingController textController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    textController.text = popUpController.newTask.value.taskContent;
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Obx(
-        () => TextField(
-          // 样式设置
-          style: const TextStyle(
-            color: AppColors.text,
-          ),
-          cursorColor: AppColors.text,
-          decoration: textFieldStyle(
-            '又有嘛任务？',
-            popUpController.contentError.value,
-          ),
-
-          // 功能设置
-          controller: textController,
-          onChanged: (input) {
-            popUpController.newTask.value.taskContent = input;
-            popUpController.checkContent();
-          },
-          onEditingComplete: () {
-            FocusScope.of(context).nextFocus();
-          },
-        ),
-      ),
-    );
-  }
-}
-
 // 优先级下拉栏
 class PriorityPopUp extends StatelessWidget {
   const PriorityPopUp({
@@ -267,13 +129,10 @@ class PriorityPopUp extends StatelessWidget {
     return Obx(
       () => DropdownButtonFormField(
         // 样式设置
-        hint: const Text(
-          '请选择优先级',
-          style: TextStyle(
-            color: AppColors.textDark,
-          ),
+        decoration: textFieldStyle(
+          hintText: '请选择优先级',
+          errorText: '',
         ),
-        decoration: textFieldStyle(''),
         dropdownColor: AppColors.backgroundDark,
         elevation: 16,
 
@@ -304,40 +163,6 @@ class PriorityPopUp extends StatelessWidget {
               ),
             ),
         ],
-      ),
-    );
-  }
-}
-
-// 备注输入框
-class NoteTextField extends StatelessWidget {
-  NoteTextField({
-    super.key,
-    required this.popUpController,
-  });
-
-  final PopUpController popUpController;
-  final TextEditingController textController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    textController.text = popUpController.newTask.value.taskNote;
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: TextField(
-        // 样式设置
-        expands: true,
-        maxLines: null,
-        textAlignVertical: TextAlignVertical.top,
-        style: const TextStyle(
-          color: AppColors.text,
-        ),
-        cursorColor: AppColors.text,
-        decoration: textFieldStyle('备注：'),
-
-        // 功能设置
-        controller: textController,
-        onChanged: (input) => popUpController.newTask.value.taskNote = input,
       ),
     );
   }

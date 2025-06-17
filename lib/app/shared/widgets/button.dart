@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:to_do/app/pages/todo/modules/popup.dart';
+import 'package:to_do/app/pages/todo/modules/task_popup.dart';
 import 'package:to_do/core/theme.dart';
-
 
 class ButtonsArea extends StatelessWidget {
   const ButtonsArea({super.key});
 
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
         Get.dialog(
-          AddTaskPopup(),
+          TaskPopup(),
           barrierDismissible: false,
         );
       },

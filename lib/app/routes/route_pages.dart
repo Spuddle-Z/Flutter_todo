@@ -18,12 +18,12 @@ class RoutePages {
     ),
     GetPage(
       name: RoutePath.todo,
-      page: () => TodoView(),
+      page: () => const TodoView(),
       binding: TodoBinding(),
     ),
     GetPage(
       name: RoutePath.life,
-      page: () => LifeView(),
+      page: () => const LifeView(),
       binding: LifeBinding(),
     ),
   ];

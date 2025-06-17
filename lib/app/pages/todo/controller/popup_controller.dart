@@ -17,7 +17,7 @@ class PopUpController extends GetxController {
   // 加载任务
   void loadTask(Task task) {
     newTask.value = Task.copy(task);
-    dateString.value = (task.taskDate != null)
+    dateText.value = (task.taskDate != null)
         ? '${task.taskDate!.year}'
             '${task.taskDate!.month.toString().padLeft(2, '0')}'
             '${task.taskDate!.day.toString().padLeft(2, '0')}'
@@ -33,7 +33,7 @@ class PopUpController extends GetxController {
     newTask.value.taskNote = '';
     newTask.value.taskRecurrence = '不重复';
 
-    dateString.value = '${DateTime.now().year}'
+    dateText.value = '${DateTime.now().year}'
         '${DateTime.now().month.toString().padLeft(2, '0')}'
         '${DateTime.now().day.toString().padLeft(2, '0')}';
     selectedPriority.value = null;
@@ -44,9 +44,7 @@ class PopUpController extends GetxController {
   }
 
   // 管理日期输入
-  RxString dateString = RxString('${DateTime.now().year}'
-      '${DateTime.now().month.toString().padLeft(2, '0')}'
-      '${DateTime.now().day.toString().padLeft(2, '0')}');
+  RxString dateText = ''.obs;
 
   // 管理周期输入
   List<String> recurrenceList = ['不重复', '每天', '每周', '每月'];
@@ -89,18 +87,18 @@ class PopUpController extends GetxController {
   // 检查日期
   RxnString dateError = RxnString();
   bool checkDate() {
-    if (dateString.value.isEmpty) {
+    if (dateText.value.isEmpty) {
       newTask.value.taskDate = null;
       return true;
-    } else if (dateString.value.length != 8) {
+    } else if (dateText.value.length != 8) {
       dateError.value = '请按照 YYYYMMDD 的格式输入日期';
       return false;
     } else {
       try {
         newTask.value.taskDate =
-            DateTime.parse('${dateString.value.substring(0, 4)}-'
-                '${dateString.value.substring(4, 6)}-'
-                '${dateString.value.substring(6, 8)}');
+            DateTime.parse('${dateText.value.substring(0, 4)}-'
+                '${dateText.value.substring(4, 6)}-'
+                '${dateText.value.substring(6, 8)}');
         dateError.value = null;
         return true;
       } catch (e) {
