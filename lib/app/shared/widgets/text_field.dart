@@ -1,81 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:to_do/app/pages/todo/controller/popup_controller.dart';
 import 'package:to_do/core/theme.dart';
 
+class ContentTextFieldController extends GetxController {
+  final TextEditingController textController = TextEditingController();
+  late RxnString errorText;
 
+  @override
+  void onInit() {
+    super.onInit();
+    errorText = RxnString(); // 初始化错误文本为 null
+  }
+}
 
-// 任务内容输入框
 class ContentTextField extends StatelessWidget {
-  ContentTextField({
+  /// ### 文本输入框
+  ///
+  /// 该输入框用于输入文本，可以设置为单行或多行输入。
+  const ContentTextField({
     super.key,
-    required this.popUpController,
+    required this.hintText,
+    required this.isMultiLine,
+    required this.onChanged,
   });
 
-  final PopUpController popUpController;
-  final TextEditingController textController = TextEditingController();
+  final String hintText;
+  final bool isMultiLine;
+  final String? Function(String) onChanged;
 
   @override
   Widget build(BuildContext context) {
-    textController.text = popUpController.newTask.value.taskContent;
+    final ContentTextFieldController contentTextFieldController = Get.put(
+        ContentTextFieldController(),
+        tag: '${DateTime.now().millisecondsSinceEpoch}');
+
     return Padding(
       padding: const EdgeInsets.all(8),
-      child: Obx(
-        () => TextField(
+      child: Obx(() {
+        return TextField(
           // 样式设置
+          expands: isMultiLine,
+          maxLines: isMultiLine ? null : 1,
+          textAlignVertical: TextAlignVertical.top,
           cursorColor: AppColors.text,
+          style: const TextStyle(
+            color: AppColors.text,
+          ),
           decoration: textFieldStyle(
-            hintText: '又有嘛任务？',
-            errorText: popUpController.contentError.value,
+            hintText: hintText,
+            errorText: contentTextFieldController.errorText.value,
           ),
 
           // 功能设置
-          controller: textController,
+          controller: contentTextFieldController.textController,
           onChanged: (input) {
-            popUpController.newTask.value.taskContent = input;
-            popUpController.checkContent();
+            contentTextFieldController.errorText.value = onChanged(input);
           },
           onEditingComplete: () {
             FocusScope.of(context).nextFocus();
           },
-        ),
-      ),
-    );
-  }
-}
-
-// 备注输入框
-class NoteTextField extends StatelessWidget {
-  NoteTextField({
-    super.key,
-    required this.popUpController,
-  });
-
-  final PopUpController popUpController;
-  final TextEditingController textController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    textController.text = popUpController.newTask.value.taskNote;
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: TextField(
-        // 样式设置
-        expands: true,
-        maxLines: null,
-        textAlignVertical: TextAlignVertical.top,
-        style: const TextStyle(
-          color: AppColors.text,
-        ),
-        cursorColor: AppColors.text,
-        decoration: textFieldStyle(
-          hintText: '备注：',
-        ),
-
-        // 功能设置
-        controller: textController,
-        onChanged: (input) => popUpController.newTask.value.taskNote = input,
-      ),
+        );
+      }),
     );
   }
 }

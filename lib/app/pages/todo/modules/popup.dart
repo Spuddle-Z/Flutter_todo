@@ -8,7 +8,6 @@ import 'package:to_do/app/data/models/task_model.dart';
 import 'package:to_do/app/shared/widgets/checkbox.dart';
 import 'package:to_do/app/shared/widgets/date_text_field.dart';
 import 'package:to_do/app/shared/widgets/dropdown_selector.dart';
-import 'package:to_do/app/shared/widgets/text_field.dart';
 import 'package:to_do/core/theme.dart';
 
 class EditTaskPopup extends StatelessWidget {
@@ -47,7 +46,7 @@ class EditTaskPopup extends StatelessWidget {
                 children: [
                   Expanded(
                     child: DateTextField(
-                      dateText: popUpController.dateText.value,
+                      initialDate: popUpController.dateText.value,
                       onChanged: (value, isValid) {},
                     ),
                   ),

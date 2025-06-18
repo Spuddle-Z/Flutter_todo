@@ -3,28 +3,25 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:to_do/core/theme.dart';
 
-/*
-  日期输入框
-  该输入框用于输入日期，输入格式为8位数字，表示年月日（YYYYMMDD）。
-  如果输入不符合要求，将显示错误提示。
-*/
 class DateTextFieldController extends GetxController {
-  TextEditingController textController = TextEditingController();
-  // 默认日期为今天
+  DateTextFieldController({required this.initialDate});
+
+  final String initialDate;
+  final TextEditingController textController = TextEditingController();
   late RxnString errorText;
 
   @override
   void onInit() {
     super.onInit();
+    // 初始化文本控制器为当前日期，格式为 YYYYMMDD
+    textController.text = initialDate;
     errorText = RxnString(); // 初始化错误文本为 null
   }
 
+  /// 检查日期输入是否符合 YYYYMMDD 格式，同时检查日期是否合法。
   bool isDateValid() {
-    /*
-      检查日期输入是否符合 YYYYMMDD 格式，同时检查日期是否合法。
-    */
     if (textController.text.isEmpty) {
-      errorText.value = '';
+      errorText.value = null;
       return true;
     } else if (textController.text.length != 8) {
       errorText.value = '请按照 YYYYMMDD 格式输入';
@@ -47,7 +44,7 @@ class DateTextFieldController extends GetxController {
         errorText.value = '日期不合法';
         return false;
       } else {
-        errorText.value = '';
+        errorText.value = null;
         return true;
       }
     }
@@ -55,43 +52,48 @@ class DateTextFieldController extends GetxController {
 }
 
 class DateTextField extends StatelessWidget {
+  /// ### 日期输入框
+  ///
+  /// 该输入框用于输入日期，输入格式为8位数字，表示年月日（YYYYMMDD）。如果输入不符合要求，将显示错误提示。
   const DateTextField({
     super.key,
-    required this.dateText,
+    required this.initialDate,
     required this.onChanged,
   });
 
-  final String dateText;
+  final String initialDate;
   final void Function(String, bool) onChanged;
 
   @override
   Widget build(BuildContext context) {
-    final DateTextFieldController dateTextFieldController = Get.put(
-        DateTextFieldController(),
-        tag: '${DateTime.now().millisecondsSinceEpoch}');
-    return TextField(
-      // 样式设置
-      style: const TextStyle(
-        color: AppColors.text,
-      ),
-      cursorColor: AppColors.text,
-      decoration: textFieldStyle(
-        hintText: '无截止日期',
-        errorText: dateTextFieldController.errorText.value,
-      ),
+    final DateTextFieldController dateTextFieldController =
+        Get.put(DateTextFieldController(initialDate: initialDate));
 
-      // 功能设置
-      controller: dateTextFieldController.textController,
-      inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
-        LengthLimitingTextInputFormatter(8),
-      ],
-      onChanged: (input) {
-        onChanged(input, dateTextFieldController.isDateValid());
-      },
-      onEditingComplete: () {
-        FocusScope.of(context).nextFocus();
-      },
-    );
+    return Obx(() {
+      return TextField(
+        // 样式设置
+        cursorColor: AppColors.text,
+        style: const TextStyle(
+          color: AppColors.text,
+        ),
+        decoration: textFieldStyle(
+          hintText: '无截止日期',
+          errorText: dateTextFieldController.errorText.value,
+        ),
+
+        // 功能设置
+        controller: dateTextFieldController.textController,
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+          LengthLimitingTextInputFormatter(8),
+        ],
+        onChanged: (input) {
+          onChanged(input, dateTextFieldController.isDateValid());
+        },
+        onEditingComplete: () {
+          FocusScope.of(context).nextFocus();
+        },
+      );
+    });
   }
 }
