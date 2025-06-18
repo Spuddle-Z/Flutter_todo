@@ -18,10 +18,10 @@ class TaskAdapter extends TypeAdapter<Task> {
     };
     return Task(
       taskContent: fields[0] as String,
-      taskPriority: fields[2] as int,
+      taskPriority: fields[4] as int,
       taskDate: fields[3] as DateTime?,
-      taskNote: fields[4] as String,
-      taskRecurrence: fields[5] as String,
+      taskNote: fields[5] as String,
+      taskRecurrence: fields[2] as int,
     )..taskDone = fields[1] as bool;
   }
 
@@ -34,13 +34,13 @@ class TaskAdapter extends TypeAdapter<Task> {
       ..writeByte(1)
       ..write(obj.taskDone)
       ..writeByte(2)
-      ..write(obj.taskPriority)
+      ..write(obj.taskRecurrence)
       ..writeByte(3)
       ..write(obj.taskDate)
       ..writeByte(4)
-      ..write(obj.taskNote)
+      ..write(obj.taskPriority)
       ..writeByte(5)
-      ..write(obj.taskRecurrence);
+      ..write(obj.taskNote);
   }
 
   @override

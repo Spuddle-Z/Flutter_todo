@@ -5,7 +5,7 @@ import 'package:to_do/core/theme.dart';
 class DropdownSelector extends StatelessWidget {
   const DropdownSelector({
     super.key,
-    required this.value,
+    required this.initValue,
     required this.isEnabled,
     required this.onChanged,
     required this.optionList,
@@ -13,7 +13,7 @@ class DropdownSelector extends StatelessWidget {
     this.errorText,
   });
 
-  final int? value;
+  final int? initValue;
   final bool isEnabled;
   final void Function(int?)? onChanged;
   final List<Widget> optionList;
@@ -38,7 +38,7 @@ class DropdownSelector extends StatelessWidget {
       elevation: 16,
 
       // 功能设置
-      value: value,
+      value: initValue,
       onChanged: isEnabled ? onChanged : null,
       items: List<DropdownMenuItem<int>>.generate(
         optionList.length,

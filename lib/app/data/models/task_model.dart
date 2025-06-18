@@ -9,13 +9,13 @@ class Task {
   @HiveField(1)
   bool taskDone = false;
   @HiveField(2)
-  int taskPriority;
+  int taskRecurrence;
   @HiveField(3)
   DateTime? taskDate;
   @HiveField(4)
-  String taskNote;
+  int taskPriority;
   @HiveField(5)
-  String taskRecurrence;
+  String taskNote;
 
   Task({
     required this.taskContent,

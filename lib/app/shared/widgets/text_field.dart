@@ -3,12 +3,16 @@ import 'package:get/get.dart';
 import 'package:to_do/core/theme.dart';
 
 class ContentTextFieldController extends GetxController {
+  ContentTextFieldController({required this.initialText});
+
+  final String initialText;
   final TextEditingController textController = TextEditingController();
   late RxnString errorText;
 
   @override
   void onInit() {
     super.onInit();
+    textController.text = initialText;
     errorText = RxnString(); // 初始化错误文本为 null
   }
 }
@@ -19,11 +23,13 @@ class ContentTextField extends StatelessWidget {
   /// 该输入框用于输入文本，可以设置为单行或多行输入。
   const ContentTextField({
     super.key,
+    required this.initialText,
     required this.hintText,
     required this.isMultiLine,
     required this.onChanged,
   });
 
+  final String initialText;
   final String hintText;
   final bool isMultiLine;
   final String? Function(String) onChanged;
@@ -31,8 +37,8 @@ class ContentTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ContentTextFieldController contentTextFieldController = Get.put(
-        ContentTextFieldController(),
-        tag: '${DateTime.now().millisecondsSinceEpoch}');
+        ContentTextFieldController(initialText: initialText),
+        tag: '${DateTime.now().microsecondsSinceEpoch}');
 
     return Padding(
       padding: const EdgeInsets.all(8),

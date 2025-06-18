@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:to_do/app/data/models/task_model.dart';
-
 import 'package:to_do/core/theme.dart';
 
 class PopUpController extends GetxController {
@@ -11,7 +10,7 @@ class PopUpController extends GetxController {
     taskContent: '',
     taskPriority: 0,
     taskNote: '',
-    taskRecurrence: '不重复',
+    taskRecurrence: 0,
   ).obs;
 
   // 加载任务
@@ -22,7 +21,7 @@ class PopUpController extends GetxController {
             '${task.taskDate!.month.toString().padLeft(2, '0')}'
             '${task.taskDate!.day.toString().padLeft(2, '0')}'
         : '';
-    selectedRecurrence.value = recurrenceList.indexOf(task.taskRecurrence);
+    selectedRecurrence.value = task.taskRecurrence;
     selectedPriority.value = task.taskPriority;
   }
 
@@ -31,7 +30,7 @@ class PopUpController extends GetxController {
     newTask.value.taskContent = '';
     newTask.value.taskPriority = 0;
     newTask.value.taskNote = '';
-    newTask.value.taskRecurrence = '不重复';
+    newTask.value.taskRecurrence = 0;
 
     dateText.value = '${DateTime.now().year}'
         '${DateTime.now().month.toString().padLeft(2, '0')}'
@@ -51,7 +50,7 @@ class PopUpController extends GetxController {
   RxnInt selectedRecurrence = RxnInt();
   void updateRecurrence(int recurrence) {
     selectedRecurrence.value = recurrence;
-    newTask.value.taskRecurrence = recurrenceList[recurrence];
+    newTask.value.taskRecurrence = recurrence;
   }
 
   // 管理优先级选择器

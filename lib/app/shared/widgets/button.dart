@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:to_do/app/pages/todo/modules/task_popup.dart';
+import 'package:to_do/app/pages/todo/widgets/task_popup.dart';
 import 'package:to_do/core/theme.dart';
 
 class ButtonsArea extends StatelessWidget {
@@ -12,7 +12,7 @@ class ButtonsArea extends StatelessWidget {
     return TextButton(
       onPressed: () {
         Get.dialog(
-          TaskPopup(),
+          const TaskPopup(),
           barrierDismissible: false,
         );
       },

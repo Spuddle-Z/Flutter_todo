@@ -66,8 +66,9 @@ class DateTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateTextFieldController dateTextFieldController =
-        Get.put(DateTextFieldController(initialDate: initialDate));
+    final DateTextFieldController dateTextFieldController = Get.put(
+        DateTextFieldController(initialDate: initialDate),
+        tag: '${DateTime.now().microsecondsSinceEpoch}');
 
     return Obx(() {
       return TextField(

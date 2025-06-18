@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:to_do/app/pages/todo/modules/popup.dart';
 import 'package:to_do/app/data/models/task_model.dart';
+import 'package:to_do/app/pages/todo/widgets/task_detail_popup.dart';
 import 'package:to_do/app/shared/widgets/checkbox.dart';
 import 'package:to_do/core/theme.dart';
 
@@ -92,7 +92,7 @@ class SmallTaskTile extends StatelessWidget {
                 padding: const EdgeInsets.all(0),
                 onPressed: () {
                   Get.dialog(
-                    InformationPopUp(
+                    TaskDetailPopUp(
                       task: task,
                       taskKey: taskKey,
                       realToggle: () => funcToggle(taskKey),
