@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:to_do/app/pages/todo/widgets/small_task_tile.dart';
+
+import 'package:to_do/app/pages/todo/widgets/task_tile.dart';
 import 'package:to_do/app/pages/todo/todo_controller.dart';
-import 'package:to_do/app/pages/todo/controller/task_controller.dart';
+
 import 'package:to_do/core/theme.dart';
 
 // 日历单元格控制器
@@ -10,35 +11,33 @@ class DayCellController extends GetxController {
   DayCellController({
     required this.index,
   });
-  final TodoController calendarController = Get.find<TodoController>();
-  final TaskController taskController = Get.find<TaskController>();
   final int index;
 
-  late Rx<DateTime> cellDate;
-  late bool isToday;
-  late bool isCurrentMonth;
-  late bool isWeekend;
-  late RxList<dynamic> keys;
+  final TodoController todoController = Get.find<TodoController>();
 
-  @override
-  void onInit() {
-    super.onInit();
-    cellDate = calendarController.getCellDate(index).obs;
-    isToday = cellDate.value.day == calendarController.today.value.day &&
-        cellDate.value.month == calendarController.today.value.month &&
-        cellDate.value.year == calendarController.today.value.year;
-    isCurrentMonth =
-        cellDate.value.month == calendarController.viewMonth.value.month;
-    isWeekend = cellDate.value.weekday == 7 || cellDate.value.weekday == 6;
-    keys = taskController.taskBox.value.keys.where(ifShow).toList().obs;
-    keys.sort((a, b) => taskController.sortTask(a, b));
-  }
+  // 计算变量
+  Rx<DateTime> get cellDate =>
+      Rx<DateTime>(todoController.getCellDate(index)); // 本单元格对应日期
+  RxBool get isToday => RxBool(cellDate.value.day ==
+          todoController.today.value.day &&
+      cellDate.value.month == todoController.today.value.month &&
+      cellDate.value.year == todoController.today.value.year); // 本单元格日期是否为今天
+  RxBool get isCurrentMonth => RxBool(cellDate.value.month ==
+      todoController.viewMonth.value.month); // 本单元格日期是否处于当前月份内
+  RxBool get isWeekend => RxBool(cellDate.value.weekday == 7 ||
+      cellDate.value.weekday == 6); // 本单元格日期是否为周末
+  RxList<dynamic> get keys {
+    RxList<dynamic> keys =
+        todoController.taskBox.value.keys.where(ifShow).toList().obs;
+    keys.sort((a, b) => todoController.sortTask(a, b));
+    return keys;
+  } // 获取本单元格内的任务键列表
 
-  // 过滤函数，判断任务是否要显示在当前单元格内
+  /// 过滤函数，判断任务是否要显示在当前单元格内
   bool ifShow(key) {
-    bool taskDone = taskController.taskBox.value.get(key)!.taskDone;
-    DateTime? taskDate = taskController.taskBox.value.get(key)!.taskDate;
-    if (isToday) {
+    bool taskDone = todoController.taskBox.value.get(key)!.taskDone;
+    DateTime? taskDate = todoController.taskBox.value.get(key)!.taskDate;
+    if (isToday.value) {
       return taskDate != null &&
           ((!taskDone && taskDate.isBefore(cellDate.value)) ||
               taskDate.isAtSameMomentAs(cellDate.value));
@@ -46,43 +45,34 @@ class DayCellController extends GetxController {
       return taskDate != null && taskDate.isAtSameMomentAs(cellDate.value);
     }
   }
-
-  Widget getSmallTaskTile(int index) {
-    return SmallTaskTile(
-      task: taskController.taskBox.value.get(keys[index])!,
-      taskKey: keys[index],
-      funcToggle: taskController.toggleTask,
-      funcDelete: taskController.deleteTask,
-      tileColor: taskController.getTaskColor(keys[index], isToday),
-    );
-  }
 }
 
-// 日历单元格
 class DayCell extends StatelessWidget {
-  DayCell({
+  /// ### 日历单元格
+  ///
+  /// 该组件用于显示日历中的单个日期单元格，包含日期和该日期下的任务列表。
+  const DayCell({
     super.key,
     required this.index,
   });
-
   final int index;
-  final TaskController taskController = Get.find<TaskController>();
 
   @override
   Widget build(BuildContext context) {
     final DayCellController dayCellController = Get.put(
         DayCellController(index: index),
         tag: 'dayCellController_$index');
+
     return Obx(() {
       return Container(
         margin: const EdgeInsets.all(2),
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: dayCellController.isCurrentMonth
+          color: dayCellController.isCurrentMonth.value
               ? AppColors.background
               : AppColors.backgroundDark,
           border: Border.all(
-            color: dayCellController.isToday
+            color: dayCellController.isToday.value
                 ? AppColors.textDark
                 : AppColors.backgroundDark,
             width: 2,
@@ -94,9 +84,9 @@ class DayCell extends StatelessWidget {
             Text(
               '${dayCellController.cellDate.value.day}',
               style: TextStyle(
-                color: dayCellController.isToday
+                color: dayCellController.isToday.value
                     ? AppColors.textActive
-                    : dayCellController.isWeekend
+                    : dayCellController.isWeekend.value
                         ? AppColors.textDark
                         : AppColors.text,
               ),
@@ -109,15 +99,9 @@ class DayCell extends StatelessWidget {
                 child: ListView.builder(
                   itemCount: dayCellController.keys.length,
                   itemBuilder: (context, index) {
-                    return SmallTaskTile(
-                      task: taskController.taskBox.value
-                          .get(dayCellController.keys[index])!,
+                    return TaskTile(
                       taskKey: dayCellController.keys[index],
-                      funcToggle: taskController.toggleTask,
-                      funcDelete: taskController.deleteTask,
-                      tileColor: taskController.getTaskColor(
-                          dayCellController.keys[index],
-                          dayCellController.isToday),
+                      isMiniTile: true,
                     );
                   },
                   physics: const ClampingScrollPhysics(),

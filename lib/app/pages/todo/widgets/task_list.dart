@@ -1,39 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controller/task_controller.dart';
+import 'package:to_do/app/pages/todo/todo_controller.dart';
 
-import '../../../shared/widgets/task_tile.dart';
+import 'package:to_do/app/pages/todo/widgets/task_tile.dart';
 
+class TaskListController extends GetxController {
+  TaskListController({
+    required this.filterTask,
+  });
+  final bool Function(dynamic) filterTask;
 
-// 任务列表
+  final TodoController todoController = Get.find<TodoController>();
+
+  // 计算变量
+  RxList<dynamic> get keys {
+    RxList<dynamic> keys =
+        todoController.taskBox.value.keys.where(filterTask).toList().obs;
+    keys.sort((a, b) => todoController.sortTask(a, b));
+    return keys;
+  } // 获取符合过滤条件的任务键列表
+}
+
 class TaskList extends StatelessWidget {
+  /// ### 任务列表
+  ///
+  /// 该组件用于显示任务列表。
   const TaskList({
     super.key,
-    required this.taskController,
-    required this.funcFilter,
+    required this.tag,
+    required this.filterTask,
   });
 
-  final TaskController taskController;
-  final bool Function(dynamic) funcFilter;
+  final String tag;
+  final bool Function(dynamic) filterTask;
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      final RxList<dynamic> keys = taskController.taskBox.value.keys.where(funcFilter).toList().obs;
-      keys.sort((a, b) => taskController.sortTask(a, b));
-      RxInt expandedKey = (-1).obs;
+    final TaskListController taskListController =
+        Get.put(TaskListController(filterTask: filterTask), tag: tag);
 
+    return Obx(() {
       return ListView.builder(
-        itemCount: keys.length,
+        itemCount: taskListController.keys.length,
         itemBuilder: (context, index) {
           return TaskTile(
-            task: taskController.taskBox.value.get(keys[index])!,
-            taskKey: keys[index],
-            funcToggle: taskController.toggleTask,
-            funcDelete: taskController.deleteTask,
-            tileColor: taskController.getTaskColor(keys[index], true),
-            expandedKey: expandedKey,
+            taskKey: taskListController.keys[index],
+            isMiniTile: false,
           );
         },
         physics: const ClampingScrollPhysics(),

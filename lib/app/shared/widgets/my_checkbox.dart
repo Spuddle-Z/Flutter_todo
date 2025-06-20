@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:to_do/core/theme.dart';
 
-
 // 勾选框
-class CheckboxWidget extends StatelessWidget {
-  const CheckboxWidget({
+class MyCheckbox extends StatelessWidget {
+  const MyCheckbox({
     super.key,
-    required this.taskDone,
-    required this.tileColor,
+    required this.done,
+    required this.color,
     required this.scale,
     required this.onChanged,
   });
 
-  final bool taskDone;
-  final Color tileColor;
+  final bool done;
+  final Color color;
   final double scale;
   final void Function(bool?)? onChanged;
 
@@ -25,12 +24,12 @@ class CheckboxWidget extends StatelessWidget {
       child: Transform.scale(
         scale: scale,
         child: Checkbox(
-          value: taskDone,
-          activeColor: tileColor,
+          value: done,
+          activeColor: color,
           checkColor: AppColors.background,
-          hoverColor: tileColor.withAlpha(0x33),
+          hoverColor: color.withAlpha(0x33),
           side: BorderSide(
-            color: tileColor,
+            color: color,
             width: 2,
           ),
           onChanged: onChanged,

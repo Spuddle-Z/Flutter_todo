@@ -9,7 +9,6 @@ class DetailTile extends StatelessWidget {
     required this.keyText,
     required this.valueWidget,
   });
-
   final String keyText;
   final Widget valueWidget;
 

@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:to_do/app/pages/todo/widgets/task_popup.dart';
 import 'package:to_do/core/theme.dart';
 
-class ButtonsArea extends StatelessWidget {
-  const ButtonsArea({super.key});
+class MyTextButton extends StatelessWidget {
+  const MyTextButton({super.key});
 
   @override
   Widget build(BuildContext context) {

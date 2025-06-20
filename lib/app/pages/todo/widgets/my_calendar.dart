@@ -3,17 +3,19 @@ import 'package:get/get.dart';
 
 import 'package:to_do/app/pages/todo/widgets/day_cell.dart';
 import 'package:to_do/app/pages/todo/todo_controller.dart';
-import 'package:to_do/app/pages/todo/controller/task_controller.dart';
+import 'package:to_do/app/shared/constants/calendar_constant.dart';
 
-import 'package:to_do/app/shared/widgets/button.dart';
+import 'package:to_do/app/shared/widgets/my_text_button.dart';
 import 'package:to_do/app/shared/widgets/recessed_panel.dart';
 import 'package:to_do/core/theme.dart';
 
-class CalendarWidget extends StatelessWidget {
-  CalendarWidget({super.key});
+class MyCalendar extends StatelessWidget {
+  /// ### 日历组件
+  ///
+  /// 该组件用于显示日历视图的任务清单。
+  MyCalendar({super.key});
 
   final TodoController todoController = Get.find<TodoController>();
-  final TaskController taskController = Get.find<TaskController>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,26 +34,26 @@ class CalendarWidget extends StatelessWidget {
                 child: Row(
                   children: [
                     IconButton(
-                      onPressed: () => todoController.updateViewMonth(-1),
+                      onPressed: () => todoController.onViewMonthChanged(-1),
                       icon: const Icon(Icons.keyboard_arrow_left),
                       color: AppColors.text,
                     ),
                     Container(
                       width: 200,
                       alignment: Alignment.center,
-                      child: Obx(
-                        () => Text(
-                          todoController.viewMonthString.value,
+                      child: Obx(() {
+                        return Text(
+                          todoController.viewMonthText.value,
                           style: const TextStyle(
                             color: AppColors.primary,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
-                        ),
-                      ),
+                        );
+                      }),
                     ),
                     IconButton(
-                      onPressed: () => todoController.updateViewMonth(1),
+                      onPressed: () => todoController.onViewMonthChanged(1),
                       icon: const Icon(Icons.keyboard_arrow_right),
                       color: AppColors.text,
                     ),
@@ -64,7 +66,7 @@ class CalendarWidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      ButtonsArea(),
+                      MyTextButton(),
                     ],
                   ),
                 ),
@@ -76,15 +78,6 @@ class CalendarWidget extends StatelessWidget {
             height: 40,
             child: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-                List<String> days = const [
-                  'Sun',
-                  'Mon',
-                  'Tue',
-                  'Wed',
-                  'Thu',
-                  'Fri',
-                  'Sat'
-                ];
                 double width = constraints.maxWidth / 7;
                 double height = constraints.maxHeight;
 
@@ -99,7 +92,7 @@ class CalendarWidget extends StatelessWidget {
                       height: height,
                       alignment: Alignment.center,
                       child: Text(
-                        days[index],
+                        CalendarConstant.weekdayAbbrList[index],
                         style: TextStyle(
                           color: index == 0 || index == 6
                               ? AppColors.textDark

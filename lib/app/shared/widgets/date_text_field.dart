@@ -5,17 +5,17 @@ import 'package:to_do/core/theme.dart';
 
 class DateTextFieldController extends GetxController {
   DateTextFieldController({required this.initialDate});
-
   final String initialDate;
+
   final TextEditingController textController = TextEditingController();
-  late RxnString errorText;
+  RxnString errorText = RxnString();
 
   @override
   void onInit() {
     super.onInit();
     // 初始化文本控制器为当前日期，格式为 YYYYMMDD
     textController.text = initialDate;
-    errorText = RxnString(); // 初始化错误文本为 null
+    errorText.value = null; // 初始化错误文本为 null
   }
 
   /// 检查日期输入是否符合 YYYYMMDD 格式，同时检查日期是否合法。

@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do/core/theme.dart';
 
-class ContentTextFieldController extends GetxController {
-  ContentTextFieldController({required this.initialText});
+class MyTextFieldController extends GetxController {
+  MyTextFieldController({required this.initialText});
 
   final String initialText;
   final TextEditingController textController = TextEditingController();
-  late RxnString errorText;
+  RxnString errorText = RxnString();
 
   @override
   void onInit() {
     super.onInit();
     textController.text = initialText;
-    errorText = RxnString(); // 初始化错误文本为 null
+    errorText.value = null; // 初始化错误文本为 null
   }
 }
 
@@ -36,8 +36,8 @@ class ContentTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ContentTextFieldController contentTextFieldController = Get.put(
-        ContentTextFieldController(initialText: initialText),
+    final MyTextFieldController contentTextFieldController = Get.put(
+        MyTextFieldController(initialText: initialText),
         tag: '${DateTime.now().microsecondsSinceEpoch}');
 
     return Padding(

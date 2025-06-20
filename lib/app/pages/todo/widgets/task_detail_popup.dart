@@ -1,50 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:to_do/app/pages/todo/todo_controller.dart';
 import 'package:to_do/app/pages/todo/widgets/detail_tile.dart';
 import 'package:to_do/app/pages/todo/widgets/task_popup.dart';
 
 import 'package:to_do/app/data/models/task_model.dart';
 import 'package:to_do/app/shared/constants/task_constant.dart';
-import 'package:to_do/app/shared/widgets/checkbox.dart';
+import 'package:to_do/app/shared/widgets/my_checkbox.dart';
 import 'package:to_do/core/theme.dart';
 
+class TaskDetailPopupController extends GetxController {
+  TaskDetailPopupController({
+    required this.taskKey,
+  });
+  final int taskKey;
+
+  final TodoController todoController = Get.find<TodoController>();
+
+  // 计算变量
+  Rx<Task> get task => todoController.taskBox.value.get(taskKey)!.obs; // 任务数据
+
+  /// 切换任务完成状态
+  void onTaskToggled(done) {
+    task.value.taskDone = done!;
+    todoController.updateTask(taskKey, task.value);
+  }
+
+  /// 删除任务
+  void onTaskDeleted() {
+    todoController.deleteTask(taskKey);
+  }
+}
+
 class TaskDetailPopUp extends StatelessWidget {
+  /// ### 任务详情弹窗
+  ///
+  /// 该弹窗用于显示任务的详细信息。
   const TaskDetailPopUp({
     super.key,
-    required this.task,
     required this.taskKey,
-    required this.realToggle,
-    required this.funcDelete,
   });
-
-  final Task task;
   final int taskKey;
-  final void Function() realToggle;
-  final void Function() funcDelete;
 
   @override
   Widget build(BuildContext context) {
-    RxBool fakeDone = task.taskDone.obs;
+    final TaskDetailPopupController taskDetailPopupController =
+        Get.put(TaskDetailPopupController(taskKey: taskKey));
 
     return AlertDialog(
       title: Row(
         children: [
-          Obx(
-            () => CheckboxWidget(
-              taskDone: fakeDone.value,
-              tileColor: AppColors.primary,
+          Obx(() {
+            return MyCheckbox(
+              done: taskDetailPopupController.task.value.taskDone,
+              color: AppColors.primary,
               scale: 1.2,
-              onChanged: (value) {
-                fakeDone.value = !fakeDone.value;
-                realToggle();
-              },
-            ),
-          ),
+              onChanged: taskDetailPopupController.onTaskToggled,
+            );
+          }),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
-              task.taskContent,
+              taskDetailPopupController.task.value.taskContent,
               style: const TextStyle(
                 color: AppColors.primary,
               ),
@@ -64,7 +82,7 @@ class TaskDetailPopUp extends StatelessWidget {
             DetailTile(
               keyText: 'Deadline',
               valueWidget: Text(
-                '${task.taskDate!.year} 年 ${task.taskDate!.month} 月 ${task.taskDate!.day} 日',
+                '${taskDetailPopupController.task.value.taskDate!.year} 年 ${taskDetailPopupController.task.value.taskDate!.month} 月 ${taskDetailPopupController.task.value.taskDate!.day} 日',
                 textAlign: TextAlign.left,
                 style: const TextStyle(
                   color: AppColors.text,
@@ -77,7 +95,8 @@ class TaskDetailPopUp extends StatelessWidget {
                   child: DetailTile(
                     keyText: 'Recurrence',
                     valueWidget: Text(
-                      TaskConstant().recurrenceTextList[task.taskRecurrence],
+                      TaskConstant.recurrenceTextList[
+                          taskDetailPopupController.task.value.taskRecurrence],
                       textAlign: TextAlign.left,
                       style: const TextStyle(
                         color: AppColors.text,
@@ -91,18 +110,24 @@ class TaskDetailPopUp extends StatelessWidget {
                     valueWidget: Row(
                       children: [
                         Icon(
-                          TaskConstant().priorityIconList[task.taskPriority],
-                          color: TaskConstant()
-                              .priorityColorList[task.taskPriority],
+                          TaskConstant.priorityIconList[
+                              taskDetailPopupController
+                                  .task.value.taskPriority],
+                          color: TaskConstant.priorityColorList[
+                              taskDetailPopupController
+                                  .task.value.taskPriority],
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 4),
                           child: Text(
-                            TaskConstant().priorityTextList[task.taskPriority],
+                            TaskConstant.priorityTextList[
+                                taskDetailPopupController
+                                    .task.value.taskPriority],
                             textAlign: TextAlign.left,
                             style: TextStyle(
-                              color: TaskConstant()
-                                  .priorityColorList[task.taskPriority],
+                              color: TaskConstant.priorityColorList[
+                                  taskDetailPopupController
+                                      .task.value.taskPriority],
                             ),
                           ),
                         ),
@@ -112,12 +137,12 @@ class TaskDetailPopUp extends StatelessWidget {
                 ),
               ],
             ),
-            if (task.taskNote.isNotEmpty)
+            if (taskDetailPopupController.task.value.taskNote.isNotEmpty)
               DetailTile(
                 keyText: 'Note',
                 valueWidget: SingleChildScrollView(
                   child: SelectableText(
-                    task.taskNote,
+                    taskDetailPopupController.task.value.taskNote,
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                       color: AppColors.text,
@@ -131,7 +156,7 @@ class TaskDetailPopUp extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           onPressed: () {
-            funcDelete();
+            taskDetailPopupController.onTaskDeleted();
             Get.back();
           },
           style: textButtonStyle(),
@@ -156,33 +181,6 @@ class TaskDetailPopUp extends StatelessWidget {
           child: const Text('OK'),
         ),
       ],
-    );
-  }
-}
-
-// 任务信息表头
-class InformationHead extends StatelessWidget {
-  const InformationHead({
-    super.key,
-    required this.text,
-  });
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(4),
-      padding: const EdgeInsets.all(8),
-      width: 100,
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: AppColors.text,
-          fontWeight: FontWeight.bold,
-        ),
-        textAlign: TextAlign.right,
-      ),
     );
   }
 }

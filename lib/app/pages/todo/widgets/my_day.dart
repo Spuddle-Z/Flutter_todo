@@ -1,38 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:to_do/app/pages/todo/controller/task_controller.dart';
+import 'package:to_do/app/pages/todo/todo_controller.dart';
 
 import 'package:to_do/app/shared/widgets/recessed_panel.dart';
 import 'package:to_do/app/pages/todo/widgets/task_list.dart';
 import 'package:to_do/app/pages/todo/widgets/random_task.dart';
 import 'package:to_do/core/theme.dart';
 
+class MyDay extends StatelessWidget {
+  MyDay({super.key});
 
-class TaskLists extends StatelessWidget {
-  TaskLists({super.key});
-
-  final TaskController taskController = Get.find<TaskController>();
+  final TodoController todoController = Get.find<TodoController>();
 
   @override
   Widget build(BuildContext context) {
-    bool todayFilter(k) {
-      DateTime? date = taskController.taskBox.value.get(k)!.taskDate;
-      bool done = taskController.taskBox.value.get(k)!.taskDone;
-      DateTime today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-      return date != null && ((!done && date.isBefore(today)) || date.isAtSameMomentAs(today));
+    bool filterTodayTask(key) {
+      DateTime? date = todoController.taskBox.value.get(key)!.taskDate;
+      bool done = todoController.taskBox.value.get(key)!.taskDone;
+      DateTime today = DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day);
+      return date != null &&
+          ((!done && date.isBefore(today)) || date.isAtSameMomentAs(today));
     }
-    bool noDeadlineFilter(k) {
-      DateTime? date = taskController.taskBox.value.get(k)!.taskDate;
+
+    bool filterNoDeadlineTask(key) {
+      DateTime? date = todoController.taskBox.value.get(key)!.taskDate;
       return date == null;
     }
 
     return Column(
       children: [
         Expanded(
-          flex: 2,
-          child: RecessedPanel(
-            child: Column(
+            flex: 2,
+            child: RecessedPanel(
+                child: Column(
               children: [
                 const Padding(
                   padding: EdgeInsets.all(8.0),
@@ -47,18 +49,16 @@ class TaskLists extends StatelessWidget {
                 ),
                 Expanded(
                   child: TaskList(
-                    taskController: taskController,
-                    funcFilter: todayFilter,
+                    tag: 'today',
+                    filterTask: filterTodayTask,
                   ),
                 ),
               ],
-            )
-          )
-        ),
+            ))),
         Expanded(
-          flex: 3,
-          child: RecessedPanel(
-            child: Column(
+            flex: 3,
+            child: RecessedPanel(
+                child: Column(
               children: [
                 const Padding(
                   padding: EdgeInsets.all(8.0),
@@ -71,7 +71,7 @@ class TaskLists extends StatelessWidget {
                     ),
                   ),
                 ),
-                RandomTask(taskController: taskController),
+                RandomTask(),
                 Container(
                   height: 1,
                   margin: const EdgeInsets.symmetric(
@@ -84,14 +84,12 @@ class TaskLists extends StatelessWidget {
                 ),
                 Expanded(
                   child: TaskList(
-                    taskController: taskController,
-                    funcFilter: noDeadlineFilter,
+                    tag: 'noDeadline',
+                    filterTask: filterNoDeadlineTask,
                   ),
                 ),
               ],
-            )
-          )
-        ),
+            ))),
       ],
     );
   }
