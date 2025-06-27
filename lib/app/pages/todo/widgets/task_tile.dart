@@ -149,17 +149,19 @@ class TaskTile extends StatelessWidget {
                 // 展开备注按钮
                 if (!isMiniTile &&
                     taskTileController.task.value.taskNote.isNotEmpty)
-                  MyIconButton(
-                    icon: AnimatedRotation(
-                        duration: const Duration(milliseconds: 300),
-                        turns: taskTileController.isExpanded.value ? 0.5 : 0,
-                        child: const Icon(Icons.keyboard_arrow_down)),
-                    color: taskTileController.color,
-                    onPressed: () {
-                      taskTileController.isExpanded.value =
-                          !taskTileController.isExpanded.value;
-                    },
-                  ),
+                  Obx(() {
+                    return MyIconButton(
+                      icon: AnimatedRotation(
+                          duration: const Duration(milliseconds: 300),
+                          turns: taskTileController.isExpanded.value ? 0 : 0.5,
+                          child: const Icon(Icons.keyboard_arrow_down)),
+                      color: taskTileController.color,
+                      onPressed: () {
+                        taskTileController.isExpanded.value =
+                            !taskTileController.isExpanded.value;
+                      },
+                    );
+                  }),
 
                 // 编辑按钮
                 if (!isMiniTile)
@@ -204,30 +206,31 @@ class TaskTile extends StatelessWidget {
 
             // 备注内容
             if (!isMiniTile)
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeOut,
-                height:
-                    taskTileController.isExpanded.value == taskKey ? null : 0,
-                padding: const EdgeInsets.all(4),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: AppColors.backgroundDark,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: SelectableText(
-                      taskTileController.task.value.taskNote,
-                      style: const TextStyle(
-                        color: AppColors.text,
-                        fontSize: 12,
+              Obx(() {
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
+                  height: taskTileController.isExpanded.value ? null : 0,
+                  padding: const EdgeInsets.all(4),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundDark,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: SelectableText(
+                        taskTileController.task.value.taskNote,
+                        style: const TextStyle(
+                          color: AppColors.text,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
+                );
+              }),
           ],
         ),
       ),
