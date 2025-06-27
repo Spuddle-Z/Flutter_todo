@@ -14,9 +14,9 @@ class TaskListController extends GetxController {
   final MainController mainController = Get.find<MainController>();
 
   // 计算变量
-  RxList<dynamic> get keys {
-    RxList<dynamic> keys =
-        mainController.taskBox.value.keys.where(filterTask).toList().obs;
+  List<dynamic> get keys {
+    List<dynamic> keys =
+        mainController.taskBox.value.keys.where(filterTask).toList();
     keys.sort((a, b) => mainController.sortTask(a, b));
     return keys;
   } // 获取符合过滤条件的任务键列表

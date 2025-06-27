@@ -32,17 +32,17 @@ class TaskTileController extends GetxController {
   ).obs; // 任务数据
 
   // 计算变量
-  Rx<Color> get color {
+  Color get color {
     // 根据任务状态和截止日期计算颜色
     if (task.value.taskDone) {
-      return Rx<Color>(AppColors.textDark);
+      return AppColors.textDark;
     } else if (task.value.taskDate != null &&
         task.value.taskDate != cellDate &&
         task.value.taskDate!
             .isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
-      return Rx<Color>(AppColors.textActive);
+      return AppColors.textActive;
     } else {
-      return Rx<Color>(TaskConstant.priorityColorList[task.value.taskPriority]);
+      return TaskConstant.priorityColorList[task.value.taskPriority];
     }
   } // 获取任务颜色
 
@@ -89,11 +89,11 @@ class TaskTile extends StatelessWidget {
       padding: EdgeInsets.all(isMiniTile ? 2 : 4),
       child: Container(
         decoration: BoxDecoration(
-          color: taskTileController.color.value.withAlpha(0x33),
+          color: taskTileController.color.withAlpha(0x33),
           borderRadius: BorderRadius.circular(isMiniTile ? 4 : 8),
           border: Border(
             top: BorderSide(
-              color: taskTileController.color.value,
+              color: taskTileController.color,
               width: isMiniTile ? 2 : 3,
             ),
           ),
@@ -105,7 +105,7 @@ class TaskTile extends StatelessWidget {
                 // 勾选框
                 MyCheckbox(
                   done: taskTileController.task.value.taskDone,
-                  color: taskTileController.color.value,
+                  color: taskTileController.color,
                   scale: isMiniTile ? 0.6 : 1,
                   onChanged: taskTileController.onTaskToggled,
                 ),
@@ -115,12 +115,12 @@ class TaskTile extends StatelessWidget {
                   child: Text(
                     taskTileController.task.value.taskContent,
                     style: TextStyle(
-                      color: taskTileController.color.value,
+                      color: taskTileController.color,
                       fontSize: isMiniTile ? 12 : 16,
                       decoration: taskTileController.task.value.taskDone
                           ? TextDecoration.lineThrough
                           : TextDecoration.none,
-                      decorationColor: taskTileController.color.value,
+                      decorationColor: taskTileController.color,
                       decorationThickness: 2,
                     ),
                     overflow: TextOverflow.ellipsis,
@@ -129,7 +129,7 @@ class TaskTile extends StatelessWidget {
                 ),
 
                 // 超时天数
-                if (taskTileController.color.value == AppColors.textActive)
+                if (taskTileController.color == AppColors.textActive)
                   Container(
                     padding: EdgeInsets.all(isMiniTile ? 1 : 2),
                     decoration: BoxDecoration(
@@ -154,7 +154,7 @@ class TaskTile extends StatelessWidget {
                         duration: const Duration(milliseconds: 300),
                         turns: taskTileController.isExpanded.value ? 0.5 : 0,
                         child: const Icon(Icons.keyboard_arrow_down)),
-                    color: taskTileController.color.value,
+                    color: taskTileController.color,
                     onPressed: () {
                       taskTileController.isExpanded.value =
                           !taskTileController.isExpanded.value;
@@ -165,7 +165,7 @@ class TaskTile extends StatelessWidget {
                 if (!isMiniTile)
                   MyIconButton(
                     icon: const Icon(Icons.edit),
-                    color: taskTileController.color.value,
+                    color: taskTileController.color,
                     onPressed: () => {
                       Get.dialog(
                         TaskPopup(taskKey: taskKey),
@@ -178,7 +178,7 @@ class TaskTile extends StatelessWidget {
                 if (!isMiniTile)
                   MyIconButton(
                     icon: const Icon(Icons.close),
-                    color: taskTileController.color.value,
+                    color: taskTileController.color,
                     onPressed: taskTileController.onTaskDelete,
                   ),
 
@@ -189,7 +189,7 @@ class TaskTile extends StatelessWidget {
                     height: 18,
                     child: IconButton(
                       icon: const Icon(Icons.more_vert),
-                      color: taskTileController.color.value,
+                      color: taskTileController.color,
                       iconSize: 12,
                       padding: const EdgeInsets.all(0),
                       onPressed: () {

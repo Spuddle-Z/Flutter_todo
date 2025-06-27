@@ -18,19 +18,18 @@ class DayCellController extends GetxController {
   final TodoController todoController = Get.find<TodoController>();
 
   // 计算变量
-  Rx<DateTime> get cellDate =>
-      Rx<DateTime>(todoController.getCellDate(index)); // 本单元格对应日期
-  RxBool get isToday => RxBool(cellDate.value.day ==
-          mainController.today.value.day &&
-      cellDate.value.month == mainController.today.value.month &&
-      cellDate.value.year == mainController.today.value.year); // 本单元格日期是否为今天
-  RxBool get isCurrentMonth => RxBool(cellDate.value.month ==
-      todoController.viewMonth.value.month); // 本单元格日期是否处于当前月份内
-  RxBool get isWeekend => RxBool(cellDate.value.weekday == 7 ||
-      cellDate.value.weekday == 6); // 本单元格日期是否为周末
-  RxList<dynamic> get keys {
-    RxList<dynamic> keys =
-        mainController.taskBox.value.keys.where(ifShow).toList().obs;
+  DateTime get cellDate => todoController.getCellDate(index); // 本单元格对应日期
+  bool get isToday =>
+      cellDate.day == mainController.today.value.day &&
+      cellDate.month == mainController.today.value.month &&
+      cellDate.year == mainController.today.value.year; // 本单元格日期是否为今天
+  bool get isCurrentMonth =>
+      cellDate.month == todoController.viewMonth.value.month; // 本单元格日期是否处于当前月份内
+  bool get isWeekend =>
+      cellDate.weekday == 7 || cellDate.weekday == 6; // 本单元格日期是否为周末
+  List<dynamic> get keys {
+    List<dynamic> keys =
+        mainController.taskBox.value.keys.where(ifShow).toList();
     keys.sort((a, b) => mainController.sortTask(a, b));
     return keys;
   } // 获取本单元格内的任务键列表
@@ -39,12 +38,12 @@ class DayCellController extends GetxController {
   bool ifShow(key) {
     bool taskDone = mainController.taskBox.value.get(key)!.taskDone;
     DateTime? taskDate = mainController.taskBox.value.get(key)!.taskDate;
-    if (isToday.value) {
+    if (isToday) {
       return taskDate != null &&
-          ((!taskDone && taskDate.isBefore(cellDate.value)) ||
-              taskDate.isAtSameMomentAs(cellDate.value));
+          ((!taskDone && taskDate.isBefore(cellDate)) ||
+              taskDate.isAtSameMomentAs(cellDate));
     } else {
-      return taskDate != null && taskDate.isAtSameMomentAs(cellDate.value);
+      return taskDate != null && taskDate.isAtSameMomentAs(cellDate);
     }
   }
 }
@@ -70,11 +69,11 @@ class DayCell extends StatelessWidget {
         margin: const EdgeInsets.all(2),
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: dayCellController.isCurrentMonth.value
+          color: dayCellController.isCurrentMonth
               ? AppColors.background
               : AppColors.backgroundDark,
           border: Border.all(
-            color: dayCellController.isToday.value
+            color: dayCellController.isToday
                 ? AppColors.textDark
                 : AppColors.backgroundDark,
             width: 2,
@@ -84,11 +83,11 @@ class DayCell extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              '${dayCellController.cellDate.value.day}',
+              '${dayCellController.cellDate.day}',
               style: TextStyle(
-                color: dayCellController.isToday.value
+                color: dayCellController.isToday
                     ? AppColors.textActive
-                    : dayCellController.isWeekend.value
+                    : dayCellController.isWeekend
                         ? AppColors.textDark
                         : AppColors.text,
               ),
@@ -104,7 +103,7 @@ class DayCell extends StatelessWidget {
                     return TaskTile(
                       taskKey: dayCellController.keys[index],
                       isMiniTile: true,
-                      cellDate: dayCellController.cellDate.value,
+                      cellDate: dayCellController.cellDate,
                     );
                   },
                   physics: const ClampingScrollPhysics(),

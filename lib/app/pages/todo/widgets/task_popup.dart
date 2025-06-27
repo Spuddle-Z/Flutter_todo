@@ -54,13 +54,13 @@ class TaskPopupController extends GetxController {
       dateText.value = '${DateTime.now().year}'
           '${DateTime.now().month.toString().padLeft(2, '0')}'
           '${DateTime.now().day.toString().padLeft(2, '0')}';
-      recurrenceIndex.value = null;
-      priorityIndex.value = null;
+      recurrenceIndex.value = 0;
+      priorityIndex.value = 0;
       taskNote.value = '';
       isContentValid.value = false;
       isDateValid.value = true;
-      isRecurrenceValid.value = false;
-      isPriorityValid.value = false;
+      isRecurrenceValid.value = true;
+      isPriorityValid.value = true;
     }
   }
 
@@ -97,6 +97,10 @@ class TaskPopupController extends GetxController {
 
   /// 提交任务
   void onSubmit() {
+    debugPrint('Content: $isContentValid');
+    debugPrint('Date: $isDateValid');
+    debugPrint('Recurrence: $isRecurrenceValid');
+    debugPrint('Priority: $isPriorityValid');
     if (isContentValid.value &&
         isDateValid.value &&
         isRecurrenceValid.value &&

@@ -13,13 +13,11 @@ class RandomTaskController extends GetxController {
   // 状态变量
   final RxnInt randomKey = RxnInt(); // 随机任务的键
 
-  @override
-  void onInit() {
-    super.onInit();
-
-    // 初始化时获取一个随机任务的键
-    refreshRandomKey();
-  }
+  // 计算变量
+  List<dynamic> get keys => mainController.taskBox.value.keys
+      .where((k) => mainController.taskBox.value.get(k)!.taskDate == null)
+      .toList(); // 无截止日期任务列表
+  bool get existNoDeadlineTask => keys.isNotEmpty; // 是否存在无截止日期任务
 
   /// 获取随机任务的键
   void refreshRandomKey() {
@@ -46,24 +44,25 @@ class RandomTask extends StatelessWidget {
     final RandomTaskController randomTaskController =
         Get.put(RandomTaskController());
     return Obx(() {
-      if (randomTaskController.randomKey.value == null) {
-        return const Center(
-          child: Text(
-            'No task without deadline <(￣︶￣)>',
-            style: TextStyle(
-              color: AppColors.textDark,
-              fontSize: 16,
-            ),
-          ),
-        );
-      } else {
+      if (randomTaskController.existNoDeadlineTask) {
+        // 存在无截止日期任务
         return Row(
           children: [
             Expanded(
-              child: TaskTile(
-                taskKey: randomTaskController.randomKey.value!,
-                isMiniTile: false,
-              ),
+              child: randomTaskController.randomKey.value == null
+                  ? const Center(
+                      child: Text(
+                        'Roll a random task =>',
+                        style: TextStyle(
+                          color: AppColors.textDark,
+                          fontSize: 16,
+                        ),
+                      ),
+                    )
+                  : TaskTile(
+                      taskKey: randomTaskController.randomKey.value!,
+                      isMiniTile: false,
+                    ),
             ),
             Padding(
               padding: const EdgeInsets.all(4),
@@ -80,6 +79,17 @@ class RandomTask extends StatelessWidget {
               ),
             ),
           ],
+        );
+      } else {
+        // 不存在无截止日期任务
+        return const Center(
+          child: Text(
+            'No task without deadline <(￣︶￣)>',
+            style: TextStyle(
+              color: AppColors.textDark,
+              fontSize: 16,
+            ),
+          ),
         );
       }
     });
