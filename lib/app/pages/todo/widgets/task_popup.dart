@@ -97,15 +97,10 @@ class TaskPopupController extends GetxController {
 
   /// 提交任务
   void onSubmit() {
-    debugPrint('Content: ${isContentValid.value}\n'
-        'Date: ${isDateValid.value}\n'
-        'Recurrence: ${isRecurrenceValid.value}\n'
-        'Priority: ${isPriorityValid.value}');
     if (isContentValid.value &&
         isDateValid.value &&
         isRecurrenceValid.value &&
         isPriorityValid.value) {
-      debugPrint('Submitting task: ${taskContent.value}');
       Task newTask = Task(
         taskContent: taskContent.value,
         taskDate: dateText.value.isNotEmpty

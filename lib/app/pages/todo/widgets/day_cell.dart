@@ -102,6 +102,7 @@ class DayCell extends StatelessWidget {
                     return TaskTile(
                       taskKey: dayCellController.keys[index],
                       isMiniTile: true,
+                      cellDate: dayCellController.cellDate.value,
                     );
                   },
                   physics: const ClampingScrollPhysics(),

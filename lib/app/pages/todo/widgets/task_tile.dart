@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:to_do/app/pages/todo/todo_controller.dart';
+import 'package:to_do/app/pages/todo/widgets/task_detail_popup.dart';
 import 'package:to_do/app/pages/todo/widgets/task_popup.dart';
 
 import 'package:to_do/app/data/models/task_model.dart';
@@ -13,13 +14,15 @@ import 'package:to_do/core/theme.dart';
 class TaskTileController extends GetxController {
   TaskTileController({
     required this.taskKey,
+    this.cellDate,
   });
   final int taskKey;
+  final DateTime? cellDate;
 
   final TodoController todoController = Get.find<TodoController>();
 
   // 状态变量
-  final RxInt expandedKey = (-1).obs; // 用于控制备注的展开状态
+  final RxBool isExpanded = false.obs; // 用于控制备注的展开状态
   final Rx<Task> task = Task(
     taskContent: '',
     taskDate: null,
@@ -34,6 +37,7 @@ class TaskTileController extends GetxController {
     if (task.value.taskDone) {
       return Rx<Color>(AppColors.textDark);
     } else if (task.value.taskDate != null &&
+        task.value.taskDate != cellDate &&
         task.value.taskDate!
             .isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
       return Rx<Color>(AppColors.textActive);
@@ -69,15 +73,17 @@ class TaskTile extends StatelessWidget {
     super.key,
     required this.taskKey,
     required this.isMiniTile,
+    this.cellDate,
   });
   final int taskKey;
   final bool isMiniTile;
+  final DateTime? cellDate;
 
   @override
   Widget build(BuildContext context) {
     final TaskTileController taskTileController = Get.put(
-        TaskTileController(taskKey: taskKey),
-        tag: 'taskTileController_$taskKey _$isMiniTile');
+        TaskTileController(taskKey: taskKey, cellDate: cellDate),
+        tag: 'taskTileController_$taskKey _$isMiniTile ${cellDate ?? ''}');
 
     return Padding(
       padding: EdgeInsets.all(isMiniTile ? 2 : 4),
@@ -146,16 +152,12 @@ class TaskTile extends StatelessWidget {
                   MyIconButton(
                     icon: AnimatedRotation(
                         duration: const Duration(milliseconds: 300),
-                        turns: taskTileController.expandedKey.value == taskKey
-                            ? 0.5
-                            : 0,
+                        turns: taskTileController.isExpanded.value ? 0.5 : 0,
                         child: const Icon(Icons.keyboard_arrow_down)),
                     color: taskTileController.color.value,
                     onPressed: () {
-                      taskTileController.expandedKey.value =
-                          taskTileController.expandedKey.value == taskKey
-                              ? -1
-                              : taskKey;
+                      taskTileController.isExpanded.value =
+                          !taskTileController.isExpanded.value;
                     },
                   ),
 
@@ -192,7 +194,7 @@ class TaskTile extends StatelessWidget {
                       padding: const EdgeInsets.all(0),
                       onPressed: () {
                         Get.dialog(
-                          TaskPopup(taskKey: taskKey),
+                          TaskDetailPopUp(taskKey: taskKey),
                         );
                       },
                     ),
@@ -206,7 +208,7 @@ class TaskTile extends StatelessWidget {
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeOut,
                 height:
-                    taskTileController.expandedKey.value == taskKey ? null : 0,
+                    taskTileController.isExpanded.value == taskKey ? null : 0,
                 padding: const EdgeInsets.all(4),
                 child: Container(
                   width: double.infinity,

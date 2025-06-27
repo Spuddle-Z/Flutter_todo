@@ -37,7 +37,7 @@ class RandomTask extends StatelessWidget {
   /// ### 随机任务
   ///
   /// 该组件用于随机抽取一个没有截止日期的任务进行展示。
-  RandomTask({
+  const RandomTask({
     super.key,
   });
 
