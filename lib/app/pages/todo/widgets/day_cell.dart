@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:to_do/app/pages/main/main_controller.dart';
 
 import 'package:to_do/app/pages/todo/widgets/task_tile.dart';
 import 'package:to_do/app/pages/todo/todo_controller.dart';
@@ -13,30 +14,31 @@ class DayCellController extends GetxController {
   });
   final int index;
 
+  final MainController mainController = Get.find<MainController>();
   final TodoController todoController = Get.find<TodoController>();
 
   // 计算变量
   Rx<DateTime> get cellDate =>
       Rx<DateTime>(todoController.getCellDate(index)); // 本单元格对应日期
   RxBool get isToday => RxBool(cellDate.value.day ==
-          todoController.today.value.day &&
-      cellDate.value.month == todoController.today.value.month &&
-      cellDate.value.year == todoController.today.value.year); // 本单元格日期是否为今天
+          mainController.today.value.day &&
+      cellDate.value.month == mainController.today.value.month &&
+      cellDate.value.year == mainController.today.value.year); // 本单元格日期是否为今天
   RxBool get isCurrentMonth => RxBool(cellDate.value.month ==
       todoController.viewMonth.value.month); // 本单元格日期是否处于当前月份内
   RxBool get isWeekend => RxBool(cellDate.value.weekday == 7 ||
       cellDate.value.weekday == 6); // 本单元格日期是否为周末
   RxList<dynamic> get keys {
     RxList<dynamic> keys =
-        todoController.taskBox.value.keys.where(ifShow).toList().obs;
-    keys.sort((a, b) => todoController.sortTask(a, b));
+        mainController.taskBox.value.keys.where(ifShow).toList().obs;
+    keys.sort((a, b) => mainController.sortTask(a, b));
     return keys;
   } // 获取本单元格内的任务键列表
 
   /// 过滤函数，判断任务是否要显示在当前单元格内
   bool ifShow(key) {
-    bool taskDone = todoController.taskBox.value.get(key)!.taskDone;
-    DateTime? taskDate = todoController.taskBox.value.get(key)!.taskDate;
+    bool taskDone = mainController.taskBox.value.get(key)!.taskDone;
+    DateTime? taskDate = mainController.taskBox.value.get(key)!.taskDate;
     if (isToday.value) {
       return taskDate != null &&
           ((!taskDone && taskDate.isBefore(cellDate.value)) ||

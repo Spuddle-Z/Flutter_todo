@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:to_do/app/pages/todo/todo_controller.dart';
+import 'package:to_do/app/pages/main/main_controller.dart';
 
 import 'package:to_do/app/pages/todo/widgets/task_tile.dart';
 
@@ -11,13 +11,13 @@ class TaskListController extends GetxController {
   });
   final bool Function(dynamic) filterTask;
 
-  final TodoController todoController = Get.find<TodoController>();
+  final MainController mainController = Get.find<MainController>();
 
   // 计算变量
   RxList<dynamic> get keys {
     RxList<dynamic> keys =
-        todoController.taskBox.value.keys.where(filterTask).toList().obs;
-    keys.sort((a, b) => todoController.sortTask(a, b));
+        mainController.taskBox.value.keys.where(filterTask).toList().obs;
+    keys.sort((a, b) => mainController.sortTask(a, b));
     return keys;
   } // 获取符合过滤条件的任务键列表
 }

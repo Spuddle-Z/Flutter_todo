@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:to_do/app/pages/main/main_controller.dart';
 
-import 'package:to_do/app/pages/todo/todo_controller.dart';
 import 'package:to_do/app/pages/todo/widgets/task_detail_popup.dart';
 import 'package:to_do/app/pages/todo/widgets/task_popup.dart';
 
@@ -19,7 +19,7 @@ class TaskTileController extends GetxController {
   final int taskKey;
   final DateTime? cellDate;
 
-  final TodoController todoController = Get.find<TodoController>();
+  final MainController mainController = Get.find<MainController>();
 
   // 状态变量
   final RxBool isExpanded = false.obs; // 用于控制备注的展开状态
@@ -50,18 +50,18 @@ class TaskTileController extends GetxController {
   void onInit() {
     super.onInit();
 
-    task.value = todoController.taskBox.value.get(taskKey)!; // 获取任务数据
+    task.value = mainController.taskBox.value.get(taskKey)!; // 获取任务数据
   }
 
   /// 切换任务完成状态
   void onTaskToggled(bool? done) {
     task.value.taskDone = done!;
-    todoController.updateTask(taskKey, task.value);
+    mainController.updateTask(taskKey, task.value);
   }
 
   /// 删除任务
   void onTaskDelete() {
-    todoController.deleteTask(taskKey);
+    mainController.deleteTask(taskKey);
   }
 }
 

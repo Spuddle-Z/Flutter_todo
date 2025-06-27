@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
-
 import 'package:to_do/app/data/models/task_model.dart';
+import 'package:to_do/app/pages/main/main_controller.dart';
 import 'package:to_do/app/shared/widgets/my_text_field.dart';
 import 'package:to_do/app/shared/widgets/date_text_field.dart';
 import 'package:to_do/app/shared/widgets/dropdown_selector.dart';
@@ -15,8 +14,9 @@ class TaskPopupController extends GetxController {
   });
   final int? taskKey;
 
+  final MainController mainController = Get.find<MainController>();
+
   // 状态变量
-  final Rx<Box<Task>> taskBox = Hive.box<Task>('tasks').obs;
   final RxString taskContent = ''.obs;
   final RxString dateText = ''.obs;
   final RxnInt recurrenceIndex = RxnInt();
@@ -34,7 +34,7 @@ class TaskPopupController extends GetxController {
     // 初始化任务
     if (taskKey != null) {
       // 如果有任务键，则加载对应的任务
-      Task task = taskBox.value.get(taskKey)!;
+      Task task = mainController.taskBox.value.get(taskKey)!;
       taskContent.value = task.taskContent;
       dateText.value = (task.taskDate != null)
           ? '${task.taskDate!.year}'
@@ -115,11 +115,11 @@ class TaskPopupController extends GetxController {
         taskNote: taskNote.value,
       );
       if (taskKey != null) {
-        taskBox.value.put(taskKey!, newTask);
+        mainController.taskBox.value.put(taskKey!, newTask);
       } else {
-        taskBox.value.add(newTask);
+        mainController.taskBox.value.add(newTask);
       }
-      taskBox.refresh();
+      mainController.taskBox.refresh();
       Get.back();
     }
   }

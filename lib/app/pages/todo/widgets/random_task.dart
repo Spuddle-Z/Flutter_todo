@@ -1,14 +1,14 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:to_do/app/pages/main/main_controller.dart';
 
-import 'package:to_do/app/pages/todo/todo_controller.dart';
 import 'package:to_do/app/pages/todo/widgets/task_tile.dart';
 
 import 'package:to_do/core/theme.dart';
 
 class RandomTaskController extends GetxController {
-  final TodoController todoController = Get.find<TodoController>();
+  final MainController mainController = Get.find<MainController>();
 
   // 状态变量
   final RxnInt randomKey = RxnInt(); // 随机任务的键
@@ -23,8 +23,8 @@ class RandomTaskController extends GetxController {
 
   /// 获取随机任务的键
   void refreshRandomKey() {
-    final keys = todoController.taskBox.value.keys
-        .where((k) => todoController.taskBox.value.get(k)!.taskDate == null)
+    final keys = mainController.taskBox.value.keys
+        .where((k) => mainController.taskBox.value.get(k)!.taskDate == null)
         .toList();
 
     // 如果没有符合条件的任务，随机键为 null

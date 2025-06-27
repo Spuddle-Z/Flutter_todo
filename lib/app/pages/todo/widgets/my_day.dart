@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'package:to_do/app/pages/todo/todo_controller.dart';
-
+import 'package:to_do/app/pages/main/main_controller.dart';
 import 'package:to_do/app/shared/widgets/recessed_panel.dart';
 import 'package:to_do/app/pages/todo/widgets/task_list.dart';
 import 'package:to_do/app/pages/todo/widgets/random_task.dart';
@@ -11,13 +9,13 @@ import 'package:to_do/core/theme.dart';
 class MyDay extends StatelessWidget {
   MyDay({super.key});
 
-  final TodoController todoController = Get.find<TodoController>();
+  final MainController mainController = Get.find<MainController>();
 
   @override
   Widget build(BuildContext context) {
     bool filterTodayTask(key) {
-      DateTime? date = todoController.taskBox.value.get(key)!.taskDate;
-      bool done = todoController.taskBox.value.get(key)!.taskDone;
+      DateTime? date = mainController.taskBox.value.get(key)!.taskDate;
+      bool done = mainController.taskBox.value.get(key)!.taskDone;
       DateTime today = DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day);
       return date != null &&
@@ -25,7 +23,7 @@ class MyDay extends StatelessWidget {
     }
 
     bool filterNoDeadlineTask(key) {
-      DateTime? date = todoController.taskBox.value.get(key)!.taskDate;
+      DateTime? date = mainController.taskBox.value.get(key)!.taskDate;
       return date == null;
     }
 
@@ -71,7 +69,7 @@ class MyDay extends StatelessWidget {
                     ),
                   ),
                 ),
-                RandomTask(),
+                const RandomTask(),
                 Container(
                   height: 1,
                   margin: const EdgeInsets.symmetric(

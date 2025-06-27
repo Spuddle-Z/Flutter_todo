@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:to_do/app/pages/main/main_controller.dart';
 
-import 'package:to_do/app/pages/todo/todo_controller.dart';
 import 'package:to_do/app/pages/todo/widgets/detail_tile.dart';
 import 'package:to_do/app/pages/todo/widgets/task_popup.dart';
 
@@ -16,20 +16,20 @@ class TaskDetailPopupController extends GetxController {
   });
   final int taskKey;
 
-  final TodoController todoController = Get.find<TodoController>();
+  final MainController mainController = Get.find<MainController>();
 
   // 计算变量
-  Rx<Task> get task => todoController.taskBox.value.get(taskKey)!.obs; // 任务数据
+  Rx<Task> get task => mainController.taskBox.value.get(taskKey)!.obs; // 任务数据
 
   /// 切换任务完成状态
   void onTaskToggled(done) {
     task.value.taskDone = done!;
-    todoController.updateTask(taskKey, task.value);
+    mainController.updateTask(taskKey, task.value);
   }
 
   /// 删除任务
   void onTaskDeleted() {
-    todoController.deleteTask(taskKey);
+    mainController.deleteTask(taskKey);
   }
 }
 
