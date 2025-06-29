@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
-
 import 'package:to_do/app/pages/todo/widgets/task_tile.dart';
 import 'package:to_do/app/pages/todo/todo_controller.dart';
-
 import 'package:to_do/core/theme.dart';
 
 // 日历单元格控制器
-class DayCellController extends GetxController {
-  DayCellController({
+class CalendarDayCellController extends GetxController {
+  CalendarDayCellController({
     required this.index,
   });
   final int index;
@@ -48,11 +46,11 @@ class DayCellController extends GetxController {
   }
 }
 
-class DayCell extends StatelessWidget {
+class CalendarDayCell extends StatelessWidget {
   /// ### 日历单元格
   ///
   /// 该组件用于显示日历中的单个日期单元格，包含日期和该日期下的任务列表。
-  const DayCell({
+  const CalendarDayCell({
     super.key,
     required this.index,
   });
@@ -60,8 +58,8 @@ class DayCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DayCellController dayCellController = Get.put(
-        DayCellController(index: index),
+    final CalendarDayCellController dayCellController = Get.put(
+        CalendarDayCellController(index: index),
         tag: 'dayCellController_$index');
 
     return Obx(() {

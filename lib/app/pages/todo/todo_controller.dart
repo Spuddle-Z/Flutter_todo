@@ -11,21 +11,11 @@ class TodoController extends GetxController {
   final Rx<DateTime> viewMonth = DateTime.now().obs; // 当前显示的月份
 
   // 计算变量
-  RxInt get firstDayIndex =>
-      RxInt(DateTime(viewMonth.value.year, viewMonth.value.month, 1).weekday %
-          7); // 当前显示月份的第一天在一周中的索引
-  RxString get viewMonthText => RxString(
-      '${viewMonth.value.year} - ${CalendarConstant.monthTextList[viewMonth.value.month - 1]}'); // 当前显示月份的文本表示
-
-  /// 切换显示的月份
-  void onViewMonthChanged(int offset) {
-    viewMonth.value =
-        DateTime(viewMonth.value.year, viewMonth.value.month + offset);
-    firstDayIndex.value =
-        DateTime(viewMonth.value.year, viewMonth.value.month, 1).weekday % 7;
-    viewMonthText.value =
-        '${viewMonth.value.year} - ${CalendarConstant.monthTextList[viewMonth.value.month - 1]}';
-  }
+  int get firstDayIndex =>
+      DateTime(viewMonth.value.year, viewMonth.value.month, 1).weekday %
+      7; // 当前显示月份的第一天在一周中的索引
+  String get viewMonthText =>
+      '${viewMonth.value.year} - ${CalendarConstant.monthTextList[viewMonth.value.month - 1]}'; // 当前显示月份的文本表示
 
   /// 计算单元格对应的日期。
   ///
@@ -35,22 +25,22 @@ class TodoController extends GetxController {
   /// 返回值：
   /// - 对应的日期。
   DateTime getCellDate(int index) {
-    if (index < firstDayIndex.value) {
+    if (index < firstDayIndex) {
       final DateTime lastMonth =
           DateTime(viewMonth.value.year, viewMonth.value.month, 0);
       return DateTime(lastMonth.year, lastMonth.month,
-          lastMonth.day - firstDayIndex.value + index + 1);
+          lastMonth.day - firstDayIndex + index + 1);
     } else if (index <
-        firstDayIndex.value +
+        firstDayIndex +
             DateTime(viewMonth.value.year, viewMonth.value.month + 1, 0).day) {
       return DateTime(viewMonth.value.year, viewMonth.value.month,
-          index - firstDayIndex.value + 1);
+          index - firstDayIndex + 1);
     } else {
       return DateTime(
           viewMonth.value.year,
           viewMonth.value.month + 1,
           index -
-              firstDayIndex.value -
+              firstDayIndex -
               DateTime(viewMonth.value.year, viewMonth.value.month + 1, 0).day +
               1);
     }

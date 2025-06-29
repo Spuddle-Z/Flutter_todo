@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:to_do/core/theme.dart';
 
-// 勾选框
 class MyCheckbox extends StatelessWidget {
+  /// ### 勾选框
+  ///
+  /// 该组件用于显示一个可勾选的复选框。
   const MyCheckbox({
     super.key,
     required this.done,

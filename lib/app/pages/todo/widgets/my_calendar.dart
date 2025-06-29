@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:to_do/app/pages/todo/widgets/day_cell.dart';
+import 'package:to_do/app/pages/todo/widgets/calendar_day_cell.dart';
 import 'package:to_do/app/pages/todo/todo_controller.dart';
 import 'package:to_do/app/shared/constants/calendar_constant.dart';
 
@@ -34,7 +34,9 @@ class MyCalendar extends StatelessWidget {
                 child: Row(
                   children: [
                     IconButton(
-                      onPressed: () => todoController.onViewMonthChanged(-1),
+                      onPressed: () => todoController.viewMonth.value =
+                          DateTime(todoController.viewMonth.value.year,
+                              todoController.viewMonth.value.month - 1),
                       icon: const Icon(Icons.keyboard_arrow_left),
                       color: AppColors.text,
                     ),
@@ -43,7 +45,7 @@ class MyCalendar extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Obx(() {
                         return Text(
-                          todoController.viewMonthText.value,
+                          todoController.viewMonthText,
                           style: const TextStyle(
                             color: AppColors.primary,
                             fontSize: 20,
@@ -53,7 +55,9 @@ class MyCalendar extends StatelessWidget {
                       }),
                     ),
                     IconButton(
-                      onPressed: () => todoController.onViewMonthChanged(1),
+                      onPressed: () => todoController.viewMonth.value =
+                          DateTime(todoController.viewMonth.value.year,
+                              todoController.viewMonth.value.month + 1),
                       icon: const Icon(Icons.keyboard_arrow_right),
                       color: AppColors.text,
                     ),
@@ -120,7 +124,7 @@ class MyCalendar extends StatelessWidget {
                     childAspectRatio: cellWidth / cellHeight,
                   ),
                   itemBuilder: (BuildContext context, int index) {
-                    return DayCell(index: index);
+                    return CalendarDayCell(index: index);
                   },
                 );
               },

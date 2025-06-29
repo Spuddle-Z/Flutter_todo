@@ -1,12 +1,16 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-
 import 'package:to_do/app/data/models/task_model.dart';
 
 class MainController extends GetxController {
   // 状态变量
   final Rx<Box<Task>> taskBox = Hive.box<Task>('tasks').obs; // 任务盒
+  final List<List<Rx<Box<bool>>>> hobbyBoxes = [
+    [Hive.box<bool>('Rise').obs, Hive.box<bool>('Sleep').obs], // 早睡早起盒
+    [Hive.box<bool>('Sports').obs], // 运动盒
+    [Hive.box<bool>('Relax').obs], // 放松盒
+  ];
   final Rx<DateTime> today = DateTime.now().obs; // 当前时间
   final RxInt currentIndex = 0.obs; // 当前页面索引
 
