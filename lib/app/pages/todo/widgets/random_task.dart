@@ -42,7 +42,8 @@ class RandomTask extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final RandomTaskController randomTaskController =
-        Get.put(RandomTaskController());
+        Get.find<RandomTaskController>();
+
     return Obx(() {
       if (randomTaskController.existNoDeadlineTask) {
         // 存在无截止日期任务

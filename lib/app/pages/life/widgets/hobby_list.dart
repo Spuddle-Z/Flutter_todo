@@ -58,8 +58,8 @@ class HobbyList extends StatelessWidget {
                     return SizedBox(
                       width: Get.width,
                       child: HobbyItem(
-                        i: i,
-                        j: j,
+                        hobbyIndexI: i,
+                        hobbyIndexJ: j,
                         date: mainController.today.value
                             .subtract(Duration(days: isToday ? 0 : 1)),
                       ),

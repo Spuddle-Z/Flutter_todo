@@ -8,19 +8,19 @@ import 'package:to_do/core/theme.dart';
 
 class HobbyItemController extends GetxController {
   HobbyItemController({
-    required this.i,
-    required this.j,
+    required this.hobbyIndexI,
+    required this.hobbyIndexJ,
     required this.date,
   });
-  final int i;
-  final int j;
+  final int hobbyIndexI;
+  final int hobbyIndexJ;
   final DateTime date;
 
   final MainController mainController = Get.find<MainController>();
 
   /// 获取兴趣爱好状态
   bool getHobbyState() {
-    return mainController.hobbyBoxes[i][j].value
+    return mainController.hobbyBoxes[hobbyIndexI][hobbyIndexJ].value
             .get(formatDate(date, [yyyy, mm, dd])) !=
         null;
   }
@@ -29,11 +29,11 @@ class HobbyItemController extends GetxController {
   void toggleHobbyState() {
     String key = formatDate(date, [yyyy, mm, dd]);
     if (getHobbyState()) {
-      mainController.hobbyBoxes[i][j].value.delete(key);
+      mainController.hobbyBoxes[hobbyIndexI][hobbyIndexJ].value.delete(key);
     } else {
-      mainController.hobbyBoxes[i][j].value.put(key, true);
+      mainController.hobbyBoxes[hobbyIndexI][hobbyIndexJ].value.put(key, true);
     }
-    mainController.hobbyBoxes[i][j].refresh();
+    mainController.hobbyBoxes[hobbyIndexI][hobbyIndexJ].refresh();
   }
 }
 
@@ -43,32 +43,37 @@ class HobbyItem extends StatelessWidget {
   /// 该组件用于显示单个兴趣爱好项，包括勾选框和文本。
   const HobbyItem({
     super.key,
-    required this.i,
-    required this.j,
+    required this.hobbyIndexI,
+    required this.hobbyIndexJ,
     required this.date,
   });
-  final int i;
-  final int j;
+  final int hobbyIndexI;
+  final int hobbyIndexJ;
   final DateTime date;
 
   @override
   Widget build(BuildContext context) {
     final HobbyItemController hobbyItemController = Get.put(
-        HobbyItemController(i: i, j: j, date: date),
-        tag: 'hobbyItemController $i-$j ${date.toIso8601String()}');
+        HobbyItemController(
+          hobbyIndexI: hobbyIndexI,
+          hobbyIndexJ: hobbyIndexJ,
+          date: date,
+        ),
+        tag:
+            'hobbyItemController $hobbyIndexI-$hobbyIndexJ ${date.toIso8601String()}');
 
     return Row(
       children: [
         Obx(() {
           return MyCheckbox(
             done: hobbyItemController.getHobbyState(),
-            color: HobbyConstant.hobbyColorList[i],
+            color: HobbyConstant.hobbyColorList[hobbyIndexI],
             scale: 1,
             onChanged: (value) => hobbyItemController.toggleHobbyState(),
           );
         }),
         Text(
-          HobbyConstant.hobbyTextList[i][j],
+          HobbyConstant.hobbyTextList[hobbyIndexI][hobbyIndexJ],
           style: const TextStyle(
             color: AppColors.text,
             fontSize: 16,

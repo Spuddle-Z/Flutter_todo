@@ -153,7 +153,7 @@ class TaskTile extends StatelessWidget {
                     return MyIconButton(
                       icon: AnimatedRotation(
                           duration: const Duration(milliseconds: 300),
-                          turns: taskTileController.isExpanded.value ? 0 : 0.5,
+                          turns: taskTileController.isExpanded.value ? 0.5 : 0,
                           child: const Icon(Icons.keyboard_arrow_down)),
                       color: taskTileController.color,
                       onPressed: () {
