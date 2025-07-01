@@ -43,7 +43,6 @@ class MainView extends StatelessWidget {
           },
           child: Focus(
             focusNode: mainController.focusNode,
-            
             child: Obx(() {
               return Row(
                 children: [

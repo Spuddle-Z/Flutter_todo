@@ -34,14 +34,14 @@ class CalendarDayCellController extends GetxController {
 
   /// 过滤函数，判断任务是否要显示在当前单元格内
   bool ifShow(key) {
-    bool taskDone = mainController.taskBox.value.get(key)!.taskDone;
-    DateTime? taskDate = mainController.taskBox.value.get(key)!.taskDate;
+    bool done = mainController.taskBox.value.get(key)!.taskDone;
+    DateTime? date = mainController.taskBox.value.get(key)!.taskDate;
+    if (date == null) return false; // 如果没有截止日期，则不显示
     if (isToday) {
-      return taskDate != null &&
-          ((!taskDone && taskDate.isBefore(cellDate)) ||
-              taskDate.isAtSameMomentAs(cellDate));
+      return ((!done && date.isBefore(cellDate)) ||
+          date.isAtSameMomentAs(cellDate));
     } else {
-      return taskDate != null && taskDate.isAtSameMomentAs(cellDate);
+      return date.isAtSameMomentAs(cellDate);
     }
   }
 }
