@@ -14,17 +14,17 @@ class MyDay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool filterTodayTask(key) {
-      DateTime? date = mainController.taskBox.value.get(key)!.taskDate;
+      DateTime? date = mainController.taskBox.value.get(key)!.date;
       if (date == null) return false; // 如果没有截止日期，则不显示
 
-      bool done = mainController.taskBox.value.get(key)!.taskDone;
+      bool done = mainController.taskBox.value.get(key)!.done;
       DateTime today = DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day);
       return ((!done && date.isBefore(today)) || date.isAtSameMomentAs(today));
     }
 
     bool filterNoDeadlineTask(key) {
-      DateTime? date = mainController.taskBox.value.get(key)!.taskDate;
+      DateTime? date = mainController.taskBox.value.get(key)!.date;
       return date == null;
     }
 

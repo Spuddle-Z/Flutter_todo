@@ -9,12 +9,14 @@ class MyCheckbox extends StatelessWidget {
     super.key,
     required this.done,
     required this.color,
+    required this.activeColor,
     required this.scale,
     required this.onChanged,
   });
 
   final bool done;
   final Color color;
+  final Color activeColor;
   final double scale;
   final void Function(bool?)? onChanged;
 
@@ -27,7 +29,7 @@ class MyCheckbox extends StatelessWidget {
         scale: scale,
         child: Checkbox(
           value: done,
-          activeColor: color,
+          activeColor: activeColor,
           checkColor: AppColors.background,
           hoverColor: color.withAlpha(0x33),
           side: BorderSide(

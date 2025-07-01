@@ -84,21 +84,21 @@ class MainController extends GetxController {
   void generateTask() {
     // 筛选出周期性任务的键
     List<dynamic> recurringKeys = taskBox.value.keys
-        .where((k) => taskBox.value.get(k)!.taskRecurrence != 0)
+        .where((k) => taskBox.value.get(k)!.recurrence != 0)
         .toList();
 
     for (int i = 0; i < recurringKeys.length; i++) {
       Task recurringTask = taskBox.value.get(recurringKeys[i])!;
       // 循环生成下一个周期性任务，直到当前任务不需要再生成
-      while (recurringTask.taskDone ||
-          recurringTask.taskDate!.isBefore(DateTime.now()) ||
-          recurringTask.taskDate!.isAtSameMomentAs(DateTime.now())) {
+      while (recurringTask.done ||
+          recurringTask.date!.isBefore(DateTime.now()) ||
+          recurringTask.date!.isAtSameMomentAs(DateTime.now())) {
         Task newTask = Task.copy(recurringTask);
-        newTask.taskDone = false;
-        newTask.taskDate =
-            getNextDate(recurringTask.taskDate!, recurringTask.taskRecurrence);
+        newTask.done = false;
+        newTask.date =
+            getNextDate(recurringTask.date!, recurringTask.recurrence);
         taskBox.value.add(newTask);
-        recurringTask.taskRecurrence = 0; // 将原任务标记为不再周期性
+        recurringTask.recurrence = 0; // 将原任务标记为不再周期性
         taskBox.value.put(recurringKeys[i], recurringTask);
         recurringTask = newTask;
       }
@@ -118,16 +118,14 @@ class MainController extends GetxController {
     Task taskB = taskBox.value.get(keyB)!;
 
     // 未完成的任务排在前面
-    if (taskA.taskDone != taskB.taskDone) {
-      return taskA.taskDone ? 1 : -1;
+    if (taskA.done != taskB.done) {
+      return taskA.done ? 1 : -1;
     }
     // 按截止日期排序
-    if (taskA.taskDate != null &&
-        taskB.taskDate != null &&
-        taskA.taskDate != taskB.taskDate) {
-      return taskA.taskDate!.compareTo(taskB.taskDate!);
+    if (taskA.date != null && taskB.date != null && taskA.date != taskB.date) {
+      return taskA.date!.compareTo(taskB.date!);
     }
     // 按优先级排序
-    return taskB.taskPriority.compareTo(taskA.taskPriority);
+    return taskB.priority.compareTo(taskA.priority);
   }
 }

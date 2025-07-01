@@ -24,25 +24,25 @@ class TaskTileController extends GetxController {
   // 状态变量
   final RxBool isExpanded = false.obs; // 用于控制备注的展开状态
   final Rx<Task> task = Task(
-    taskContent: '',
-    taskDate: null,
-    taskRecurrence: 0,
-    taskPriority: 0,
-    taskNote: '',
+    content: '',
+    date: null,
+    recurrence: 0,
+    priority: 0,
+    note: '',
   ).obs; // 任务数据
 
   // 计算变量
   Color get color {
     // 根据任务状态和截止日期计算颜色
-    if (task.value.taskDone) {
+    if (task.value.done) {
       return AppColors.textDark;
-    } else if (task.value.taskDate != null &&
-        task.value.taskDate != cellDate &&
-        task.value.taskDate!
+    } else if (task.value.date != null &&
+        task.value.date != cellDate &&
+        task.value.date!
             .isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
       return AppColors.textActive;
     } else {
-      return TaskConstant.priorityColorList[task.value.taskPriority];
+      return TaskConstant.priorityColorList[task.value.priority];
     }
   } // 获取任务颜色
 
@@ -55,7 +55,7 @@ class TaskTileController extends GetxController {
 
   /// 切换任务完成状态
   void onTaskToggled(bool? done) {
-    task.value.taskDone = done!;
+    task.value.done = done!;
     mainController.updateTask(taskKey, task.value);
   }
 
@@ -104,8 +104,9 @@ class TaskTile extends StatelessWidget {
               children: [
                 // 勾选框
                 MyCheckbox(
-                  done: taskTileController.task.value.taskDone,
+                  done: taskTileController.task.value.done,
                   color: taskTileController.color,
+                  activeColor: taskTileController.color,
                   scale: isMiniTile ? 0.6 : 1,
                   onChanged: taskTileController.onTaskToggled,
                 ),
@@ -113,11 +114,11 @@ class TaskTile extends StatelessWidget {
                 // 任务内容
                 Expanded(
                   child: Text(
-                    taskTileController.task.value.taskContent,
+                    taskTileController.task.value.content,
                     style: TextStyle(
                       color: taskTileController.color,
                       fontSize: isMiniTile ? 12 : 16,
-                      decoration: taskTileController.task.value.taskDone
+                      decoration: taskTileController.task.value.done
                           ? TextDecoration.lineThrough
                           : TextDecoration.none,
                       decorationColor: taskTileController.color,
@@ -137,7 +138,7 @@ class TaskTile extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
-                      "${-taskTileController.task.value.taskDate!.difference(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)).inDays}天前",
+                      "${-taskTileController.task.value.date!.difference(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)).inDays}天前",
                       style: TextStyle(
                         color: AppColors.background.withAlpha(0xaa),
                         fontSize: isMiniTile ? 8 : 12,
@@ -148,7 +149,7 @@ class TaskTile extends StatelessWidget {
 
                 // 展开备注按钮
                 if (!isMiniTile &&
-                    taskTileController.task.value.taskNote.isNotEmpty)
+                    taskTileController.task.value.note.isNotEmpty)
                   Obx(() {
                     return MyIconButton(
                       icon: AnimatedRotation(
@@ -221,7 +222,7 @@ class TaskTile extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8),
                       child: SelectableText(
-                        taskTileController.task.value.taskNote,
+                        taskTileController.task.value.note,
                         style: const TextStyle(
                           color: AppColors.text,
                           fontSize: 12,

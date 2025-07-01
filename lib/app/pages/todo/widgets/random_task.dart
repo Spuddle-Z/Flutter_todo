@@ -15,14 +15,14 @@ class RandomTaskController extends GetxController {
 
   // 计算变量
   List<dynamic> get keys => mainController.taskBox.value.keys
-      .where((k) => mainController.taskBox.value.get(k)!.taskDate == null)
+      .where((k) => mainController.taskBox.value.get(k)!.date == null)
       .toList(); // 无截止日期任务列表
   bool get existNoDeadlineTask => keys.isNotEmpty; // 是否存在无截止日期任务
 
   /// 获取随机任务的键
   void refreshRandomKey() {
     final keys = mainController.taskBox.value.keys
-        .where((k) => mainController.taskBox.value.get(k)!.taskDate == null)
+        .where((k) => mainController.taskBox.value.get(k)!.date == null)
         .toList();
 
     // 如果没有符合条件的任务，随机键为 null

@@ -34,8 +34,8 @@ class CalendarDayCellController extends GetxController {
 
   /// 过滤函数，判断任务是否要显示在当前单元格内
   bool ifShow(key) {
-    bool done = mainController.taskBox.value.get(key)!.taskDone;
-    DateTime? date = mainController.taskBox.value.get(key)!.taskDate;
+    bool done = mainController.taskBox.value.get(key)!.done;
+    DateTime? date = mainController.taskBox.value.get(key)!.date;
     if (date == null) return false; // 如果没有截止日期，则不显示
     if (isToday) {
       return ((!done && date.isBefore(cellDate)) ||
@@ -88,6 +88,9 @@ class CalendarDayCell extends StatelessWidget {
                     : dayCellController.isWeekend
                         ? AppColors.textDark
                         : AppColors.text,
+                fontWeight: dayCellController.isToday
+                    ? FontWeight.bold
+                    : FontWeight.normal,
               ),
             ),
             // 任务列表

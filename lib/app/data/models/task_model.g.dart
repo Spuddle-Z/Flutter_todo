@@ -17,12 +17,12 @@ class TaskAdapter extends TypeAdapter<Task> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Task(
-      taskContent: fields[0] as String,
-      taskPriority: fields[4] as int,
-      taskDate: fields[3] as DateTime?,
-      taskNote: fields[5] as String,
-      taskRecurrence: fields[2] as int,
-    )..taskDone = fields[1] as bool;
+      content: fields[0] as String,
+      priority: fields[4] as int,
+      date: fields[3] as DateTime?,
+      note: fields[5] as String,
+      recurrence: fields[2] as int,
+    )..done = fields[1] as bool;
   }
 
   @override
@@ -30,17 +30,17 @@ class TaskAdapter extends TypeAdapter<Task> {
     writer
       ..writeByte(6)
       ..writeByte(0)
-      ..write(obj.taskContent)
+      ..write(obj.content)
       ..writeByte(1)
-      ..write(obj.taskDone)
+      ..write(obj.done)
       ..writeByte(2)
-      ..write(obj.taskRecurrence)
+      ..write(obj.recurrence)
       ..writeByte(3)
-      ..write(obj.taskDate)
+      ..write(obj.date)
       ..writeByte(4)
-      ..write(obj.taskPriority)
+      ..write(obj.priority)
       ..writeByte(5)
-      ..write(obj.taskNote);
+      ..write(obj.note);
   }
 
   @override

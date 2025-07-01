@@ -67,7 +67,8 @@ class HobbyItem extends StatelessWidget {
         Obx(() {
           return MyCheckbox(
             done: hobbyItemController.getHobbyState(),
-            color: HobbyConstant.hobbyColorList[hobbyIndexI],
+            color: AppColors.textDark,
+            activeColor: HobbyConstant.hobbyColorList[hobbyIndexI],
             scale: 1,
             onChanged: (value) => hobbyItemController.toggleHobbyState(),
           );

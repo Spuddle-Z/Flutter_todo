@@ -1,35 +1,34 @@
 import 'package:hive/hive.dart';
-
 part 'task_model.g.dart';
 
 @HiveType(typeId: 0)
 class Task {
   @HiveField(0)
-  String taskContent;
+  String content;
   @HiveField(1)
-  bool taskDone = false;
+  bool done = false;
   @HiveField(2)
-  int taskRecurrence;
+  int recurrence;
   @HiveField(3)
-  DateTime? taskDate;
+  DateTime? date;
   @HiveField(4)
-  int taskPriority;
+  int priority;
   @HiveField(5)
-  String taskNote;
+  String note;
 
   Task({
-    required this.taskContent,
-    required this.taskPriority,
-    this.taskDate,
-    required this.taskNote,
-    required this.taskRecurrence,
+    required this.content,
+    required this.priority,
+    this.date,
+    required this.note,
+    required this.recurrence,
   });
 
   Task.copy(Task task)
-      : taskContent = task.taskContent,
-        taskDone = task.taskDone,
-        taskPriority = task.taskPriority,
-        taskDate = task.taskDate,
-        taskNote = task.taskNote,
-        taskRecurrence = task.taskRecurrence;
+      : content = task.content,
+        done = task.done,
+        priority = task.priority,
+        date = task.date,
+        note = task.note,
+        recurrence = task.recurrence;
 }

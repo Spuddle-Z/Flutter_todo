@@ -35,15 +35,15 @@ class TaskPopupController extends GetxController {
     if (taskKey != null) {
       // 如果有任务键，则加载对应的任务
       Task task = mainController.taskBox.value.get(taskKey)!;
-      taskContent.value = task.taskContent;
-      dateText.value = (task.taskDate != null)
-          ? '${task.taskDate!.year}'
-              '${task.taskDate!.month.toString().padLeft(2, '0')}'
-              '${task.taskDate!.day.toString().padLeft(2, '0')}'
+      taskContent.value = task.content;
+      dateText.value = (task.date != null)
+          ? '${task.date!.year}'
+              '${task.date!.month.toString().padLeft(2, '0')}'
+              '${task.date!.day.toString().padLeft(2, '0')}'
           : '';
-      recurrenceIndex.value = task.taskRecurrence;
-      priorityIndex.value = task.taskPriority;
-      taskNote.value = task.taskNote;
+      recurrenceIndex.value = task.recurrence;
+      priorityIndex.value = task.priority;
+      taskNote.value = task.note;
       isContentValid.value = true;
       isDateValid.value = true;
       isRecurrenceValid.value = true;
@@ -106,17 +106,17 @@ class TaskPopupController extends GetxController {
         isRecurrenceValid.value &&
         isPriorityValid.value) {
       Task newTask = Task(
-        taskContent: taskContent.value,
-        taskDate: dateText.value.isNotEmpty
+        content: taskContent.value,
+        date: dateText.value.isNotEmpty
             ? DateTime(
                 int.parse(dateText.value.substring(0, 4)),
                 int.parse(dateText.value.substring(4, 6)),
                 int.parse(dateText.value.substring(6, 8)),
               )
             : null,
-        taskRecurrence: recurrenceIndex.value!,
-        taskPriority: priorityIndex.value!,
-        taskNote: taskNote.value,
+        recurrence: recurrenceIndex.value!,
+        priority: priorityIndex.value!,
+        note: taskNote.value,
       );
       if (taskKey != null) {
         mainController.taskBox.value.put(taskKey!, newTask);

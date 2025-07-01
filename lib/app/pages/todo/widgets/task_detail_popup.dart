@@ -23,7 +23,7 @@ class TaskDetailPopupController extends GetxController {
 
   /// 切换任务完成状态
   void onTaskToggled(done) {
-    task.taskDone = done!;
+    task.done = done!;
     mainController.updateTask(taskKey, task);
   }
 
@@ -53,8 +53,9 @@ class TaskDetailPopUp extends StatelessWidget {
         children: [
           Obx(() {
             return MyCheckbox(
-              done: taskDetailPopupController.task.taskDone,
+              done: taskDetailPopupController.task.done,
               color: AppColors.primary,
+              activeColor: AppColors.primary,
               scale: 1.2,
               onChanged: taskDetailPopupController.onTaskToggled,
             );
@@ -62,7 +63,7 @@ class TaskDetailPopUp extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
-              taskDetailPopupController.task.taskContent,
+              taskDetailPopupController.task.content,
               style: const TextStyle(
                 color: AppColors.primary,
               ),
@@ -82,7 +83,7 @@ class TaskDetailPopUp extends StatelessWidget {
             DetailTile(
               keyText: 'Deadline',
               valueWidget: Text(
-                '${taskDetailPopupController.task.taskDate!.year} 年 ${taskDetailPopupController.task.taskDate!.month} 月 ${taskDetailPopupController.task.taskDate!.day} 日',
+                '${taskDetailPopupController.task.date!.year} 年 ${taskDetailPopupController.task.date!.month} 月 ${taskDetailPopupController.task.date!.day} 日',
                 textAlign: TextAlign.left,
                 style: const TextStyle(
                   color: AppColors.text,
@@ -96,7 +97,7 @@ class TaskDetailPopUp extends StatelessWidget {
                     keyText: 'Recurrence',
                     valueWidget: Text(
                       TaskConstant.recurrenceTextList[
-                          taskDetailPopupController.task.taskRecurrence],
+                          taskDetailPopupController.task.recurrence],
                       textAlign: TextAlign.left,
                       style: const TextStyle(
                         color: AppColors.text,
@@ -111,19 +112,19 @@ class TaskDetailPopUp extends StatelessWidget {
                       children: [
                         Icon(
                           TaskConstant.priorityIconList[
-                              taskDetailPopupController.task.taskPriority],
+                              taskDetailPopupController.task.priority],
                           color: TaskConstant.priorityColorList[
-                              taskDetailPopupController.task.taskPriority],
+                              taskDetailPopupController.task.priority],
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 4),
                           child: Text(
                             TaskConstant.priorityTextList[
-                                taskDetailPopupController.task.taskPriority],
+                                taskDetailPopupController.task.priority],
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               color: TaskConstant.priorityColorList[
-                                  taskDetailPopupController.task.taskPriority],
+                                  taskDetailPopupController.task.priority],
                             ),
                           ),
                         ),
@@ -133,12 +134,12 @@ class TaskDetailPopUp extends StatelessWidget {
                 ),
               ],
             ),
-            if (taskDetailPopupController.task.taskNote.isNotEmpty)
+            if (taskDetailPopupController.task.note.isNotEmpty)
               DetailTile(
                 keyText: 'Note',
                 valueWidget: SingleChildScrollView(
                   child: SelectableText(
-                    taskDetailPopupController.task.taskNote,
+                    taskDetailPopupController.task.note,
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                       color: AppColors.text,

@@ -78,7 +78,7 @@ class LifeView extends StatelessWidget {
                   ],
                 ),
               )),
-          //
+          // 习惯列表
           Expanded(
             flex: 1,
             child: RecessedPanel(
