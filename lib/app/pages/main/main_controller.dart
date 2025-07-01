@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:to_do/app/data/models/task_model.dart';
@@ -13,6 +14,9 @@ class MainController extends GetxController {
   ];
   final Rx<DateTime> today = DateTime.now().obs; // 当前时间
   final RxInt currentIndex = 0.obs; // 当前页面索引
+
+  // 焦点管理
+  final FocusNode focusNode = FocusNode();
 
   // 定时器，用于每分钟更新当前时间
   Timer? timer;
@@ -30,7 +34,15 @@ class MainController extends GetxController {
   }
 
   @override
+  void onReady() {
+    super.onReady();
+    Future.delayed(
+        Duration.zero, () => focusNode.requestFocus()); // 等待组件渲染完成后请求焦点
+  }
+
+  @override
   void onClose() {
+    focusNode.dispose(); // 释放焦点
     super.onClose();
     timer?.cancel();
   }

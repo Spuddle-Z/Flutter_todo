@@ -6,6 +6,8 @@ import 'package:to_do/app/pages/todo/todo_view.dart';
 import 'package:to_do/app/pages/life/life_view.dart';
 import 'package:to_do/app/pages/main/widgets/navigation_bar_button.dart';
 
+import 'package:to_do/core/shortcuts/intents.dart';
+import 'package:to_do/core/shortcuts/shortcuts.dart';
 import 'package:to_do/core/theme.dart';
 
 class MainView extends StatelessWidget {
@@ -22,40 +24,63 @@ class MainView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(() {
-        return Row(
-          children: [
-            // 导航栏
-            Container(
-              width: 80,
-              color: AppColors.backgroundDark,
-              child: Column(
+      body: Shortcuts(
+        shortcuts: shortcuts,
+        child: Actions(
+          actions: {
+            ToTodoIntent: CallbackAction<ToTodoIntent>(
+              onInvoke: (intent) {
+                mainController.currentIndex.value = 0;
+                return null;
+              },
+            ),
+            ToLifeIntent: CallbackAction<ToLifeIntent>(
+              onInvoke: (intent) {
+                mainController.currentIndex.value = 1;
+                return null;
+              },
+            ),
+          },
+          child: Focus(
+            focusNode: mainController.focusNode,
+            
+            child: Obx(() {
+              return Row(
                 children: [
-                  NavigationBarButton(
-                    icon: Icons.calendar_month,
-                    label: 'To Do',
-                    isActive: mainController.currentIndex.value == 0,
-                    onTap: () => mainController.currentIndex.value = 0,
+                  // 导航栏
+                  Container(
+                    width: 80,
+                    color: AppColors.backgroundDark,
+                    child: Column(
+                      children: [
+                        NavigationBarButton(
+                          icon: Icons.calendar_month,
+                          label: 'To Do',
+                          isActive: mainController.currentIndex.value == 0,
+                          onTap: () => mainController.currentIndex.value = 0,
+                        ),
+                        NavigationBarButton(
+                          icon: Icons.coffee,
+                          label: 'Life',
+                          isActive: mainController.currentIndex.value == 1,
+                          onTap: () => mainController.currentIndex.value = 1,
+                        ),
+                      ],
+                    ),
                   ),
-                  NavigationBarButton(
-                    icon: Icons.coffee,
-                    label: 'Life',
-                    isActive: mainController.currentIndex.value == 1,
-                    onTap: () => mainController.currentIndex.value = 1,
+                  // 主内容区域
+                  Expanded(
+                    child: IndexedStack(
+                      index: mainController.currentIndex.value,
+                      children: pages,
+                    ),
                   ),
                 ],
-              ),
-            ),
-            // 主内容区域
-            Expanded(
-              child: IndexedStack(
-                index: mainController.currentIndex.value,
-                children: pages,
-              ),
-            ),
-          ],
-        );
-      }),
+              );
+            }),
+          ),
+        ),
+      ),
     );
   }
 }
