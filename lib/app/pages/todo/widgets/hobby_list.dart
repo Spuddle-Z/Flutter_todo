@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
 import 'package:to_do/core/theme.dart';
-import 'package:to_do/app/pages/life/widgets/hobby_item.dart';
+import 'package:to_do/app/pages/todo/widgets/hobby_item.dart';
 
 class HobbyList extends StatelessWidget {
   /// ### 兴趣爱好列表组件

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do/app/pages/life/life_controller.dart';
-
 import 'package:to_do/app/pages/life/widgets/hot_map.dart';
-import 'package:to_do/app/pages/life/widgets/hobby_list.dart';
 import 'package:to_do/app/shared/constants/hobby_constant.dart';
 import 'package:to_do/app/shared/widgets/recessed_panel.dart';
-
 import 'package:to_do/core/theme.dart';
 
 class LifeView extends StatelessWidget {
@@ -78,23 +75,6 @@ class LifeView extends StatelessWidget {
                   ],
                 ),
               )),
-          // 习惯列表
-          Expanded(
-            flex: 1,
-            child: RecessedPanel(
-              child: const Row(
-                children: [
-                  Expanded(
-                    child: HobbyList(isToday: false),
-                  ),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: HobbyList(isToday: true),
-                  ),
-                ],
-              ),
-            ),
-          ),
         ],
       ),
     );
