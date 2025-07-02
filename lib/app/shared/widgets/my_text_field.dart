@@ -18,6 +18,11 @@ class MyTextFieldController extends GetxController {
 }
 
 class MyTextField extends StatelessWidget {
+  final String initialText;
+  final String hintText;
+  final bool isMultiLine;
+  final String? Function(String) onChanged;
+
   /// ### 文本输入框
   ///
   /// 该输入框用于输入文本，可以设置为单行或多行输入。
@@ -29,14 +34,9 @@ class MyTextField extends StatelessWidget {
     required this.onChanged,
   });
 
-  final String initialText;
-  final String hintText;
-  final bool isMultiLine;
-  final String? Function(String) onChanged;
-
   @override
   Widget build(BuildContext context) {
-    final MyTextFieldController contentTextFieldController = Get.put(
+    final MyTextFieldController myTextFieldController = Get.put(
         MyTextFieldController(initialText: initialText),
         tag: '${DateTime.now().microsecondsSinceEpoch}');
 
@@ -54,13 +54,13 @@ class MyTextField extends StatelessWidget {
           ),
           decoration: textFieldStyle(
             hintText: hintText,
-            errorText: contentTextFieldController.errorText.value,
+            errorText: myTextFieldController.errorText.value,
           ),
 
           // 功能设置
-          controller: contentTextFieldController.textController,
+          controller: myTextFieldController.textController,
           onChanged: (input) {
-            contentTextFieldController.errorText.value = onChanged(input);
+            myTextFieldController.errorText.value = onChanged(input);
           },
           onEditingComplete: () {
             FocusScope.of(context).nextFocus();
