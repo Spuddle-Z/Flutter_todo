@@ -49,7 +49,7 @@ class MainView extends StatelessWidget {
                   // 导航栏
                   Container(
                     width: 80,
-                    color: AppColors.backgroundDark,
+                    color: MyColors.backgroundDark,
                     child: Column(
                       children: [
                         NavigationBarButton(

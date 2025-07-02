@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:to_do/app/pages/todo/widgets/task_popup.dart';
+import 'package:to_do/app/pages/todo/widgets/item_popup.dart';
 import 'package:to_do/core/theme.dart';
 
 class MyTextButton extends StatelessWidget {
@@ -12,7 +12,7 @@ class MyTextButton extends StatelessWidget {
     return TextButton(
       onPressed: () {
         Get.dialog(
-          const TaskPopup(),
+          const ItemPopup(),
           barrierDismissible: false,
         );
       },
@@ -21,12 +21,12 @@ class MyTextButton extends StatelessWidget {
         children: [
           Icon(
             Icons.add,
-            color: AppColors.text,
+            color: MyColors.text,
           ),
           Text(
             'Add Task',
             style: TextStyle(
-              color: AppColors.text,
+              color: MyColors.text,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),

@@ -73,9 +73,9 @@ class DateTextField extends StatelessWidget {
     return Obx(() {
       return TextField(
         // 样式设置
-        cursorColor: AppColors.text,
+        cursorColor: MyColors.text,
         style: const TextStyle(
-          color: AppColors.text,
+          color: MyColors.text,
         ),
         decoration: textFieldStyle(
           hintText: '无截止日期',

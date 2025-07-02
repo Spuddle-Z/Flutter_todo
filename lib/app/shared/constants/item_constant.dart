@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:to_do/core/theme.dart';
 
-class TaskConstant {
+class ItemConstant {
   static const List<String> recurrenceTextList = [
     '不重复',
     '每天',
@@ -20,8 +19,23 @@ class TaskConstant {
     Icons.error_outline,
   ];
   static const List<Color> priorityColorList = [
-    AppColors.green,
-    AppColors.primary,
-    AppColors.red,
+    MyColors.green,
+    MyColors.primary,
+    MyColors.red,
+  ];
+  static const List<String> difficultyTextList = [
+    '简单',
+    '中等',
+    '困难',
+  ];
+  static const List<IconData> difficultyIconList = [
+    Icons.sentiment_satisfied,
+    Icons.sentiment_neutral,
+    Icons.sentiment_dissatisfied,
+  ];
+  static const List<Color> difficultyColorList = [
+    MyColors.blue,
+    MyColors.lemon,
+    MyColors.purple,
   ];
 }

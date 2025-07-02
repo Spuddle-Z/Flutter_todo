@@ -17,11 +17,11 @@ class MyTextFieldController extends GetxController {
   }
 }
 
-class ContentTextField extends StatelessWidget {
+class MyTextField extends StatelessWidget {
   /// ### 文本输入框
   ///
   /// 该输入框用于输入文本，可以设置为单行或多行输入。
-  const ContentTextField({
+  const MyTextField({
     super.key,
     required this.initialText,
     required this.hintText,
@@ -48,9 +48,9 @@ class ContentTextField extends StatelessWidget {
           expands: isMultiLine,
           maxLines: isMultiLine ? null : 1,
           textAlignVertical: TextAlignVertical.top,
-          cursorColor: AppColors.text,
+          cursorColor: MyColors.text,
           style: const TextStyle(
-            color: AppColors.text,
+            color: MyColors.text,
           ),
           decoration: textFieldStyle(
             hintText: hintText,

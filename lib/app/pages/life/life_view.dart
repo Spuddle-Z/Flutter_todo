@@ -17,7 +17,7 @@ class LifeView extends StatelessWidget {
     final LifeController lifeController = Get.find<LifeController>();
 
     return Container(
-      color: AppColors.background,
+      color: MyColors.background,
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * 0.05,
         vertical: MediaQuery.of(context).size.height * 0.02,
@@ -41,7 +41,7 @@ class LifeView extends StatelessWidget {
                                 onPressed: () =>
                                     lifeController.viewYear.value -= 1,
                                 icon: const Icon(Icons.keyboard_arrow_left),
-                                color: AppColors.text,
+                                color: MyColors.text,
                               ),
                               Container(
                                 width: 80,
@@ -50,7 +50,7 @@ class LifeView extends StatelessWidget {
                                   return Text(
                                     lifeController.viewYearString,
                                     style: const TextStyle(
-                                      color: AppColors.primary,
+                                      color: MyColors.primary,
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -61,7 +61,7 @@ class LifeView extends StatelessWidget {
                                 onPressed: () =>
                                     lifeController.viewYear.value += 1,
                                 icon: const Icon(Icons.keyboard_arrow_right),
-                                color: AppColors.text,
+                                color: MyColors.text,
                               )
                             ],
                           ),

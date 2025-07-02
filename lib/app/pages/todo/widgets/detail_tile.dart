@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-
 import 'package:to_do/core/theme.dart';
 
-// 截止日期显示栏
 class DetailTile extends StatelessWidget {
+  final String keyText;
+  final Widget valueWidget;
+
+  /// ### 详细内容显示栏
+  ///
+  /// 该组件用于显示任务的详细信息，包括任务的截止日期、优先级和备注等。
   const DetailTile({
     super.key,
     required this.keyText,
     required this.valueWidget,
   });
-  final String keyText;
-  final Widget valueWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class DetailTile extends StatelessWidget {
           child: Text(
             keyText,
             style: const TextStyle(
-              color: AppColors.text,
+              color: MyColors.text,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.right,
@@ -33,7 +35,7 @@ class DetailTile extends StatelessWidget {
           margin: const EdgeInsets.all(4),
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppColors.backgroundDark,
+            color: MyColors.backgroundDark,
             borderRadius: BorderRadius.circular(4),
           ),
           child: valueWidget,

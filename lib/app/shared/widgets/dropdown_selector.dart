@@ -27,14 +27,14 @@ class DropdownSelector extends StatelessWidget {
       hint: Text(
         hintText,
         style: const TextStyle(
-          color: AppColors.textDark,
+          color: MyColors.textDark,
         ),
       ),
       decoration: textFieldStyle(
         hintText: hintText,
         errorText: errorText,
       ),
-      dropdownColor: AppColors.backgroundDark,
+      dropdownColor: MyColors.backgroundDark,
       elevation: 16,
 
       // 功能设置

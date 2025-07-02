@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
-import 'package:to_do/app/pages/todo/widgets/task_tile.dart';
+import 'package:to_do/app/shared/widgets/item_tile.dart';
 import 'package:to_do/app/pages/todo/todo_controller.dart';
 import 'package:to_do/core/theme.dart';
 
-// 日历单元格控制器
 class CalendarDayCellController extends GetxController {
+  final int index;
+
   CalendarDayCellController({
     required this.index,
   });
-  final int index;
 
   final MainController mainController = Get.find<MainController>();
   final TodoController todoController = Get.find<TodoController>();
@@ -28,7 +28,7 @@ class CalendarDayCellController extends GetxController {
   List<dynamic> get keys {
     List<dynamic> keys =
         mainController.taskBox.value.keys.where(ifShow).toList();
-    keys.sort((a, b) => mainController.sortTask(a, b));
+    keys.sort((a, b) => mainController.sortItem(a, b));
     return keys;
   } // 获取本单元格内的任务键列表
 
@@ -47,6 +47,8 @@ class CalendarDayCellController extends GetxController {
 }
 
 class CalendarDayCell extends StatelessWidget {
+  final int index;
+
   /// ### 日历单元格
   ///
   /// 该组件用于显示日历中的单个日期单元格，包含日期和该日期下的任务列表。
@@ -54,7 +56,6 @@ class CalendarDayCell extends StatelessWidget {
     super.key,
     required this.index,
   });
-  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -68,12 +69,12 @@ class CalendarDayCell extends StatelessWidget {
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           color: dayCellController.isCurrentMonth
-              ? AppColors.background
-              : AppColors.backgroundDark,
+              ? MyColors.background
+              : MyColors.backgroundDark,
           border: Border.all(
             color: dayCellController.isToday
-                ? AppColors.textDark
-                : AppColors.backgroundDark,
+                ? MyColors.textDark
+                : MyColors.backgroundDark,
             width: 2,
           ),
           borderRadius: BorderRadius.circular(8),
@@ -84,10 +85,10 @@ class CalendarDayCell extends StatelessWidget {
               '${dayCellController.cellDate.day}',
               style: TextStyle(
                 color: dayCellController.isToday
-                    ? AppColors.textActive
+                    ? MyColors.textActive
                     : dayCellController.isWeekend
-                        ? AppColors.textDark
-                        : AppColors.text,
+                        ? MyColors.textDark
+                        : MyColors.text,
                 fontWeight: dayCellController.isToday
                     ? FontWeight.bold
                     : FontWeight.normal,
@@ -101,8 +102,8 @@ class CalendarDayCell extends StatelessWidget {
                 child: ListView.builder(
                   itemCount: dayCellController.keys.length,
                   itemBuilder: (context, index) {
-                    return TaskTile(
-                      taskKey: dayCellController.keys[index],
+                    return ItemTile(
+                      itemKey: dayCellController.keys[index],
                       isMiniTile: true,
                       cellDate: dayCellController.cellDate,
                     );

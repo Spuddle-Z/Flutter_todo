@@ -30,7 +30,7 @@ class MyCheckbox extends StatelessWidget {
         child: Checkbox(
           value: done,
           activeColor: activeColor,
-          checkColor: AppColors.background,
+          checkColor: MyColors.background,
           hoverColor: color.withAlpha(0x33),
           side: BorderSide(
             color: color,

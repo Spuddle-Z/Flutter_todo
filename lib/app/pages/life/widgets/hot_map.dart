@@ -29,7 +29,7 @@ class HotMap extends StatelessWidget {
             child: Text(
               HobbyConstant.hobbyTitleList[hobbyIndex],
               style: const TextStyle(
-                color: AppColors.primary,
+                color: MyColors.primary,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -64,7 +64,7 @@ class HotMap extends StatelessWidget {
                         child: Text(
                           days[index],
                           style: const TextStyle(
-                            color: AppColors.textDark,
+                            color: MyColors.textDark,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

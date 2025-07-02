@@ -5,23 +5,23 @@ import 'package:to_do/app/pages/main/main_controller.dart';
 import 'package:to_do/app/shared/widgets/my_text_field.dart';
 import 'package:to_do/app/shared/widgets/date_text_field.dart';
 import 'package:to_do/app/shared/widgets/dropdown_selector.dart';
-import 'package:to_do/app/shared/constants/task_constant.dart';
+import 'package:to_do/app/shared/constants/item_constant.dart';
 import 'package:to_do/core/theme.dart';
 
-class TaskPopupController extends GetxController {
-  TaskPopupController({
-    required this.taskKey,
+class ItemPopupController extends GetxController {
+  ItemPopupController({
+    required this.itemKey,
   });
-  final int? taskKey;
+  final int? itemKey;
 
   final MainController mainController = Get.find<MainController>();
 
   // 状态变量
-  final RxString taskContent = ''.obs;
+  final RxString content = ''.obs;
   final RxString dateText = ''.obs;
   final RxnInt recurrenceIndex = RxnInt();
   final RxnInt priorityIndex = RxnInt();
-  final RxString taskNote = ''.obs;
+  final RxString note = ''.obs;
   final RxBool isContentValid = false.obs;
   final RxBool isDateValid = false.obs;
   final RxBool isRecurrenceValid = false.obs;
@@ -32,10 +32,10 @@ class TaskPopupController extends GetxController {
     super.onInit();
 
     // 初始化任务
-    if (taskKey != null) {
+    if (itemKey != null) {
       // 如果有任务键，则加载对应的任务
-      Task task = mainController.taskBox.value.get(taskKey)!;
-      taskContent.value = task.content;
+      Task task = mainController.taskBox.value.get(itemKey)!;
+      content.value = task.content;
       dateText.value = (task.date != null)
           ? '${task.date!.year}'
               '${task.date!.month.toString().padLeft(2, '0')}'
@@ -43,20 +43,20 @@ class TaskPopupController extends GetxController {
           : '';
       recurrenceIndex.value = task.recurrence;
       priorityIndex.value = task.priority;
-      taskNote.value = task.note;
+      note.value = task.note;
       isContentValid.value = true;
       isDateValid.value = true;
       isRecurrenceValid.value = true;
       isPriorityValid.value = true;
     } else {
       // 如果没有任务键，则初始化一个新的任务
-      taskContent.value = '';
+      content.value = '';
       dateText.value = '${DateTime.now().year}'
           '${DateTime.now().month.toString().padLeft(2, '0')}'
           '${DateTime.now().day.toString().padLeft(2, '0')}';
       recurrenceIndex.value = 0;
       priorityIndex.value = 0;
-      taskNote.value = '';
+      note.value = '';
       isContentValid.value = false;
       isDateValid.value = true;
       isRecurrenceValid.value = true;
@@ -66,7 +66,7 @@ class TaskPopupController extends GetxController {
 
   /// 更新任务内容并检查是否有效
   String? onContentChanged(String input) {
-    taskContent.value = input;
+    content.value = input;
     isContentValid.value = input.isNotEmpty;
     return isContentValid.value ? null : '任务内容不能为空';
   }
@@ -91,22 +91,18 @@ class TaskPopupController extends GetxController {
 
   /// 更新备注内容
   String? onNoteChanged(String input) {
-    taskNote.value = input;
+    note.value = input;
     return null; // 备注内容不需要验证
   }
 
   /// 提交任务
   void onSubmit() {
-    debugPrint('Content: $isContentValid');
-    debugPrint('Date: $isDateValid');
-    debugPrint('Recurrence: $isRecurrenceValid');
-    debugPrint('Priority: $isPriorityValid');
     if (isContentValid.value &&
         isDateValid.value &&
         isRecurrenceValid.value &&
         isPriorityValid.value) {
       Task newTask = Task(
-        content: taskContent.value,
+        content: content.value,
         date: dateText.value.isNotEmpty
             ? DateTime(
                 int.parse(dateText.value.substring(0, 4)),
@@ -116,10 +112,10 @@ class TaskPopupController extends GetxController {
             : null,
         recurrence: recurrenceIndex.value!,
         priority: priorityIndex.value!,
-        note: taskNote.value,
+        note: note.value,
       );
-      if (taskKey != null) {
-        mainController.taskBox.value.put(taskKey!, newTask);
+      if (itemKey != null) {
+        mainController.taskBox.value.put(itemKey!, newTask);
       } else {
         mainController.taskBox.value.add(newTask);
       }
@@ -129,30 +125,30 @@ class TaskPopupController extends GetxController {
   }
 }
 
-class TaskPopup extends StatelessWidget {
+class ItemPopup extends StatelessWidget {
   /// ### 添加与修改任务弹窗
   ///
   /// 该弹窗用于添加或修改任务，包含任务内容、截止日期、周期性、优先级和备注等输入项。
-  const TaskPopup({
+  const ItemPopup({
     super.key,
-    this.taskKey,
+    this.itemKey,
   });
 
-  final int? taskKey;
+  final int? itemKey;
 
   @override
   Widget build(BuildContext context) {
-    final TaskPopupController taskPopupController =
-        Get.put(TaskPopupController(taskKey: taskKey));
+    final ItemPopupController itemPopupController =
+        Get.put(ItemPopupController(itemKey: itemKey));
 
     return AlertDialog(
       title: Text(
-        taskKey == null ? 'New Task' : 'Edit Task',
+        itemKey == null ? 'New Task' : 'Edit Task',
         style: const TextStyle(
-          color: AppColors.primary,
+          color: MyColors.primary,
         ),
       ),
-      backgroundColor: AppColors.background,
+      backgroundColor: MyColors.background,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -162,11 +158,11 @@ class TaskPopup extends StatelessWidget {
         child: Column(
           children: [
             // 任务内容输入框
-            ContentTextField(
-              initialText: taskPopupController.taskContent.value,
+            MyTextField(
+              initialText: itemPopupController.content.value,
               hintText: '又有嘛事儿？',
               isMultiLine: false,
-              onChanged: taskPopupController.onContentChanged,
+              onChanged: itemPopupController.onContentChanged,
             ),
             Padding(
               padding: const EdgeInsets.all(8),
@@ -176,25 +172,25 @@ class TaskPopup extends StatelessWidget {
                   // 日期输入框
                   Expanded(
                     child: DateTextField(
-                      initialDate: taskPopupController.dateText.value,
-                      onChanged: taskPopupController.onDateChanged,
+                      initialDate: itemPopupController.dateText.value,
+                      onChanged: itemPopupController.onDateChanged,
                     ),
                   ),
                   const SizedBox(width: 8),
                   // 重复周期输入框
                   Obx(() {
-                    if (taskPopupController.dateText.isNotEmpty) {
+                    if (itemPopupController.dateText.isNotEmpty) {
                       return Expanded(
                         child: DropdownSelector(
-                          initValue: taskPopupController.recurrenceIndex.value,
-                          isEnabled: taskPopupController.dateText.isNotEmpty,
-                          onChanged: taskPopupController.onRecurrenceChanged,
+                          initValue: itemPopupController.recurrenceIndex.value,
+                          isEnabled: itemPopupController.dateText.isNotEmpty,
+                          onChanged: itemPopupController.onRecurrenceChanged,
                           optionList: List.generate(
-                            TaskConstant.recurrenceTextList.length,
+                            ItemConstant.recurrenceTextList.length,
                             (index) => Text(
-                              TaskConstant.recurrenceTextList[index],
+                              ItemConstant.recurrenceTextList[index],
                               style: const TextStyle(
-                                color: AppColors.text,
+                                color: MyColors.text,
                               ),
                             ),
                           ),
@@ -208,21 +204,21 @@ class TaskPopup extends StatelessWidget {
                   const SizedBox(width: 8),
                   Expanded(
                     child: DropdownSelector(
-                      initValue: taskPopupController.priorityIndex.value,
+                      initValue: itemPopupController.priorityIndex.value,
                       isEnabled: true,
-                      onChanged: taskPopupController.onPriorityChanged,
+                      onChanged: itemPopupController.onPriorityChanged,
                       optionList: List.generate(
-                        TaskConstant.priorityTextList.length,
+                        ItemConstant.priorityTextList.length,
                         (index) => Row(
                           children: [
                             Icon(
-                              TaskConstant.priorityIconList[index],
-                              color: TaskConstant.priorityColorList[index],
+                              ItemConstant.priorityIconList[index],
+                              color: ItemConstant.priorityColorList[index],
                             ),
                             Text(
-                              TaskConstant.priorityTextList[index],
+                              ItemConstant.priorityTextList[index],
                               style: TextStyle(
-                                color: TaskConstant.priorityColorList[index],
+                                color: ItemConstant.priorityColorList[index],
                               ),
                             ),
                           ],
@@ -236,11 +232,11 @@ class TaskPopup extends StatelessWidget {
             ),
             // 备注输入框
             Expanded(
-              child: ContentTextField(
-                initialText: taskPopupController.taskNote.value,
+              child: MyTextField(
+                initialText: itemPopupController.note.value,
                 hintText: '备注：',
                 isMultiLine: true,
-                onChanged: taskPopupController.onNoteChanged,
+                onChanged: itemPopupController.onNoteChanged,
               ),
             ),
           ],
@@ -256,10 +252,10 @@ class TaskPopup extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            taskPopupController.onSubmit();
+            itemPopupController.onSubmit();
           },
           style: textButtonStyle(),
-          child: Text(taskKey == null ? 'Add' : 'Save'),
+          child: Text(itemKey == null ? 'Add' : 'Save'),
         ),
       ],
     );

@@ -38,7 +38,7 @@ class MyCalendar extends StatelessWidget {
                           DateTime(todoController.viewMonth.value.year,
                               todoController.viewMonth.value.month - 1),
                       icon: const Icon(Icons.keyboard_arrow_left),
-                      color: AppColors.text,
+                      color: MyColors.text,
                     ),
                     Container(
                       width: 200,
@@ -47,7 +47,7 @@ class MyCalendar extends StatelessWidget {
                         return Text(
                           todoController.viewMonthText,
                           style: const TextStyle(
-                            color: AppColors.primary,
+                            color: MyColors.primary,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
@@ -59,7 +59,7 @@ class MyCalendar extends StatelessWidget {
                           DateTime(todoController.viewMonth.value.year,
                               todoController.viewMonth.value.month + 1),
                       icon: const Icon(Icons.keyboard_arrow_right),
-                      color: AppColors.text,
+                      color: MyColors.text,
                     ),
                   ],
                 ),
@@ -99,8 +99,8 @@ class MyCalendar extends StatelessWidget {
                         CalendarConstant.weekdayAbbrList[index],
                         style: TextStyle(
                           color: index == 0 || index == 6
-                              ? AppColors.textDark
-                              : AppColors.text,
+                              ? MyColors.textDark
+                              : MyColors.text,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

@@ -31,7 +31,7 @@ class NavigationBarButton extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 16),
           decoration: BoxDecoration(
-            color: isActive ? AppColors.background : Colors.transparent,
+            color: isActive ? MyColors.background : Colors.transparent,
             boxShadow: isActive
                 ? [
                     BoxShadow(
@@ -52,13 +52,13 @@ class NavigationBarButton extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: isActive ? AppColors.primary : AppColors.textDark,
+                color: isActive ? MyColors.primary : MyColors.textDark,
               ),
               const SizedBox(height: 4),
               Text(
                 label,
                 style: TextStyle(
-                    color: isActive ? AppColors.primary : AppColors.textDark,
+                    color: isActive ? MyColors.primary : MyColors.textDark,
                     fontSize: 12),
               ),
             ],

@@ -13,9 +13,9 @@ class HobbyConstant {
     ['Relax'],
   ];
   static const List<Color> hobbyColorList = [
-    AppColors.primary,
-    AppColors.green,
-    AppColors.purple,
+    MyColors.primary,
+    MyColors.green,
+    MyColors.purple,
   ];
   static const int hotMapRows = 7;
   static const int hotMapColumns = 54;

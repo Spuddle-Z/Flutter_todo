@@ -113,7 +113,7 @@ class MainController extends GetxController {
   ///
   /// 返回值：
   /// - 返回值为1时，表示`keyA`在`keyB`之后；返回值为-1时，表示`keyA`在`keyB`之前；返回值为0时，表示两者相等。
-  int sortTask(int keyA, int keyB) {
+  int sortItem(int keyA, int keyB) {
     Task taskA = taskBox.value.get(keyA)!;
     Task taskB = taskBox.value.get(keyB)!;
 

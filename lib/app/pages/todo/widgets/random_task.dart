@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
 
-import 'package:to_do/app/pages/todo/widgets/task_tile.dart';
+import 'package:to_do/app/shared/widgets/item_tile.dart';
 
 import 'package:to_do/core/theme.dart';
 
@@ -55,13 +55,13 @@ class RandomTask extends StatelessWidget {
                       child: Text(
                         'Roll a random task =>',
                         style: TextStyle(
-                          color: AppColors.textDark,
+                          color: MyColors.textDark,
                           fontSize: 16,
                         ),
                       ),
                     )
-                  : TaskTile(
-                      taskKey: randomTaskController.randomKey.value!,
+                  : ItemTile(
+                      itemKey: randomTaskController.randomKey.value!,
                       isMiniTile: false,
                     ),
             ),
@@ -74,7 +74,7 @@ class RandomTask extends StatelessWidget {
                   padding: EdgeInsets.all(9.5),
                   child: Icon(
                     Icons.refresh,
-                    color: AppColors.text,
+                    color: MyColors.text,
                   ),
                 ),
               ),
@@ -87,7 +87,7 @@ class RandomTask extends StatelessWidget {
           child: Text(
             'No task without deadline <(￣︶￣)>',
             style: TextStyle(
-              color: AppColors.textDark,
+              color: MyColors.textDark,
               fontSize: 16,
             ),
           ),

@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
 
-import 'package:to_do/app/pages/todo/widgets/task_detail_popup.dart';
-import 'package:to_do/app/pages/todo/widgets/task_popup.dart';
+import 'package:to_do/app/pages/todo/widgets/item_detail_popup.dart';
+import 'package:to_do/app/pages/todo/widgets/item_popup.dart';
 
 import 'package:to_do/app/data/models/task_model.dart';
-import 'package:to_do/app/shared/constants/task_constant.dart';
+import 'package:to_do/app/shared/constants/item_constant.dart';
 import 'package:to_do/app/shared/widgets/my_checkbox.dart';
 import 'package:to_do/app/shared/widgets/my_icon_button.dart';
 import 'package:to_do/core/theme.dart';
 
-class TaskTileController extends GetxController {
-  TaskTileController({
-    required this.taskKey,
+class ItemTileController extends GetxController {
+  ItemTileController({
+    required this.itemKey,
     this.cellDate,
   });
-  final int taskKey;
+  final int itemKey;
   final DateTime? cellDate;
 
   final MainController mainController = Get.find<MainController>();
@@ -35,14 +35,14 @@ class TaskTileController extends GetxController {
   Color get color {
     // 根据任务状态和截止日期计算颜色
     if (task.value.done) {
-      return AppColors.textDark;
+      return MyColors.textDark;
     } else if (task.value.date != null &&
         task.value.date != cellDate &&
         task.value.date!
             .isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
-      return AppColors.textActive;
+      return MyColors.textActive;
     } else {
-      return TaskConstant.priorityColorList[task.value.priority];
+      return ItemConstant.priorityColorList[task.value.priority];
     }
   } // 获取任务颜色
 
@@ -50,50 +50,50 @@ class TaskTileController extends GetxController {
   void onInit() {
     super.onInit();
 
-    task.value = mainController.taskBox.value.get(taskKey)!; // 获取任务数据
+    task.value = mainController.taskBox.value.get(itemKey)!; // 获取任务数据
   }
 
   /// 切换任务完成状态
   void onTaskToggled(bool? done) {
     task.value.done = done!;
-    mainController.updateTask(taskKey, task.value);
+    mainController.updateTask(itemKey, task.value);
   }
 
   /// 删除任务
   void onTaskDelete() {
-    mainController.deleteTask(taskKey);
+    mainController.deleteTask(itemKey);
   }
 }
 
-class TaskTile extends StatelessWidget {
+class ItemTile extends StatelessWidget {
   /// ### 任务组件
   ///
   /// 该组件用于在任务列表或日历中显示单个任务的简要内容。
-  const TaskTile({
+  const ItemTile({
     super.key,
-    required this.taskKey,
+    required this.itemKey,
     required this.isMiniTile,
     this.cellDate,
   });
-  final int taskKey;
+  final int itemKey;
   final bool isMiniTile;
   final DateTime? cellDate;
 
   @override
   Widget build(BuildContext context) {
-    final TaskTileController taskTileController = Get.put(
-        TaskTileController(taskKey: taskKey, cellDate: cellDate),
-        tag: 'taskTileController_$taskKey _$isMiniTile ${cellDate ?? ''}');
+    final ItemTileController itemTileController = Get.put(
+        ItemTileController(itemKey: itemKey, cellDate: cellDate),
+        tag: 'taskTileController_$itemKey _$isMiniTile ${cellDate ?? ''}');
 
     return Padding(
       padding: EdgeInsets.all(isMiniTile ? 2 : 4),
       child: Container(
         decoration: BoxDecoration(
-          color: taskTileController.color.withAlpha(0x33),
+          color: itemTileController.color.withAlpha(0x33),
           borderRadius: BorderRadius.circular(isMiniTile ? 4 : 8),
           border: Border(
             top: BorderSide(
-              color: taskTileController.color,
+              color: itemTileController.color,
               width: isMiniTile ? 2 : 3,
             ),
           ),
@@ -104,24 +104,24 @@ class TaskTile extends StatelessWidget {
               children: [
                 // 勾选框
                 MyCheckbox(
-                  done: taskTileController.task.value.done,
-                  color: taskTileController.color,
-                  activeColor: taskTileController.color,
+                  done: itemTileController.task.value.done,
+                  color: itemTileController.color,
+                  activeColor: itemTileController.color,
                   scale: isMiniTile ? 0.6 : 1,
-                  onChanged: taskTileController.onTaskToggled,
+                  onChanged: itemTileController.onTaskToggled,
                 ),
 
                 // 任务内容
                 Expanded(
                   child: Text(
-                    taskTileController.task.value.content,
+                    itemTileController.task.value.content,
                     style: TextStyle(
-                      color: taskTileController.color,
+                      color: itemTileController.color,
                       fontSize: isMiniTile ? 12 : 16,
-                      decoration: taskTileController.task.value.done
+                      decoration: itemTileController.task.value.done
                           ? TextDecoration.lineThrough
                           : TextDecoration.none,
-                      decorationColor: taskTileController.color,
+                      decorationColor: itemTileController.color,
                       decorationThickness: 2,
                     ),
                     overflow: TextOverflow.ellipsis,
@@ -130,17 +130,17 @@ class TaskTile extends StatelessWidget {
                 ),
 
                 // 超时天数
-                if (taskTileController.color == AppColors.textActive)
+                if (itemTileController.color == MyColors.textActive)
                   Container(
                     padding: EdgeInsets.all(isMiniTile ? 1 : 2),
                     decoration: BoxDecoration(
-                      color: AppColors.textActive,
+                      color: MyColors.textActive,
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
-                      "${-taskTileController.task.value.date!.difference(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)).inDays}天前",
+                      "${-itemTileController.task.value.date!.difference(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)).inDays}天前",
                       style: TextStyle(
-                        color: AppColors.background.withAlpha(0xaa),
+                        color: MyColors.background.withAlpha(0xaa),
                         fontSize: isMiniTile ? 8 : 12,
                         fontWeight: FontWeight.bold,
                       ),
@@ -149,17 +149,17 @@ class TaskTile extends StatelessWidget {
 
                 // 展开备注按钮
                 if (!isMiniTile &&
-                    taskTileController.task.value.note.isNotEmpty)
+                    itemTileController.task.value.note.isNotEmpty)
                   Obx(() {
                     return MyIconButton(
                       icon: AnimatedRotation(
                           duration: const Duration(milliseconds: 300),
-                          turns: taskTileController.isExpanded.value ? 0.5 : 0,
+                          turns: itemTileController.isExpanded.value ? 0.5 : 0,
                           child: const Icon(Icons.keyboard_arrow_down)),
-                      color: taskTileController.color,
+                      color: itemTileController.color,
                       onPressed: () {
-                        taskTileController.isExpanded.value =
-                            !taskTileController.isExpanded.value;
+                        itemTileController.isExpanded.value =
+                            !itemTileController.isExpanded.value;
                       },
                     );
                   }),
@@ -168,10 +168,10 @@ class TaskTile extends StatelessWidget {
                 if (!isMiniTile)
                   MyIconButton(
                     icon: const Icon(Icons.edit),
-                    color: taskTileController.color,
+                    color: itemTileController.color,
                     onPressed: () => {
                       Get.dialog(
-                        TaskPopup(taskKey: taskKey),
+                        ItemPopup(itemKey: itemKey),
                         barrierDismissible: false,
                       )
                     },
@@ -181,8 +181,8 @@ class TaskTile extends StatelessWidget {
                 if (!isMiniTile)
                   MyIconButton(
                     icon: const Icon(Icons.close),
-                    color: taskTileController.color,
-                    onPressed: taskTileController.onTaskDelete,
+                    color: itemTileController.color,
+                    onPressed: itemTileController.onTaskDelete,
                   ),
 
                 // 更多按钮
@@ -192,12 +192,12 @@ class TaskTile extends StatelessWidget {
                     height: 18,
                     child: IconButton(
                       icon: const Icon(Icons.more_vert),
-                      color: taskTileController.color,
+                      color: itemTileController.color,
                       iconSize: 12,
                       padding: const EdgeInsets.all(0),
                       onPressed: () {
                         Get.dialog(
-                          TaskDetailPopUp(taskKey: taskKey),
+                          ItemDetailPopUp(itemKey: itemKey),
                         );
                       },
                     ),
@@ -211,20 +211,20 @@ class TaskTile extends StatelessWidget {
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeOut,
-                  height: taskTileController.isExpanded.value ? null : 0,
+                  height: itemTileController.isExpanded.value ? null : 0,
                   padding: const EdgeInsets.all(4),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: AppColors.backgroundDark,
+                      color: MyColors.backgroundDark,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8),
                       child: SelectableText(
-                        taskTileController.task.value.note,
+                        itemTileController.task.value.note,
                         style: const TextStyle(
-                          color: AppColors.text,
+                          color: MyColors.text,
                           fontSize: 12,
                         ),
                       ),

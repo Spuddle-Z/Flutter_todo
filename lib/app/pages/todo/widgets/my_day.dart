@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
 import 'package:to_do/app/shared/widgets/recessed_panel.dart';
-import 'package:to_do/app/pages/todo/widgets/task_list.dart';
+import 'package:to_do/app/shared/widgets/item_list.dart';
 import 'package:to_do/app/pages/todo/widgets/random_task.dart';
 import 'package:to_do/core/theme.dart';
 
@@ -40,16 +40,16 @@ class MyDay extends StatelessWidget {
                   child: Text(
                     'Today',
                     style: TextStyle(
-                      color: AppColors.primary,
+                      color: MyColors.primary,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 Expanded(
-                  child: TaskList(
+                  child: ItemList(
                     tag: 'today',
-                    filterTask: filterTodayTask,
+                    filterItem: filterTodayTask,
                   ),
                 ),
               ],
@@ -64,7 +64,7 @@ class MyDay extends StatelessWidget {
                   child: Text(
                     'No Deadline',
                     style: TextStyle(
-                      color: AppColors.primary,
+                      color: MyColors.primary,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
@@ -78,13 +78,13 @@ class MyDay extends StatelessWidget {
                     vertical: 8,
                   ),
                   decoration: const BoxDecoration(
-                    color: AppColors.textDark,
+                    color: MyColors.textDark,
                   ),
                 ),
                 Expanded(
-                  child: TaskList(
+                  child: ItemList(
                     tag: 'noDeadline',
-                    filterTask: filterNoDeadlineTask,
+                    filterItem: filterNoDeadlineTask,
                   ),
                 ),
               ],

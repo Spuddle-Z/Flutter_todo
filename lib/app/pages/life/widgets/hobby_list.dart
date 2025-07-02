@@ -22,14 +22,14 @@ class HobbyList extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       decoration: isToday
           ? BoxDecoration(
-              color: AppColors.background,
+              color: MyColors.background,
               borderRadius: BorderRadius.circular(8),
             )
           : BoxDecoration(
               gradient: const LinearGradient(
                 colors: [
-                  AppColors.backgroundDark,
-                  AppColors.background,
+                  MyColors.backgroundDark,
+                  MyColors.background,
                 ],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
@@ -41,7 +41,7 @@ class HobbyList extends StatelessWidget {
           Text(
             isToday ? 'Today' : 'Yesterday',
             style: const TextStyle(
-              color: AppColors.primary,
+              color: MyColors.primary,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),

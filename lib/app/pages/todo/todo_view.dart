@@ -11,7 +11,7 @@ class TodoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.background,
+      color: MyColors.background,
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * 0.05,
         vertical: MediaQuery.of(context).size.height * 0.02,

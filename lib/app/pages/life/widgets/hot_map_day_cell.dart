@@ -68,12 +68,12 @@ class HotMapDayCell extends StatelessWidget {
         decoration: BoxDecoration(
           color: hotMapDayCellController.isCurrentYear
               ? hotMapDayCellController.isMonthOdd
-                  ? AppColors.backgroundLight
-                  : AppColors.background
-              : AppColors.backgroundDark,
+                  ? MyColors.backgroundLight
+                  : MyColors.background
+              : MyColors.backgroundDark,
           border: Border.all(
             color: hotMapDayCellController.isToday
-                ? AppColors.textActive
+                ? MyColors.textActive
                 : Colors.transparent,
           ),
           borderRadius: BorderRadius.circular(2),
