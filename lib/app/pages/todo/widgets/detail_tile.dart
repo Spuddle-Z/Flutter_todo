@@ -4,6 +4,7 @@ import 'package:to_do/core/theme.dart';
 class DetailTile extends StatelessWidget {
   final String keyText;
   final Widget valueWidget;
+  final bool isExpanded;
 
   /// ### 详细内容显示栏
   ///
@@ -12,6 +13,7 @@ class DetailTile extends StatelessWidget {
     super.key,
     required this.keyText,
     required this.valueWidget,
+    this.isExpanded = false,
   });
 
   @override
@@ -31,15 +33,33 @@ class DetailTile extends StatelessWidget {
             textAlign: TextAlign.right,
           ),
         ),
-        Container(
-          margin: const EdgeInsets.all(4),
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: MyColors.backgroundDark,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: valueWidget,
-        ),
+        isExpanded
+            ? Flexible(
+                child: LayoutBuilder(builder: (context, constraints) {
+                  final double availableHeight = constraints.maxHeight;
+                  return Container(
+                    constraints: BoxConstraints(
+                      maxHeight: availableHeight,
+                    ),
+                    margin: const EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: MyColors.backgroundDark,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: valueWidget,
+                  );
+                }),
+              )
+            : Container(
+                margin: const EdgeInsets.all(4),
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: MyColors.backgroundDark,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: valueWidget,
+              ),
       ],
     );
   }

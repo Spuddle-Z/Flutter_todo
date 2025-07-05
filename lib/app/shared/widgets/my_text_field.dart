@@ -38,7 +38,7 @@ class MyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final MyTextFieldController myTextFieldController = Get.put(
         MyTextFieldController(initialText: initialText),
-        tag: '${DateTime.now().microsecondsSinceEpoch}');
+        tag: UniqueKey().toString());
 
     return Padding(
       padding: const EdgeInsets.all(8),

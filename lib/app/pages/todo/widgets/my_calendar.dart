@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import 'package:to_do/app/pages/todo/widgets/calendar_day_cell.dart';
 import 'package:to_do/app/pages/todo/todo_controller.dart';
+import 'package:to_do/app/pages/todo/widgets/item_popup.dart';
 import 'package:to_do/app/shared/constants/calendar_constant.dart';
 
 import 'package:to_do/app/shared/widgets/my_text_button.dart';
@@ -64,13 +65,23 @@ class MyCalendar extends StatelessWidget {
                   ],
                 ),
               ),
-              const Expanded(
+              Expanded(
                 child: Padding(
-                  padding: EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(4),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      MyTextButton(),
+                      MyTextButton(
+                        icon: Icons.add,
+                        text: 'Add Task',
+                        onPressed: () {
+                          Get.dialog(
+                            const ItemPopup(),
+                            barrierDismissible: false,
+                          );
+                        },
+                        color: MyColors.text,
+                      ),
                     ],
                   ),
                 ),

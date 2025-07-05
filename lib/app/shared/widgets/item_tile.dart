@@ -202,7 +202,7 @@ class ItemTile extends StatelessWidget {
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: MyColors.backgroundDark,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8),

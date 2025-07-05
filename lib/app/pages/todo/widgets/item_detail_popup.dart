@@ -8,6 +8,8 @@ import 'package:to_do/app/pages/todo/widgets/item_popup.dart';
 import 'package:to_do/app/data/models/task_model.dart';
 import 'package:to_do/app/shared/constants/item_constant.dart';
 import 'package:to_do/app/shared/widgets/my_checkbox.dart';
+import 'package:to_do/app/shared/widgets/my_icon_button.dart';
+import 'package:to_do/app/shared/widgets/my_text_button.dart';
 import 'package:to_do/core/theme.dart';
 
 class ItemDetailPopupController extends GetxController {
@@ -48,136 +50,155 @@ class ItemDetailPopUp extends StatelessWidget {
     final ItemDetailPopupController itemDetailPopupController =
         Get.put(ItemDetailPopupController(itemKey: itemKey));
 
-    return AlertDialog(
-      title: Row(
-        children: [
-          Obx(() {
-            return MyCheckbox(
-              done: itemDetailPopupController.task.done,
-              color: MyColors.primary,
-              activeColor: MyColors.primary,
-              scale: 1.2,
-              onChanged: itemDetailPopupController.onTaskToggled,
-            );
-          }),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              itemDetailPopupController.task.content,
-              style: const TextStyle(
-                color: MyColors.primary,
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.6,
+          maxHeight: MediaQuery.of(context).size.height * 0.6,
+        ),
+        decoration: BoxDecoration(
+          color: MyColors.background,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: IntrinsicWidth(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Obx(() {
+                        return MyCheckbox(
+                          done: itemDetailPopupController.task.done,
+                          color: MyColors.primary,
+                          activeColor: MyColors.primary,
+                          scale: 1.2,
+                          onChanged: itemDetailPopupController.onTaskToggled,
+                        );
+                      }),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          itemDetailPopupController.task.content,
+                          style: const TextStyle(
+                            color: MyColors.primary,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  MyIconButton(
+                    icon: const Icon(Icons.close),
+                    color: MyColors.text,
+                    onPressed: () {
+                      Get.back();
+                    },
+                  ),
+                ],
               ),
-            ),
-          ),
-        ],
-      ),
-      backgroundColor: MyColors.background,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      content: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.3,
-        height: MediaQuery.of(context).size.height * 0.4,
-        child: Column(
-          children: [
-            DetailTile(
-              keyText: 'Deadline',
-              valueWidget: Text(
-                '${itemDetailPopupController.task.date!.year} 年 ${itemDetailPopupController.task.date!.month} 月 ${itemDetailPopupController.task.date!.day} 日',
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                  color: MyColors.text,
+              DetailTile(
+                keyText: 'Deadline',
+                valueWidget: Text(
+                  '${itemDetailPopupController.task.date!.year} 年 ${itemDetailPopupController.task.date!.month} 月 ${itemDetailPopupController.task.date!.day} 日',
+                  textAlign: TextAlign.left,
+                  style: const TextStyle(
+                    color: MyColors.text,
+                  ),
                 ),
               ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: DetailTile(
-                    keyText: 'Recurrence',
-                    valueWidget: Text(
-                      ItemConstant.recurrenceTextList[
-                          itemDetailPopupController.task.recurrence],
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                        color: MyColors.text,
+              Row(
+                children: [
+                  Expanded(
+                    child: DetailTile(
+                      keyText: 'Recurrence',
+                      valueWidget: Text(
+                        ItemConstant.recurrenceTextList[
+                            itemDetailPopupController.task.recurrence],
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(
+                          color: MyColors.text,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: DetailTile(
-                    keyText: 'Priority',
-                    valueWidget: Row(
-                      children: [
-                        Icon(
-                          ItemConstant.priorityIconList[
-                              itemDetailPopupController.task.priority],
-                          color: ItemConstant.priorityColorList[
-                              itemDetailPopupController.task.priority],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: Text(
-                            ItemConstant.priorityTextList[
+                  Expanded(
+                    child: DetailTile(
+                      keyText: 'Priority',
+                      valueWidget: Row(
+                        children: [
+                          Icon(
+                            ItemConstant.priorityIconList[
                                 itemDetailPopupController.task.priority],
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              color: ItemConstant.priorityColorList[
+                            color: ItemConstant.priorityColorList[
+                                itemDetailPopupController.task.priority],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Text(
+                              ItemConstant.priorityTextList[
                                   itemDetailPopupController.task.priority],
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: ItemConstant.priorityColorList[
+                                    itemDetailPopupController.task.priority],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            if (itemDetailPopupController.task.note.isNotEmpty)
-              DetailTile(
-                keyText: 'Note',
-                valueWidget: SingleChildScrollView(
-                  child: SelectableText(
-                    itemDetailPopupController.task.note,
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                      color: MyColors.text,
-                    ),
-                  ),
-                ),
+                ],
               ),
-          ],
+              // if (itemDetailPopupController.task.note.isNotEmpty)
+              //   DetailTile(
+              //     keyText: 'Note',
+              //     valueWidget: SingleChildScrollView(
+              //       child: SelectableText(
+              //         itemDetailPopupController.task.note,
+              //         textAlign: TextAlign.left,
+              //         style: const TextStyle(
+              //           color: MyColors.text,
+              //         ),
+              //       ),
+              //     ),
+              //     isExpanded: true,
+              //   ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  MyTextButton(
+                    icon: Icons.delete,
+                    text: 'Delete',
+                    onPressed: () {
+                      itemDetailPopupController.onTaskDeleted();
+                      Get.back();
+                    },
+                    color: MyColors.red,
+                  ),
+                  MyTextButton(
+                    icon: Icons.edit,
+                    text: 'Edit',
+                    onPressed: () {
+                      Get.back();
+                      Get.dialog(
+                        ItemPopup(itemKey: itemKey),
+                        barrierDismissible: false,
+                      );
+                    },
+                    color: MyColors.text,
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            itemDetailPopupController.onTaskDeleted();
-            Get.back();
-          },
-          style: textButtonStyle(),
-          child: const Text('Delete'),
-        ),
-        TextButton(
-          onPressed: () {
-            Get.back();
-            Get.dialog(
-              ItemPopup(itemKey: itemKey),
-              barrierDismissible: false,
-            );
-          },
-          style: textButtonStyle(),
-          child: const Text('Edit'),
-        ),
-        TextButton(
-          onPressed: () {
-            Get.back();
-          },
-          style: textButtonStyle(),
-          child: const Text('OK'),
-        ),
-      ],
     );
   }
 }
