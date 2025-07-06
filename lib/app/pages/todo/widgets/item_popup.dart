@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do/app/data/models/task_model.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
+import 'package:to_do/app/shared/widgets/my_icon_button.dart';
+import 'package:to_do/app/shared/widgets/my_text_button.dart';
 import 'package:to_do/app/shared/widgets/my_text_field.dart';
 import 'package:to_do/app/shared/widgets/date_text_field.dart';
 import 'package:to_do/app/shared/widgets/dropdown_selector.dart';
@@ -141,23 +143,41 @@ class ItemPopup extends StatelessWidget {
     final ItemPopupController itemPopupController =
         Get.put(ItemPopupController(itemKey: itemKey));
 
-    return AlertDialog(
-      title: Text(
-        itemKey == null ? 'New Task' : 'Edit Task',
-        style: const TextStyle(
-          color: MyColors.primary,
-        ),
-      ),
-      backgroundColor: MyColors.background,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      content: SizedBox(
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      child: Container(
         width: MediaQuery.of(context).size.width * 0.5,
-        height: MediaQuery.of(context).size.height * 0.5,
+        height: MediaQuery.of(context).size.height * 0.7,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: MyColors.background,
+          borderRadius: BorderRadius.circular(8),
+        ),
         child: Column(
           children: [
-            // 任务内容输入框
+            Stack(
+              children: [
+                Center(
+                  child: Text(
+                    itemKey == null ? 'Add Task' : 'Edit Task',
+                    style: const TextStyle(
+                      color: MyColors.primary,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: MyIconButton(
+                    icon: const Icon(Icons.close),
+                    color: MyColors.text,
+                    onPressed: () => Get.back(),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
             MyTextField(
               initialText: itemPopupController.content.value,
               hintText: '又有嘛事儿？',
@@ -239,25 +259,21 @@ class ItemPopup extends StatelessWidget {
                 onChanged: itemPopupController.onNoteChanged,
               ),
             ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                MyTextButton(
+                  onPressed: itemPopupController.onSubmit,
+                  icon: itemKey == null ? Icons.add : Icons.save,
+                  text: itemKey == null ? 'Add' : 'Save',
+                  color: MyColors.text,
+                ),
+              ],
+            ),
           ],
         ),
       ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            Get.back();
-          },
-          style: textButtonStyle(),
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () {
-            itemPopupController.onSubmit();
-          },
-          style: textButtonStyle(),
-          child: Text(itemKey == null ? 'Add' : 'Save'),
-        ),
-      ],
     );
   }
 }

@@ -94,9 +94,7 @@ class ItemDetailPopUp extends StatelessWidget {
                   MyIconButton(
                     icon: const Icon(Icons.close),
                     color: MyColors.text,
-                    onPressed: () {
-                      Get.back();
-                    },
+                    onPressed: () => Get.back(),
                   ),
                 ],
               ),
@@ -168,6 +166,7 @@ class ItemDetailPopUp extends StatelessWidget {
                   ),
                   isExpanded: true,
                 ),
+              const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
