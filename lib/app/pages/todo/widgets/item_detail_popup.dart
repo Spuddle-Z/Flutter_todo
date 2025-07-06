@@ -55,8 +55,7 @@ class ItemDetailPopUp extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.6,
-          maxHeight: MediaQuery.of(context).size.height * 0.6,
+          maxWidth: MediaQuery.of(context).size.width * 0.5,
         ),
         decoration: BoxDecoration(
           color: MyColors.background,
@@ -155,20 +154,20 @@ class ItemDetailPopUp extends StatelessWidget {
                   ),
                 ],
               ),
-              // if (itemDetailPopupController.task.note.isNotEmpty)
-              //   DetailTile(
-              //     keyText: 'Note',
-              //     valueWidget: SingleChildScrollView(
-              //       child: SelectableText(
-              //         itemDetailPopupController.task.note,
-              //         textAlign: TextAlign.left,
-              //         style: const TextStyle(
-              //           color: MyColors.text,
-              //         ),
-              //       ),
-              //     ),
-              //     isExpanded: true,
-              //   ),
+              if (itemDetailPopupController.task.note.isNotEmpty)
+                DetailTile(
+                  keyText: 'Note',
+                  valueWidget: SingleChildScrollView(
+                    child: SelectableText(
+                      itemDetailPopupController.task.note,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(
+                        color: MyColors.text,
+                      ),
+                    ),
+                  ),
+                  isExpanded: true,
+                ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

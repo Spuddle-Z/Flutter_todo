@@ -18,28 +18,28 @@ class DetailTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          margin: const EdgeInsets.all(4),
-          padding: const EdgeInsets.all(8),
-          width: 100,
-          child: Text(
-            keyText,
-            style: const TextStyle(
-              color: MyColors.text,
-              fontWeight: FontWeight.bold,
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(8),
+            width: 100,
+            child: Text(
+              keyText,
+              style: const TextStyle(
+                color: MyColors.text,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.right,
             ),
-            textAlign: TextAlign.right,
           ),
-        ),
-        isExpanded
-            ? Flexible(
-                child: LayoutBuilder(builder: (context, constraints) {
-                  final double availableHeight = constraints.maxHeight;
-                  return Container(
+          isExpanded
+              ? Expanded(
+                  child: Container(
                     constraints: BoxConstraints(
-                      maxHeight: availableHeight,
+                      maxHeight: MediaQuery.of(context).size.height * 0.4,
                     ),
                     margin: const EdgeInsets.all(4),
                     padding: const EdgeInsets.all(8),
@@ -48,19 +48,19 @@ class DetailTile extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: valueWidget,
-                  );
-                }),
-              )
-            : Container(
-                margin: const EdgeInsets.all(4),
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: MyColors.backgroundDark,
-                  borderRadius: BorderRadius.circular(4),
+                  ),
+                )
+              : Container(
+                  margin: const EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: MyColors.backgroundDark,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: valueWidget,
                 ),
-                child: valueWidget,
-              ),
-      ],
+        ],
+      ),
     );
   }
 }
