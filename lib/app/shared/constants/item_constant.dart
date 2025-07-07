@@ -35,7 +35,7 @@ class ItemConstant {
   ];
   static const List<Color> difficultyColorList = [
     MyColors.blue,
-    MyColors.lemon,
     MyColors.purple,
+    MyColors.red,
   ];
 }

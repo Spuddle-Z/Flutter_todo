@@ -11,4 +11,9 @@ class LifeController extends GetxController {
   int get firstDayIndex =>
       DateTime(viewYear.value, 1, 1).weekday % 7; // 当前显示年份的第一天在一周中的索引
   String get viewYearString => '${viewYear.value}';
+
+  /// 过滤杂事
+  bool filterTrivia(key) {
+    return !mainController.taskBox.value.get(key)!.isTask;
+  }
 }

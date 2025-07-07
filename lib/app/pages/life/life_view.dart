@@ -4,6 +4,7 @@ import 'package:to_do/app/pages/life/life_controller.dart';
 import 'package:to_do/app/pages/life/widgets/hot_map.dart';
 import 'package:to_do/app/pages/todo/widgets/random_task.dart';
 import 'package:to_do/app/shared/constants/hobby_constant.dart';
+import 'package:to_do/app/shared/widgets/item_list.dart';
 import 'package:to_do/app/shared/widgets/recessed_panel.dart';
 import 'package:to_do/core/theme.dart';
 
@@ -84,7 +85,7 @@ class LifeView extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      'No Deadline',
+                      'Trivia',
                       style: TextStyle(
                         color: MyColors.primary,
                         fontSize: 20,
@@ -103,12 +104,12 @@ class LifeView extends StatelessWidget {
                       color: MyColors.textDark,
                     ),
                   ),
-                  // Expanded(
-                  //   child: ItemList(
-                  //     tag: 'noDeadline',
-                  //     filterItem: todoController.filterNoDeadlineTask,
-                  //   ),
-                  // ),
+                  Expanded(
+                    child: ItemList(
+                      tag: 'trivia',
+                      filterItem: lifeController.filterTrivia,
+                    ),
+                  ),
                 ],
               ),
             ),
