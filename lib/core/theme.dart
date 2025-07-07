@@ -14,7 +14,6 @@ class MyColors {
   static const Color green = Color(0xFF73BBB2);
   static const Color purple = Color(0xFF9E86C8);
   static const Color blue = Color(0xFF88A9F6);
-  static const Color lemon = Color(0xFFD0DFB8);
 }
 
 // 按钮样式

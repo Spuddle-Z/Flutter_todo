@@ -34,6 +34,9 @@ class ItemPopupController extends GetxController {
   bool get isRecurrenceValid => recurrenceIndex.value != null;
   bool get isPriorityValid => priorityIndex.value != null;
   bool get isDifficultyValid => difficultyIndex.value != null;
+  String get popupTitle {
+    return '${isNewItem ? 'Add' : 'Edit'} ${isTask ? 'Task' : 'Trivia'}';
+  }
 
   @override
   void onInit() {
@@ -171,14 +174,16 @@ class ItemPopup extends StatelessWidget {
             Stack(
               children: [
                 Center(
-                  child: Text(
-                    itemKey == null ? 'Add Task' : 'Edit Task',
-                    style: const TextStyle(
-                      color: MyColors.primary,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: Obx(() {
+                    return Text(
+                      itemPopupController.popupTitle,
+                      style: const TextStyle(
+                        color: MyColors.primary,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  }),
                 ),
                 Align(
                   alignment: Alignment.topRight,
@@ -255,6 +260,7 @@ class ItemPopup extends StatelessWidget {
                                             color: ItemConstant
                                                 .priorityColorList[index],
                                           ),
+                                          const SizedBox(width: 8),
                                           Text(
                                             ItemConstant
                                                 .priorityTextList[index],
@@ -283,6 +289,12 @@ class ItemPopup extends StatelessWidget {
                                 ItemConstant.difficultyTextList.length,
                                 (index) => Row(
                                   children: [
+                                    Icon(
+                                      ItemConstant.difficultyIconList[index],
+                                      color: ItemConstant
+                                          .difficultyColorList[index],
+                                    ),
+                                    const SizedBox(width: 8),
                                     Text(
                                       ItemConstant.difficultyTextList[index],
                                       style: TextStyle(
@@ -293,6 +305,7 @@ class ItemPopup extends StatelessWidget {
                                   ],
                                 ),
                               ),
+                              hintText: '请选择难度',
                             ),
                           );
                   }),

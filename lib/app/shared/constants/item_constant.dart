@@ -24,16 +24,19 @@ class ItemConstant {
     MyColors.red,
   ];
   static const List<String> difficultyTextList = [
-    '简单',
-    '中等',
-    '困难',
+    '闭着眼都能做',
+    '不占太多精力',
+    '短时间内费脑',
+    '如同创作',
   ];
   static const List<IconData> difficultyIconList = [
-    Icons.sentiment_satisfied,
-    Icons.sentiment_neutral,
-    Icons.sentiment_dissatisfied,
+    Icons.hotel,
+    Icons.music_note,
+    Icons.my_location,
+    Icons.smoking_rooms,
   ];
   static const List<Color> difficultyColorList = [
+    MyColors.green,
     MyColors.blue,
     MyColors.purple,
     MyColors.red,
