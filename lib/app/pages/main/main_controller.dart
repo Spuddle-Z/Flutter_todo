@@ -2,11 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:to_do/app/data/models/task_model.dart';
+import 'package:to_do/app/data/models/item_model.dart';
 
 class MainController extends GetxController {
   // 状态变量
-  final Rx<Box<Task>> taskBox = Hive.box<Task>('tasks').obs; // 任务盒
+  final Rx<Box<Item>> itemBox = Hive.box<Item>('Items').obs; // 任务盒
   final List<List<Rx<Box<bool>>>> hobbyBoxes = [
     [Hive.box<bool>('Rise').obs, Hive.box<bool>('Sleep').obs], // 早睡早起盒
     [Hive.box<bool>('Sports').obs], // 运动盒
@@ -30,7 +30,7 @@ class MainController extends GetxController {
     });
 
     // 自动生成周期性任务
-    generateTask();
+    generateRecurringTask();
   }
 
   @override
@@ -48,23 +48,23 @@ class MainController extends GetxController {
   }
 
   /// 添加任务
-  void addTask(Task task) {
-    taskBox.value.add(task);
-    generateTask();
-    taskBox.refresh();
+  void addItem(Item item) {
+    itemBox.value.add(item);
+    generateRecurringTask();
+    itemBox.refresh();
   }
 
   /// 更新任务
-  void updateTask(int key, Task task) {
-    taskBox.value.put(key, task);
-    generateTask();
-    taskBox.refresh();
+  void updateItem(int key, Item item) {
+    itemBox.value.put(key, item);
+    generateRecurringTask();
+    itemBox.refresh();
   }
 
   /// 删除任务
-  void deleteTask(int key) {
-    taskBox.value.delete(key);
-    taskBox.refresh();
+  void deleteItem(int key) {
+    itemBox.value.delete(key);
+    itemBox.refresh();
   }
 
   /// 计算周期性任务的下个截止日期
@@ -81,27 +81,27 @@ class MainController extends GetxController {
   }
 
   /// 自动生成周期性任务。
-  void generateTask() {
+  void generateRecurringTask() {
     // 筛选出周期性任务的键
-    List<dynamic> recurringKeys = taskBox.value.keys
+    List<dynamic> recurringKeys = itemBox.value.keys
         .where((k) =>
-            taskBox.value.get(k)!.recurrence != null &&
-            taskBox.value.get(k)!.recurrence! > 0)
+            itemBox.value.get(k)!.recurrence != null &&
+            itemBox.value.get(k)!.recurrence! > 0)
         .toList();
 
     for (int i = 0; i < recurringKeys.length; i++) {
-      Task recurringTask = taskBox.value.get(recurringKeys[i])!;
+      Item recurringTask = itemBox.value.get(recurringKeys[i])!;
       // 循环生成下一个周期性任务，直到当前任务不需要再生成
       while (recurringTask.done ||
           recurringTask.date!.isBefore(DateTime.now()) ||
           recurringTask.date!.isAtSameMomentAs(DateTime.now())) {
-        Task newTask = Task.copy(recurringTask);
+        Item newTask = Item.copy(recurringTask);
         newTask.done = false;
         newTask.date =
             getNextDate(recurringTask.date!, recurringTask.recurrence!);
-        taskBox.value.add(newTask);
+        itemBox.value.add(newTask);
         recurringTask.recurrence = 0; // 将原任务标记为不再周期性
-        taskBox.value.put(recurringKeys[i], recurringTask);
+        itemBox.value.put(recurringKeys[i], recurringTask);
         recurringTask = newTask;
       }
     }
@@ -116,8 +116,8 @@ class MainController extends GetxController {
   /// 返回值：
   /// - 返回值为1时，表示`keyA`在`keyB`之后；返回值为-1时，表示`keyA`在`keyB`之前；返回值为0时，表示两者相等。
   int sortItem(int keyA, int keyB) {
-    Task taskA = taskBox.value.get(keyA)!;
-    Task taskB = taskBox.value.get(keyB)!;
+    Item taskA = itemBox.value.get(keyA)!;
+    Item taskB = itemBox.value.get(keyB)!;
 
     // 未完成的任务排在前面
     if (taskA.done != taskB.done) {

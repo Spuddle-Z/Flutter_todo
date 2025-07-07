@@ -1,8 +1,8 @@
 import 'package:hive/hive.dart';
-part 'task_model.g.dart';
+part 'item_model.g.dart';
 
 @HiveType(typeId: 0)
-class Task {
+class Item {
   @HiveField(0)
   bool isTask;
   @HiveField(1)
@@ -20,7 +20,7 @@ class Task {
   @HiveField(7)
   String note;
 
-  Task({
+  Item({
     required this.isTask,
     required this.content,
     this.date,
@@ -30,13 +30,13 @@ class Task {
     required this.note,
   });
 
-  Task.copy(Task task)
-      : isTask = task.isTask,
-        content = task.content,
-        done = task.done,
-        date = task.date,
-        recurrence = task.recurrence,
-        priority = task.priority,
-        difficulty = task.difficulty,
-        note = task.note;
+  Item.copy(Item item)
+      : isTask = item.isTask,
+        content = item.content,
+        done = item.done,
+        date = item.date,
+        recurrence = item.recurrence,
+        priority = item.priority,
+        difficulty = item.difficulty,
+        note = item.note;
 }

@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'task_model.dart';
+part of 'item_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TaskAdapter extends TypeAdapter<Task> {
+class ItemAdapter extends TypeAdapter<Item> {
   @override
   final int typeId = 0;
 
   @override
-  Task read(BinaryReader reader) {
+  Item read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Task(
+    return Item(
       isTask: fields[0] as bool,
       content: fields[1] as String,
       date: fields[4] as DateTime?,
@@ -28,7 +28,7 @@ class TaskAdapter extends TypeAdapter<Task> {
   }
 
   @override
-  void write(BinaryWriter writer, Task obj) {
+  void write(BinaryWriter writer, Item obj) {
     writer
       ..writeByte(8)
       ..writeByte(0)
@@ -55,7 +55,7 @@ class TaskAdapter extends TypeAdapter<Task> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TaskAdapter &&
+      other is ItemAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:to_do/app/data/models/task_model.dart';
+import 'package:to_do/app/data/models/item_model.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
 import 'package:to_do/app/pages/todo/widgets/item_detail_popup.dart';
 import 'package:to_do/app/pages/todo/widgets/item_popup.dart';
@@ -23,34 +23,34 @@ class ItemTileController extends GetxController {
   final RxBool isExpanded = false.obs; // 用于控制备注的展开状态
 
   // 计算变量
-  Task get task => mainController.taskBox.value.get(itemKey)!; // 获取任务数据
+  Item get item => mainController.itemBox.value.get(itemKey)!; // 获取任务数据
   Color get color {
     // 根据任务状态和截止日期计算颜色
-    if (task.done) {
+    if (item.done) {
       return MyColors.textDark;
     }
-    if (task.isTask) {
-      if (task.date != cellDate &&
-          task.date!
+    if (item.isTask) {
+      if (item.date != cellDate &&
+          item.date!
               .isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
         return MyColors.textActive;
       } else {
-        return ItemConstant.priorityColorList[task.priority!];
+        return ItemConstant.priorityColorList[item.priority!];
       }
     } else {
-      return ItemConstant.difficultyColorList[task.difficulty!];
+      return ItemConstant.difficultyColorList[item.difficulty!];
     }
   }
 
   /// 切换任务完成状态
   void onTaskToggled(bool? done) {
-    task.done = done!;
-    mainController.updateTask(itemKey, task);
+    item.done = done!;
+    mainController.updateItem(itemKey, item);
   }
 
   /// 删除任务
   void onTaskDelete() {
-    mainController.deleteTask(itemKey);
+    mainController.deleteItem(itemKey);
   }
 }
 
@@ -93,7 +93,7 @@ class ItemTile extends StatelessWidget {
               children: [
                 // 勾选框
                 MyCheckbox(
-                  done: itemTileController.task.done,
+                  done: itemTileController.item.done,
                   color: itemTileController.color,
                   activeColor: itemTileController.color,
                   scale: isMiniTile ? 0.6 : 1,
@@ -103,11 +103,11 @@ class ItemTile extends StatelessWidget {
                 // 任务内容
                 Expanded(
                   child: Text(
-                    itemTileController.task.content,
+                    itemTileController.item.content,
                     style: TextStyle(
                       color: itemTileController.color,
                       fontSize: isMiniTile ? 12 : 16,
-                      decoration: itemTileController.task.done
+                      decoration: itemTileController.item.done
                           ? TextDecoration.lineThrough
                           : TextDecoration.none,
                       decorationColor: itemTileController.color,
@@ -127,7 +127,7 @@ class ItemTile extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
-                      "${-itemTileController.task.date!.difference(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)).inDays}天前",
+                      "${-itemTileController.item.date!.difference(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)).inDays}天前",
                       style: TextStyle(
                         color: MyColors.background.withAlpha(0xaa),
                         fontSize: isMiniTile ? 8 : 12,
@@ -137,7 +137,7 @@ class ItemTile extends StatelessWidget {
                   ),
 
                 // 展开备注按钮
-                if (!isMiniTile && itemTileController.task.note.isNotEmpty)
+                if (!isMiniTile && itemTileController.item.note.isNotEmpty)
                   Obx(() {
                     return MyIconButton(
                       icon: AnimatedRotation(
@@ -160,7 +160,6 @@ class ItemTile extends StatelessWidget {
                     onPressed: () => {
                       Get.dialog(
                         ItemPopup(itemKey: itemKey),
-                        barrierDismissible: false,
                       )
                     },
                   ),
@@ -210,7 +209,7 @@ class ItemTile extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8),
                       child: SelectableText(
-                        itemTileController.task.note,
+                        itemTileController.item.note,
                         style: const TextStyle(
                           color: MyColors.text,
                           fontSize: 12,

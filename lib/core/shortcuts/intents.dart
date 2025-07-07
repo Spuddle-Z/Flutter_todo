@@ -8,6 +8,6 @@ class ToLifeIntent extends Intent {
   const ToLifeIntent();
 }
 
-class AddTaskIntent extends Intent {
-  const AddTaskIntent();
+class AddItemIntent extends Intent {
+  const AddItemIntent();
 }

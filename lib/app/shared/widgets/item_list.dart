@@ -16,7 +16,7 @@ class ItemListController extends GetxController {
   // 计算变量
   List<dynamic> get keys {
     List<dynamic> keys =
-        mainController.taskBox.value.keys.where(filterItem).toList();
+        mainController.itemBox.value.keys.where(filterItem).toList();
     keys.sort((a, b) => mainController.sortItem(a, b));
     return keys;
   } // 获取符合过滤条件的任务键列表

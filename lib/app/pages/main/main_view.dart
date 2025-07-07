@@ -5,6 +5,7 @@ import 'package:to_do/app/pages/main/main_controller.dart';
 import 'package:to_do/app/pages/todo/todo_view.dart';
 import 'package:to_do/app/pages/life/life_view.dart';
 import 'package:to_do/app/pages/main/widgets/navigation_bar_button.dart';
+import 'package:to_do/app/pages/todo/widgets/item_popup.dart';
 
 import 'package:to_do/core/shortcuts/intents.dart';
 import 'package:to_do/core/shortcuts/shortcuts.dart';
@@ -37,6 +38,14 @@ class MainView extends StatelessWidget {
             ToLifeIntent: CallbackAction<ToLifeIntent>(
               onInvoke: (intent) {
                 mainController.currentIndex.value = 1;
+                return null;
+              },
+            ),
+            AddItemIntent: CallbackAction<AddItemIntent>(
+              onInvoke: (intent) {
+                Get.dialog(
+                  const ItemPopup(),
+                );
                 return null;
               },
             ),

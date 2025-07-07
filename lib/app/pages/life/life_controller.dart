@@ -14,6 +14,6 @@ class LifeController extends GetxController {
 
   /// 过滤杂事
   bool filterTrivia(key) {
-    return !mainController.taskBox.value.get(key)!.isTask;
+    return !mainController.itemBox.value.get(key)!.isTask;
   }
 }

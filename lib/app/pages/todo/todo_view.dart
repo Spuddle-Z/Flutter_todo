@@ -30,7 +30,6 @@ class TodoView extends StatelessWidget {
             child: Column(
               children: [
                 Expanded(
-                  flex: 2,
                   child: RecessedPanel(
                     child: Column(
                       children: [
@@ -57,7 +56,6 @@ class TodoView extends StatelessWidget {
                 ),
                 // 习惯列表
                 Expanded(
-                  flex: 3,
                   child: RecessedPanel(
                     child: const Row(
                       children: [

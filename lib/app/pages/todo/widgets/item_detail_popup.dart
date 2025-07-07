@@ -5,7 +5,7 @@ import 'package:to_do/app/pages/main/main_controller.dart';
 import 'package:to_do/app/pages/todo/widgets/detail_tile.dart';
 import 'package:to_do/app/pages/todo/widgets/item_popup.dart';
 
-import 'package:to_do/app/data/models/task_model.dart';
+import 'package:to_do/app/data/models/item_model.dart';
 import 'package:to_do/app/shared/constants/item_constant.dart';
 import 'package:to_do/app/shared/widgets/my_checkbox.dart';
 import 'package:to_do/app/shared/widgets/my_icon_button.dart';
@@ -21,17 +21,17 @@ class ItemDetailPopupController extends GetxController {
   final MainController mainController = Get.find<MainController>();
 
   // 计算变量
-  Task get task => mainController.taskBox.value.get(itemKey)!; // 任务数据
+  Item get item => mainController.itemBox.value.get(itemKey)!; // 任务数据
 
   /// 切换任务完成状态
-  void onTaskToggled(done) {
-    task.done = done!;
-    mainController.updateTask(itemKey, task);
+  void onItemToggled(done) {
+    item.done = done!;
+    mainController.updateItem(itemKey, item);
   }
 
   /// 删除任务
-  void onTaskDeleted() {
-    mainController.deleteTask(itemKey);
+  void onItemDeleted() {
+    mainController.deleteItem(itemKey);
   }
 }
 
@@ -73,17 +73,17 @@ class ItemDetailPopUp extends StatelessWidget {
                     children: [
                       Obx(() {
                         return MyCheckbox(
-                          done: itemDetailPopupController.task.done,
+                          done: itemDetailPopupController.item.done,
                           color: MyColors.primary,
                           activeColor: MyColors.primary,
                           scale: 1.2,
-                          onChanged: itemDetailPopupController.onTaskToggled,
+                          onChanged: itemDetailPopupController.onItemToggled,
                         );
                       }),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          itemDetailPopupController.task.content,
+                          itemDetailPopupController.item.content,
                           style: const TextStyle(
                             color: MyColors.primary,
                             fontSize: 20,
@@ -99,14 +99,14 @@ class ItemDetailPopUp extends StatelessWidget {
                   ),
                 ],
               ),
-              itemDetailPopupController.task.isTask
+              itemDetailPopupController.item.isTask
                   ? Column(
                       children: [
                         // 任务截止日期
                         DetailTile(
                           keyText: 'Deadline',
                           valueWidget: Text(
-                            '${itemDetailPopupController.task.date!.year} 年 ${itemDetailPopupController.task.date!.month} 月 ${itemDetailPopupController.task.date!.day} 日',
+                            '${itemDetailPopupController.item.date!.year} 年 ${itemDetailPopupController.item.date!.month} 月 ${itemDetailPopupController.item.date!.day} 日',
                             textAlign: TextAlign.left,
                             style: const TextStyle(
                               color: MyColors.text,
@@ -121,7 +121,7 @@ class ItemDetailPopUp extends StatelessWidget {
                                 valueWidget: Text(
                                   ItemConstant.recurrenceTextList[
                                       itemDetailPopupController
-                                          .task.recurrence!],
+                                          .item.recurrence!],
                                   textAlign: TextAlign.left,
                                   style: const TextStyle(
                                     color: MyColors.text,
@@ -137,10 +137,10 @@ class ItemDetailPopUp extends StatelessWidget {
                                     Icon(
                                       ItemConstant.priorityIconList[
                                           itemDetailPopupController
-                                              .task.priority!],
+                                              .item.priority!],
                                       color: ItemConstant.priorityColorList[
                                           itemDetailPopupController
-                                              .task.priority!],
+                                              .item.priority!],
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -148,12 +148,12 @@ class ItemDetailPopUp extends StatelessWidget {
                                       child: Text(
                                         ItemConstant.priorityTextList[
                                             itemDetailPopupController
-                                                .task.priority!],
+                                                .item.priority!],
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           color: ItemConstant.priorityColorList[
                                               itemDetailPopupController
-                                                  .task.priority!],
+                                                  .item.priority!],
                                         ),
                                       ),
                                     ),
@@ -169,20 +169,20 @@ class ItemDetailPopUp extends StatelessWidget {
                       keyText: 'Difficulty',
                       valueWidget: Text(
                         ItemConstant.difficultyTextList[
-                            itemDetailPopupController.task.difficulty!],
+                            itemDetailPopupController.item.difficulty!],
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: ItemConstant.difficultyColorList[
-                              itemDetailPopupController.task.difficulty!],
+                              itemDetailPopupController.item.difficulty!],
                         ),
                       ),
                     ),
-              if (itemDetailPopupController.task.note.isNotEmpty)
+              if (itemDetailPopupController.item.note.isNotEmpty)
                 DetailTile(
                   keyText: 'Note',
                   valueWidget: SingleChildScrollView(
                     child: SelectableText(
-                      itemDetailPopupController.task.note,
+                      itemDetailPopupController.item.note,
                       textAlign: TextAlign.left,
                       style: const TextStyle(
                         color: MyColors.text,
@@ -199,7 +199,7 @@ class ItemDetailPopUp extends StatelessWidget {
                     icon: Icons.delete,
                     text: 'Delete',
                     onPressed: () {
-                      itemDetailPopupController.onTaskDeleted();
+                      itemDetailPopupController.onItemDeleted();
                       Get.back();
                     },
                     color: MyColors.red,
@@ -211,7 +211,6 @@ class ItemDetailPopUp extends StatelessWidget {
                       Get.back();
                       Get.dialog(
                         ItemPopup(itemKey: itemKey),
-                        barrierDismissible: false,
                       );
                     },
                     color: MyColors.text,

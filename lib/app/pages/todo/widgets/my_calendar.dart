@@ -77,7 +77,6 @@ class MyCalendar extends StatelessWidget {
                         onPressed: () {
                           Get.dialog(
                             const ItemPopup(),
-                            barrierDismissible: false,
                           );
                         },
                         color: MyColors.text,

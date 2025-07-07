@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:to_do/app/data/models/task_model.dart';
+import 'package:to_do/app/data/models/item_model.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
 import 'package:to_do/app/shared/widgets/my_icon_button.dart';
 import 'package:to_do/app/shared/widgets/my_text_button.dart';
@@ -47,17 +47,17 @@ class ItemPopupController extends GetxController {
           '${DateTime.now().day.toString().padLeft(2, '0')}';
     } else {
       // 如果有键，则加载对应的事件
-      Task task = mainController.taskBox.value.get(itemKey)!;
-      content.value = task.content;
-      dateText.value = task.isTask
-          ? '${task.date!.year}'
-              '${task.date!.month.toString().padLeft(2, '0')}'
-              '${task.date!.day.toString().padLeft(2, '0')}'
+      Item item = mainController.itemBox.value.get(itemKey)!;
+      content.value = item.content;
+      dateText.value = item.isTask
+          ? '${item.date!.year}'
+              '${item.date!.month.toString().padLeft(2, '0')}'
+              '${item.date!.day.toString().padLeft(2, '0')}'
           : '';
-      recurrenceIndex.value = task.recurrence;
-      priorityIndex.value = task.priority;
-      difficultyIndex.value = task.difficulty;
-      note.value = task.note;
+      recurrenceIndex.value = item.recurrence;
+      priorityIndex.value = item.priority;
+      difficultyIndex.value = item.difficulty;
+      note.value = item.note;
     }
     isDateValid.value = true;
   }
@@ -100,18 +100,12 @@ class ItemPopupController extends GetxController {
 
   /// 提交任务
   void onSubmit() {
-    // debugPrint('Is Task: $isTask');
-    // debugPrint('Content: $isContentValid');
-    // debugPrint('Date: ${isDateValid.value}');
-    // debugPrint('Recurrence: $isRecurrenceValid');
-    // debugPrint('Priority: $isPriorityValid');
-    // debugPrint('Difficulty: $isDifficultyValid');
     if (isTask &&
         isContentValid &&
         isDateValid.value &&
         isRecurrenceValid &&
         isPriorityValid) {
-      Task newTask = Task(
+      Item newTask = Item(
         isTask: true,
         content: content.value,
         date: DateTime(
@@ -124,22 +118,22 @@ class ItemPopupController extends GetxController {
         note: note.value,
       );
       if (isNewItem) {
-        mainController.addTask(newTask);
+        mainController.addItem(newTask);
       } else {
-        mainController.updateTask(itemKey!, newTask);
+        mainController.updateItem(itemKey!, newTask);
       }
       Get.back();
     } else if (!isTask && isContentValid && isDifficultyValid) {
-      Task newTrivia = Task(
+      Item newTrivia = Item(
         isTask: false,
         content: content.value,
         difficulty: difficultyIndex.value!,
         note: note.value,
       );
       if (isNewItem) {
-        mainController.addTask(newTrivia);
+        mainController.addItem(newTrivia);
       } else {
-        mainController.updateTask(itemKey!, newTrivia);
+        mainController.updateItem(itemKey!, newTrivia);
       }
       Get.back();
     }

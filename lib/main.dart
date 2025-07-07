@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'package:to_do/app/data/models/task_model.dart';
+import 'package:to_do/app/data/models/item_model.dart';
 import 'package:to_do/app/routes/route_pages.dart';
 import 'package:to_do/app/routes/route_path.dart';
 
@@ -12,8 +12,8 @@ void main() async {
   // 调用数据库
   WidgetsFlutterBinding.ensureInitialized();
   Hive.init("data");
-  Hive.registerAdapter(TaskAdapter());
-  await Hive.openBox<Task>('tasks');
+  Hive.registerAdapter(ItemAdapter());
+  await Hive.openBox<Item>('Items');
   await Hive.openBox<bool>('Sports');
   await Hive.openBox<bool>('Relax');
   await Hive.openBox<bool>('Rise');

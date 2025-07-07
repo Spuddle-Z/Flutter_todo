@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:to_do/app/data/models/task_model.dart';
+import 'package:to_do/app/data/models/item_model.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
 import 'package:to_do/app/shared/widgets/item_tile.dart';
 import 'package:to_do/app/pages/todo/todo_controller.dart';
@@ -28,20 +28,20 @@ class CalendarDayCellController extends GetxController {
       cellDate.weekday == 7 || cellDate.weekday == 6; // 本单元格日期是否为周末
   List<dynamic> get keys {
     List<dynamic> keys =
-        mainController.taskBox.value.keys.where(ifShow).toList();
+        mainController.itemBox.value.keys.where(ifShow).toList();
     keys.sort((a, b) => mainController.sortItem(a, b));
     return keys;
   } // 获取本单元格内的任务键列表
 
   /// 过滤函数，判断任务是否要显示在当前单元格内
   bool ifShow(key) {
-    Task task = mainController.taskBox.value.get(key)!;
-    if (!task.isTask) return false; // 只显示任务类型的条目
+    Item item = mainController.itemBox.value.get(key)!;
+    if (!item.isTask) return false; // 只显示任务类型的条目
     if (isToday) {
-      return ((!task.done && task.date!.isBefore(cellDate)) ||
-          task.date!.isAtSameMomentAs(cellDate));
+      return ((!item.done && item.date!.isBefore(cellDate)) ||
+          item.date!.isAtSameMomentAs(cellDate));
     }
-    return task.date!.isAtSameMomentAs(cellDate);
+    return item.date!.isAtSameMomentAs(cellDate);
   }
 }
 

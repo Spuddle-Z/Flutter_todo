@@ -6,6 +6,6 @@ class TodoBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => TodoController()); // To Do 页面的总控制器
-    Get.lazyPut(() => RandomTaskController()); // 随机任务控制器详情弹窗控制器
+    Get.lazyPut(() => RandomItemController()); // 随机任务控制器详情弹窗控制器
   }
 }

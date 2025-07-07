@@ -93,7 +93,7 @@ class LifeView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const RandomTask(),
+                  const RandomTrivia(),
                   Container(
                     height: 1,
                     margin: const EdgeInsets.symmetric(

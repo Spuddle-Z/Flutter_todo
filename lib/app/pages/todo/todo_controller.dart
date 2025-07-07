@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:to_do/app/data/models/task_model.dart';
+import 'package:to_do/app/data/models/item_model.dart';
 
 import 'package:to_do/app/pages/main/main_controller.dart';
 
@@ -49,10 +49,10 @@ class TodoController extends GetxController {
 
   /// 过滤今天的任务
   bool filterTodayTask(key) {
-    Task task = mainController.taskBox.value.get(key)!;
-    if (!task.isTask) return false; // 只处理任务类型
-    DateTime date = task.date!;
-    return ((!task.done && date.isBefore(mainController.today.value)) ||
+    Item item = mainController.itemBox.value.get(key)!;
+    if (!item.isTask) return false; // 只处理任务类型
+    DateTime date = item.date!;
+    return ((!item.done && date.isBefore(mainController.today.value)) ||
         date.isAtSameMomentAs(mainController.today.value));
   }
 }
