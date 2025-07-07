@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
 
 import 'package:to_do/app/shared/widgets/item_tile.dart';
-
+import 'package:to_do/app/data/models/task_model.dart';
 import 'package:to_do/core/theme.dart';
 
 class RandomTaskController extends GetxController {
@@ -14,8 +14,12 @@ class RandomTaskController extends GetxController {
   final RxnInt randomKey = RxnInt(); // 随机任务的键
 
   // 计算变量
-  List<dynamic> get keys =>
-      mainController.triviaBox.value.keys.toList(); // 无截止日期任务列表
+  List<dynamic> get keys => mainController.taskBox.value.keys.where(
+        (key) {
+          final Task task = mainController.taskBox.value.get(key)!;
+          return !task.isTask;
+        },
+      ).toList(); // 杂事列表
   bool get existTrivia => keys.isNotEmpty; // 是否存在无截止日期任务
 
   /// 获取随机任务的键

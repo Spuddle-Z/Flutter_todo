@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:to_do/app/data/models/trivia_model.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'package:to_do/app/data/models/task_model.dart';
@@ -15,7 +14,6 @@ void main() async {
   Hive.init("data");
   Hive.registerAdapter(TaskAdapter());
   await Hive.openBox<Task>('tasks');
-  await Hive.openBox<Trivia>('trivia');
   await Hive.openBox<bool>('Sports');
   await Hive.openBox<bool>('Relax');
   await Hive.openBox<bool>('Rise');

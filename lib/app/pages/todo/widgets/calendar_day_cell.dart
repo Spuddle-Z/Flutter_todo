@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:to_do/app/data/models/task_model.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
 import 'package:to_do/app/shared/widgets/item_tile.dart';
 import 'package:to_do/app/pages/todo/todo_controller.dart';
@@ -34,14 +35,13 @@ class CalendarDayCellController extends GetxController {
 
   /// 过滤函数，判断任务是否要显示在当前单元格内
   bool ifShow(key) {
-    bool done = mainController.taskBox.value.get(key)!.done;
-    DateTime date = mainController.taskBox.value.get(key)!.date;
+    Task task = mainController.taskBox.value.get(key)!;
+    if (!task.isTask) return false; // 只显示任务类型的条目
     if (isToday) {
-      return ((!done && date.isBefore(cellDate)) ||
-          date.isAtSameMomentAs(cellDate));
-    } else {
-      return date.isAtSameMomentAs(cellDate);
+      return ((!task.done && task.date!.isBefore(cellDate)) ||
+          task.date!.isAtSameMomentAs(cellDate));
     }
+    return task.date!.isAtSameMomentAs(cellDate);
   }
 }
 

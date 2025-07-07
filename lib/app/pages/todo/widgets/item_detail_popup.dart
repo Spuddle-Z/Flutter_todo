@@ -68,6 +68,7 @@ class ItemDetailPopUp extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // 任务标题和完成状态
                   Row(
                     children: [
                       Obx(() {
@@ -98,60 +99,84 @@ class ItemDetailPopUp extends StatelessWidget {
                   ),
                 ],
               ),
-              DetailTile(
-                keyText: 'Deadline',
-                valueWidget: Text(
-                  '${itemDetailPopupController.task.date.year} 年 ${itemDetailPopupController.task.date.month} 月 ${itemDetailPopupController.task.date.day} 日',
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(
-                    color: MyColors.text,
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: DetailTile(
-                      keyText: 'Recurrence',
+              itemDetailPopupController.task.isTask
+                  ? Column(
+                      children: [
+                        // 任务截止日期
+                        DetailTile(
+                          keyText: 'Deadline',
+                          valueWidget: Text(
+                            '${itemDetailPopupController.task.date!.year} 年 ${itemDetailPopupController.task.date!.month} 月 ${itemDetailPopupController.task.date!.day} 日',
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
+                              color: MyColors.text,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: DetailTile(
+                                keyText: 'Recurrence',
+                                valueWidget: Text(
+                                  ItemConstant.recurrenceTextList[
+                                      itemDetailPopupController
+                                          .task.recurrence!],
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                    color: MyColors.text,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: DetailTile(
+                                keyText: 'Priority',
+                                valueWidget: Row(
+                                  children: [
+                                    Icon(
+                                      ItemConstant.priorityIconList[
+                                          itemDetailPopupController
+                                              .task.priority!],
+                                      color: ItemConstant.priorityColorList[
+                                          itemDetailPopupController
+                                              .task.priority!],
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 4),
+                                      child: Text(
+                                        ItemConstant.priorityTextList[
+                                            itemDetailPopupController
+                                                .task.priority!],
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          color: ItemConstant.priorityColorList[
+                                              itemDetailPopupController
+                                                  .task.priority!],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  : DetailTile(
+                      keyText: 'Difficulty',
                       valueWidget: Text(
-                        ItemConstant.recurrenceTextList[
-                            itemDetailPopupController.task.recurrence],
+                        ItemConstant.difficultyTextList[
+                            itemDetailPopupController.task.difficulty!],
                         textAlign: TextAlign.left,
-                        style: const TextStyle(
-                          color: MyColors.text,
+                        style: TextStyle(
+                          color: ItemConstant.difficultyColorList[
+                              itemDetailPopupController.task.difficulty!],
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: DetailTile(
-                      keyText: 'Priority',
-                      valueWidget: Row(
-                        children: [
-                          Icon(
-                            ItemConstant.priorityIconList[
-                                itemDetailPopupController.task.priority],
-                            color: ItemConstant.priorityColorList[
-                                itemDetailPopupController.task.priority],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Text(
-                              ItemConstant.priorityTextList[
-                                  itemDetailPopupController.task.priority],
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: ItemConstant.priorityColorList[
-                                    itemDetailPopupController.task.priority],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               if (itemDetailPopupController.task.note.isNotEmpty)
                 DetailTile(
                   keyText: 'Note',

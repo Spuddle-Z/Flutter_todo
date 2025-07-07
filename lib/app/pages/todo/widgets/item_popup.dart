@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do/app/data/models/task_model.dart';
-import 'package:to_do/app/data/models/trivia_model.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
 import 'package:to_do/app/shared/widgets/my_icon_button.dart';
 import 'package:to_do/app/shared/widgets/my_text_button.dart';
@@ -29,8 +28,8 @@ class ItemPopupController extends GetxController {
   final RxBool isDateValid = false.obs;
 
   // 计算变量
-  bool get isTask => dateText.value.isNotEmpty;
   bool get isNewItem => itemKey == null;
+  bool get isTask => dateText.isNotEmpty; // 是否为任务（有截止日期）
   bool get isContentValid => content.value.isNotEmpty;
   bool get isRecurrenceValid => recurrenceIndex.value != null;
   bool get isPriorityValid => priorityIndex.value != null;
@@ -46,24 +45,21 @@ class ItemPopupController extends GetxController {
       dateText.value = '${DateTime.now().year}'
           '${DateTime.now().month.toString().padLeft(2, '0')}'
           '${DateTime.now().day.toString().padLeft(2, '0')}';
-      isDateValid.value = true;
-    } else if (isTask) {
+    } else {
       // 如果有键，则加载对应的事件
       Task task = mainController.taskBox.value.get(itemKey)!;
       content.value = task.content;
-      dateText.value = '${task.date.year}'
-          '${task.date.month.toString().padLeft(2, '0')}'
-          '${task.date.day.toString().padLeft(2, '0')}';
+      dateText.value = task.isTask
+          ? '${task.date!.year}'
+              '${task.date!.month.toString().padLeft(2, '0')}'
+              '${task.date!.day.toString().padLeft(2, '0')}'
+          : '';
       recurrenceIndex.value = task.recurrence;
       priorityIndex.value = task.priority;
+      difficultyIndex.value = task.difficulty;
       note.value = task.note;
-      isDateValid.value = true;
-    } else {
-      Trivia trivia = mainController.triviaBox.value.get(itemKey)!;
-      content.value = trivia.content;
-      difficultyIndex.value = trivia.difficulty;
-      note.value = trivia.note;
     }
+    isDateValid.value = true;
   }
 
   /// 更新任务内容
@@ -104,12 +100,19 @@ class ItemPopupController extends GetxController {
 
   /// 提交任务
   void onSubmit() {
+    // debugPrint('Is Task: $isTask');
+    // debugPrint('Content: $isContentValid');
+    // debugPrint('Date: ${isDateValid.value}');
+    // debugPrint('Recurrence: $isRecurrenceValid');
+    // debugPrint('Priority: $isPriorityValid');
+    // debugPrint('Difficulty: $isDifficultyValid');
     if (isTask &&
         isContentValid &&
         isDateValid.value &&
         isRecurrenceValid &&
         isPriorityValid) {
       Task newTask = Task(
+        isTask: true,
         content: content.value,
         date: DateTime(
           int.parse(dateText.value.substring(0, 4)),
@@ -127,15 +130,16 @@ class ItemPopupController extends GetxController {
       }
       Get.back();
     } else if (!isTask && isContentValid && isDifficultyValid) {
-      Trivia newTrivia = Trivia(
+      Task newTrivia = Task(
+        isTask: false,
         content: content.value,
         difficulty: difficultyIndex.value!,
         note: note.value,
       );
       if (isNewItem) {
-        mainController.addTrivia(newTrivia);
+        mainController.addTask(newTrivia);
       } else {
-        mainController.updateTrivia(itemKey!, newTrivia);
+        mainController.updateTask(itemKey!, newTrivia);
       }
       Get.back();
     }
@@ -214,7 +218,7 @@ class ItemPopup extends StatelessWidget {
                   const SizedBox(width: 8),
                   // 重复周期输入框
                   Obx(() {
-                    return itemPopupController.dateText.isNotEmpty
+                    return itemPopupController.isTask
                         ? Expanded(
                             flex: 2,
                             child: Row(

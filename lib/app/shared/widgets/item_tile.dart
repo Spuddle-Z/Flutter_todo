@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:to_do/app/data/models/task_model.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
-
 import 'package:to_do/app/pages/todo/widgets/item_detail_popup.dart';
 import 'package:to_do/app/pages/todo/widgets/item_popup.dart';
-
-import 'package:to_do/app/data/models/task_model.dart';
 import 'package:to_do/app/shared/constants/item_constant.dart';
 import 'package:to_do/app/shared/widgets/my_checkbox.dart';
 import 'package:to_do/app/shared/widgets/my_icon_button.dart';
@@ -30,11 +28,17 @@ class ItemTileController extends GetxController {
     // 根据任务状态和截止日期计算颜色
     if (task.done) {
       return MyColors.textDark;
-    } else if (task.date != cellDate &&
-        task.date.isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
-      return MyColors.textActive;
+    }
+    if (task.isTask) {
+      if (task.date != cellDate &&
+          task.date!
+              .isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
+        return MyColors.textActive;
+      } else {
+        return ItemConstant.priorityColorList[task.priority!];
+      }
     } else {
-      return ItemConstant.priorityColorList[task.priority];
+      return ItemConstant.difficultyColorList[task.difficulty!];
     }
   }
 
@@ -123,7 +127,7 @@ class ItemTile extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
-                      "${-itemTileController.task.date.difference(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)).inDays}天前",
+                      "${-itemTileController.task.date!.difference(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)).inDays}天前",
                       style: TextStyle(
                         color: MyColors.background.withAlpha(0xaa),
                         fontSize: isMiniTile ? 8 : 12,

@@ -4,31 +4,39 @@ part 'task_model.g.dart';
 @HiveType(typeId: 0)
 class Task {
   @HiveField(0)
-  String content;
+  bool isTask;
   @HiveField(1)
-  bool done = false;
+  String content;
   @HiveField(2)
-  int recurrence;
+  bool done = false;
   @HiveField(3)
-  DateTime date;
+  int? recurrence;
   @HiveField(4)
-  int priority;
+  DateTime? date;
   @HiveField(5)
+  int? priority;
+  @HiveField(6)
+  int? difficulty;
+  @HiveField(7)
   String note;
 
   Task({
+    required this.isTask,
     required this.content,
-    required this.priority,
-    required this.date,
+    this.date,
+    this.recurrence,
+    this.priority,
+    this.difficulty,
     required this.note,
-    required this.recurrence,
   });
 
   Task.copy(Task task)
-      : content = task.content,
+      : isTask = task.isTask,
+        content = task.content,
         done = task.done,
-        priority = task.priority,
         date = task.date,
-        note = task.note,
-        recurrence = task.recurrence;
+        recurrence = task.recurrence,
+        priority = task.priority,
+        difficulty = task.difficulty,
+        note = task.note;
 }
