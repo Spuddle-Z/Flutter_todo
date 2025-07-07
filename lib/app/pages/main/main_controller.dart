@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:to_do/app/data/models/task_model.dart';
+import 'package:to_do/app/data/models/trivia_model.dart';
 
 class MainController extends GetxController {
   // 状态变量
   final Rx<Box<Task>> taskBox = Hive.box<Task>('tasks').obs; // 任务盒
+  final Rx<Box<Trivia>> triviaBox = Hive.box<Trivia>('trivia').obs; // 杂事盒
   final List<List<Rx<Box<bool>>>> hobbyBoxes = [
     [Hive.box<bool>('Rise').obs, Hive.box<bool>('Sleep').obs], // 早睡早起盒
     [Hive.box<bool>('Sports').obs], // 运动盒
@@ -67,6 +69,24 @@ class MainController extends GetxController {
     taskBox.refresh();
   }
 
+  /// 添加杂事
+  void addTrivia(Trivia trivia) {
+    triviaBox.value.add(trivia);
+    triviaBox.refresh();
+  }
+
+  /// 更新杂事
+  void updateTrivia(int key, Trivia trivia) {
+    triviaBox.value.put(key, trivia);
+    triviaBox.refresh();
+  }
+
+  /// 删除杂事
+  void deleteTrivia(int key) {
+    triviaBox.value.delete(key);
+    triviaBox.refresh();
+  }
+
   /// 计算周期性任务的下个截止日期
   DateTime getNextDate(DateTime date, int recurrence) {
     if (recurrence == 1) {
@@ -91,12 +111,12 @@ class MainController extends GetxController {
       Task recurringTask = taskBox.value.get(recurringKeys[i])!;
       // 循环生成下一个周期性任务，直到当前任务不需要再生成
       while (recurringTask.done ||
-          recurringTask.date!.isBefore(DateTime.now()) ||
-          recurringTask.date!.isAtSameMomentAs(DateTime.now())) {
+          recurringTask.date.isBefore(DateTime.now()) ||
+          recurringTask.date.isAtSameMomentAs(DateTime.now())) {
         Task newTask = Task.copy(recurringTask);
         newTask.done = false;
         newTask.date =
-            getNextDate(recurringTask.date!, recurringTask.recurrence);
+            getNextDate(recurringTask.date, recurringTask.recurrence);
         taskBox.value.add(newTask);
         recurringTask.recurrence = 0; // 将原任务标记为不再周期性
         taskBox.value.put(recurringKeys[i], recurringTask);
@@ -122,8 +142,8 @@ class MainController extends GetxController {
       return taskA.done ? 1 : -1;
     }
     // 按截止日期排序
-    if (taskA.date != null && taskB.date != null && taskA.date != taskB.date) {
-      return taskA.date!.compareTo(taskB.date!);
+    if (taskA.date != taskB.date) {
+      return taskA.date.compareTo(taskB.date);
     }
     // 按优先级排序
     return taskB.priority.compareTo(taskA.priority);

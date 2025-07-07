@@ -101,7 +101,7 @@ class ItemDetailPopUp extends StatelessWidget {
               DetailTile(
                 keyText: 'Deadline',
                 valueWidget: Text(
-                  '${itemDetailPopupController.task.date!.year} 年 ${itemDetailPopupController.task.date!.month} 月 ${itemDetailPopupController.task.date!.day} 日',
+                  '${itemDetailPopupController.task.date.year} 年 ${itemDetailPopupController.task.date.month} 月 ${itemDetailPopupController.task.date.day} 日',
                   textAlign: TextAlign.left,
                   style: const TextStyle(
                     color: MyColors.text,

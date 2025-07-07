@@ -19,7 +19,7 @@ class TaskAdapter extends TypeAdapter<Task> {
     return Task(
       content: fields[0] as String,
       priority: fields[4] as int,
-      date: fields[3] as DateTime?,
+      date: fields[3] as DateTime,
       note: fields[5] as String,
       recurrence: fields[2] as int,
     )..done = fields[1] as bool;

@@ -14,20 +14,13 @@ class RandomTaskController extends GetxController {
   final RxnInt randomKey = RxnInt(); // 随机任务的键
 
   // 计算变量
-  List<dynamic> get keys => mainController.taskBox.value.keys
-      .where((k) => mainController.taskBox.value.get(k)!.date == null)
-      .toList(); // 无截止日期任务列表
-  bool get existNoDeadlineTask => keys.isNotEmpty; // 是否存在无截止日期任务
+  List<dynamic> get keys =>
+      mainController.triviaBox.value.keys.toList(); // 无截止日期任务列表
+  bool get existTrivia => keys.isNotEmpty; // 是否存在无截止日期任务
 
   /// 获取随机任务的键
   void refreshRandomKey() {
-    final keys = mainController.taskBox.value.keys
-        .where((k) => mainController.taskBox.value.get(k)!.date == null)
-        .toList();
-
-    // 如果没有符合条件的任务，随机键为 null
-    randomKey.value =
-        keys.isNotEmpty ? keys[Random().nextInt(keys.length)] : null;
+    randomKey.value = existTrivia ? keys[Random().nextInt(keys.length)] : null;
   }
 }
 
@@ -45,7 +38,7 @@ class RandomTask extends StatelessWidget {
         Get.find<RandomTaskController>();
 
     return Obx(() {
-      if (randomTaskController.existNoDeadlineTask) {
+      if (randomTaskController.existTrivia) {
         // 存在无截止日期任务
         return Row(
           children: [

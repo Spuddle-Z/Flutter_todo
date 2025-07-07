@@ -10,7 +10,7 @@ class Task {
   @HiveField(2)
   int recurrence;
   @HiveField(3)
-  DateTime? date;
+  DateTime date;
   @HiveField(4)
   int priority;
   @HiveField(5)
@@ -19,7 +19,7 @@ class Task {
   Task({
     required this.content,
     required this.priority,
-    this.date,
+    required this.date,
     required this.note,
     required this.recurrence,
   });
