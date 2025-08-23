@@ -12,7 +12,11 @@ class MainController extends GetxController {
     [Hive.box<bool>('Sports').obs], // 运动盒
     [Hive.box<bool>('Relax').obs], // 放松盒
   ];
-  final Rx<DateTime> today = DateTime.now().obs; // 当前时间
+  final Rx<DateTime> today = DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  ).obs; // 当前时间
   final RxInt currentIndex = 0.obs; // 当前页面索引
 
   // 焦点管理
@@ -26,7 +30,11 @@ class MainController extends GetxController {
     super.onInit();
     // 每分钟更新一次当前时间
     timer = Timer.periodic(const Duration(minutes: 1), (_) {
-      today.value = DateTime.now();
+      today.value = DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+      );
     });
 
     // 自动生成周期性任务
@@ -94,15 +102,15 @@ class MainController extends GetxController {
       Item recurringTask = itemBox.value.get(recurringKey)!;
       // 循环生成下一个周期性任务，直到当前任务不需要再生成
       while (recurringTask.done ||
-          recurringTask.date!.isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
+          recurringTask.date!
+              .isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
         Item newTask = Item.copy(recurringTask);
         recurringTask.recurrence = 0; // 将原任务标记为不再周期性
         itemBox.value.put(recurringKey, recurringTask);
 
         // 调整新任务的属性并存入
         newTask.done = false;
-        newTask.date =
-            getNextDate(newTask.date!, newTask.recurrence!);
+        newTask.date = getNextDate(newTask.date!, newTask.recurrence!);
         recurringKey = await itemBox.value.add(newTask);
         recurringTask = newTask;
       }

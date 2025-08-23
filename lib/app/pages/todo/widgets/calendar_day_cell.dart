@@ -18,10 +18,7 @@ class CalendarDayCellController extends GetxController {
 
   // 计算变量
   DateTime get cellDate => todoController.getCellDate(index); // 本单元格对应日期
-  bool get isToday =>
-      cellDate.day == mainController.today.value.day &&
-      cellDate.month == mainController.today.value.month &&
-      cellDate.year == mainController.today.value.year; // 本单元格日期是否为今天
+  bool get isToday => cellDate == mainController.today.value; // 本单元格日期是否为今天
   bool get isCurrentMonth =>
       cellDate.month == todoController.viewMonth.value.month; // 本单元格日期是否处于当前月份内
   bool get isWeekend =>

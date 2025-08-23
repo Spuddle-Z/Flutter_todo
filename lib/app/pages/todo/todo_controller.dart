@@ -27,23 +27,28 @@ class TodoController extends GetxController {
   /// - 对应的日期。
   DateTime getCellDate(int index) {
     if (index < firstDayIndex) {
-      final DateTime lastMonth =
-          DateTime(viewMonth.value.year, viewMonth.value.month, 0);
-      return DateTime(lastMonth.year, lastMonth.month,
-          lastMonth.day - firstDayIndex + index + 1);
+      return DateTime(
+        viewMonth.value.year,
+        viewMonth.value.month,
+        index - firstDayIndex + 1,
+      );
     } else if (index <
         firstDayIndex +
             DateTime(viewMonth.value.year, viewMonth.value.month + 1, 0).day) {
-      return DateTime(viewMonth.value.year, viewMonth.value.month,
-          index - firstDayIndex + 1);
+      return DateTime(
+        viewMonth.value.year,
+        viewMonth.value.month,
+        index - firstDayIndex + 1,
+      );
     } else {
       return DateTime(
-          viewMonth.value.year,
-          viewMonth.value.month + 1,
-          index -
-              firstDayIndex -
-              DateTime(viewMonth.value.year, viewMonth.value.month + 1, 0).day +
-              1);
+        viewMonth.value.year,
+        viewMonth.value.month + 1,
+        index -
+            firstDayIndex -
+            DateTime(viewMonth.value.year, viewMonth.value.month + 1, 0).day +
+            1,
+      );
     }
   }
 

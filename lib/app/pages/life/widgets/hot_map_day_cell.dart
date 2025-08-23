@@ -27,10 +27,7 @@ class HotMapDayCellController extends GetxController {
     return DateTime(lifeController.viewYear.value).add(Duration(days: offset));
   }
 
-  bool get isToday =>
-      cellDate.day == mainController.today.value.day &&
-      cellDate.month == mainController.today.value.month &&
-      cellDate.year == mainController.today.value.year; // 判断本单元格日期是否为今天
+  bool get isToday => cellDate == mainController.today.value; // 判断本单元格日期是否为今天
   bool get isCurrentYear =>
       cellDate.year == lifeController.viewYear.value; // 判断本单元格日期是否为当前年份
   bool get isMonthOdd => cellDate.month % 2 == 1; // 判断本单元格日期是否为奇数月份
