@@ -81,7 +81,7 @@ class MainController extends GetxController {
   }
 
   /// 自动生成周期性任务。
-  void generateRecurringTask() {
+  Future<void> generateRecurringTask() async {
     // 筛选出周期性任务的键
     List<dynamic> recurringKeys = itemBox.value.keys
         .where((k) =>
@@ -90,18 +90,20 @@ class MainController extends GetxController {
         .toList();
 
     for (int i = 0; i < recurringKeys.length; i++) {
-      Item recurringTask = itemBox.value.get(recurringKeys[i])!;
+      int recurringKey = recurringKeys[i];
+      Item recurringTask = itemBox.value.get(recurringKey)!;
       // 循环生成下一个周期性任务，直到当前任务不需要再生成
       while (recurringTask.done ||
-          recurringTask.date!.isBefore(DateTime.now()) ||
-          recurringTask.date!.isAtSameMomentAs(DateTime.now())) {
+          recurringTask.date!.isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
         Item newTask = Item.copy(recurringTask);
+        recurringTask.recurrence = 0; // 将原任务标记为不再周期性
+        itemBox.value.put(recurringKey, recurringTask);
+
+        // 调整新任务的属性并存入
         newTask.done = false;
         newTask.date =
-            getNextDate(recurringTask.date!, recurringTask.recurrence!);
-        itemBox.value.add(newTask);
-        recurringTask.recurrence = 0; // 将原任务标记为不再周期性
-        itemBox.value.put(recurringKeys[i], recurringTask);
+            getNextDate(newTask.date!, newTask.recurrence!);
+        recurringKey = await itemBox.value.add(newTask);
         recurringTask = newTask;
       }
     }
