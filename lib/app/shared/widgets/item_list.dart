@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,13 +14,44 @@ class ItemListController extends GetxController {
 
   final MainController mainController = Get.find<MainController>();
 
-  // 计算变量
-  List<dynamic> get keys {
-    List<dynamic> keys =
+  // 缓存的键列表
+  final RxList<dynamic> _cachedKeys = <dynamic>[].obs;
+
+  // 获取缓存好的、过滤后的键列表
+  List<dynamic> get keys => _cachedKeys;
+
+  // 更新键列表的防抖定时器
+  Timer? _updateTimer;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _updateKeys();
+    // 监听 itemBox 变化，使用防抖批量更新缓存
+    ever(mainController.itemBox, (_) => _scheduleUpdate());
+  }
+
+  @override
+  void onClose() {
+    _updateTimer?.cancel();
+    super.onClose();
+  }
+
+  /// 防抖，避免频繁更新
+  void _scheduleUpdate() {
+    _updateTimer?.cancel();
+    _updateTimer = Timer(const Duration(milliseconds: 100), () {
+      _updateKeys();
+    });
+  }
+
+  /// 更新键列表
+  void _updateKeys() {
+    List<dynamic> newKeys =
         mainController.itemBox.value.keys.where(filterItem).toList();
-    keys.sort((a, b) => mainController.sortItem(a, b));
-    return keys;
-  } // 获取符合过滤条件的任务键列表
+    newKeys.sort((a, b) => mainController.sortItem(a, b));
+    _cachedKeys.value = newKeys;
+  }
 }
 
 class ItemList extends StatelessWidget {

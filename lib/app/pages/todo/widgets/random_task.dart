@@ -14,14 +14,30 @@ class RandomItemController extends GetxController {
   // 状态变量
   final RxnInt randomKey = RxnInt(); // 随机任务的键
 
+  // 缓存的杂事键列表
+  final RxList<dynamic> _cachedKeys = <dynamic>[].obs;
+
   // 计算变量
-  List<dynamic> get keys => mainController.itemBox.value.keys.where(
-        (key) {
-          final Item item = mainController.itemBox.value.get(key)!;
-          return !item.isTask;
-        },
-      ).toList(); // 杂事列表
-  bool get existTrivia => keys.isNotEmpty; // 是否存在无截止日期任务
+  List<dynamic> get keys => _cachedKeys; // 杂事列表（已缓存）
+  bool get existTrivia => _cachedKeys.isNotEmpty; // 是否存在无截止日期任务
+
+  @override
+  void onInit() {
+    super.onInit();
+    _updateKeys();
+    // 监听 itemBox 变化，自动更新缓存
+    ever(mainController.itemBox, (_) => _updateKeys());
+  }
+
+  /// 更新键列表缓存
+  void _updateKeys() {
+    _cachedKeys.value = mainController.itemBox.value.keys.where(
+      (key) {
+        final Item item = mainController.itemBox.value.get(key)!;
+        return !item.isTask;
+      },
+    ).toList();
+  }
 
   /// 获取随机任务的键
   void refreshRandomKey() {

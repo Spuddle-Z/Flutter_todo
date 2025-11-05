@@ -37,8 +37,8 @@ class MainController extends GetxController {
       );
     });
 
-    // 自动生成周期性任务
-    generateRecurringTask();
+    // 自动生成周期性任务（异步执行，不阻塞初始化）
+    Future.microtask(() => generateRecurringTask());
   }
 
   @override
@@ -66,7 +66,7 @@ class MainController extends GetxController {
   void updateItem(int key, Item item) {
     itemBox.value.put(key, item);
     generateRecurringTask();
-    itemBox.refresh();
+    Future.microtask(() => itemBox.refresh());  // 异步触发刷新，避免阻塞UI
   }
 
   /// 删除任务

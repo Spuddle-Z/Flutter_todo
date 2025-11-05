@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do/app/data/models/item_model.dart';
@@ -23,12 +24,47 @@ class CalendarDayCellController extends GetxController {
       cellDate.month == todoController.viewMonth.value.month; // 本单元格日期是否处于当前月份内
   bool get isWeekend =>
       cellDate.weekday == 7 || cellDate.weekday == 6; // 本单元格日期是否为周末
-  List<dynamic> get keys {
-    List<dynamic> keys =
+  
+  // 缓存的键列表
+  final RxList<dynamic> _cachedKeys = <dynamic>[].obs;
+
+  // 获取本单元格内的任务键列表（已缓存）
+  List<dynamic> get keys => _cachedKeys;
+
+  // 更新键列表的防抖定时器
+  Timer? _updateTimer;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _updateKeys();
+    // 监听 itemBox 和 today 变化，使用防抖批量更新缓存
+    ever(mainController.itemBox, (_) => _scheduleUpdate());
+    ever(mainController.today, (_) => _scheduleUpdate());
+    ever(todoController.viewMonth, (_) => _updateKeys()); // 月份变化立即更新
+  }
+
+  @override
+  void onClose() {
+    _updateTimer?.cancel();
+    super.onClose();
+  }
+
+  /// 防抖，避免频繁更新
+  void _scheduleUpdate() {
+    _updateTimer?.cancel();
+    _updateTimer = Timer(const Duration(milliseconds: 100), () {
+      _updateKeys();
+    });
+  }
+
+  /// 更新键列表缓存
+  void _updateKeys() {
+    List<dynamic> newKeys =
         mainController.itemBox.value.keys.where(ifShow).toList();
-    keys.sort((a, b) => mainController.sortItem(a, b));
-    return keys;
-  } // 获取本单元格内的任务键列表
+    newKeys.sort((a, b) => mainController.sortItem(a, b));
+    _cachedKeys.value = newKeys;
+  }
 
   /// 过滤函数，判断任务是否要显示在当前单元格内
   bool ifShow(key) {
@@ -92,22 +128,24 @@ class CalendarDayCell extends StatelessWidget {
             ),
             // 任务列表
             Expanded(
-              child: ScrollConfiguration(
-                behavior:
-                    const MaterialScrollBehavior().copyWith(scrollbars: false),
-                child: ListView.builder(
-                  itemCount: dayCellController.keys.length,
-                  itemBuilder: (context, index) {
-                    return ItemTile(
-                      itemKey: dayCellController.keys[index],
-                      isMiniTile: true,
-                      cellDate: dayCellController.cellDate,
-                    );
-                  },
-                  physics: const ClampingScrollPhysics(),
-                  shrinkWrap: true,
-                ),
-              ),
+              child: Obx(() {
+                return ScrollConfiguration(
+                  behavior:
+                      const MaterialScrollBehavior().copyWith(scrollbars: false),
+                  child: ListView.builder(
+                    itemCount: dayCellController.keys.length,
+                    itemBuilder: (context, index) {
+                      return ItemTile(
+                        itemKey: dayCellController.keys[index],
+                        isMiniTile: true,
+                        cellDate: dayCellController.cellDate,
+                      );
+                    },
+                    physics: const ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                  ),
+                );
+              }),
             ),
           ],
         ),
