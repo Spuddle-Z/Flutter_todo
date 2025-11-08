@@ -8,4 +8,5 @@ final Map<ShortcutActivator, Intent> shortcuts = {
   const SingleActivator(LogicalKeyboardKey.digit3): const ToCoreIntent(),
   const SingleActivator(LogicalKeyboardKey.keyJ, control: true):
       const AddItemIntent(),
+  const SingleActivator(LogicalKeyboardKey.f11): const ToggleFullScreenIntent(),
 };

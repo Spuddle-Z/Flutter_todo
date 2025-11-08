@@ -57,6 +57,12 @@ class MainView extends StatelessWidget {
                 return null;
               },
             ),
+            ToggleFullScreenIntent: CallbackAction<ToggleFullScreenIntent>(
+              onInvoke: (intent) {
+                mainController.toggleFullScreen();
+                return null;
+              },
+            ),
           },
           child: Focus(
             focusNode: mainController.focusNode,

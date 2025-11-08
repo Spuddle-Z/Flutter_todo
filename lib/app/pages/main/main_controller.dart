@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:window_manager/window_manager.dart';
 import 'package:to_do/app/data/models/item_model.dart';
 
 class MainController extends GetxController {
@@ -144,5 +145,25 @@ class MainController extends GetxController {
     }
     // 如果任务类型为杂事，则按难度排序
     return taskB.difficulty!.compareTo(taskA.difficulty!);
+  }
+
+  /// 切换全屏/窗口化（通过 F11 快捷键调用）
+  Future<void> toggleFullScreen() async {
+    final isCurrentlyFullScreen = await windowManager.isFullScreen();
+
+    if (isCurrentlyFullScreen) {
+      // 从全屏切换到窗口化
+      await windowManager.setFullScreen(false); // 先退出全屏
+      const windowSize = Size(1280, 720); // 设置一个合理的窗口大小
+      await windowManager.setSize(windowSize); // 设置窗口大小
+      await windowManager.center(); // 居中窗口
+      await windowManager.show(); // 确保窗口可见、置前
+      await windowManager.focus(); // 获取焦点
+    } else {
+      // 从窗口化切换到全屏
+      await windowManager.setFullScreen(true); // 切换到全屏
+      await windowManager.show(); // 确保窗口可见、置前
+      await windowManager.focus(); // 获取焦点
+    }
   }
 }

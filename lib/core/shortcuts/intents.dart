@@ -15,3 +15,7 @@ class ToCoreIntent extends Intent {
 class AddItemIntent extends Intent {
   const AddItemIntent();
 }
+
+class ToggleFullScreenIntent extends Intent {
+  const ToggleFullScreenIntent();
+}

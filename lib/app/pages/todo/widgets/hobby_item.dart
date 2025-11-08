@@ -73,11 +73,14 @@ class HobbyItem extends StatelessWidget {
             onChanged: (value) => hobbyItemController.toggleHobbyState(),
           );
         }),
-        Text(
-          HobbyConstant.hobbyTextList[hobbyIndexI][hobbyIndexJ],
-          style: const TextStyle(
-            color: MyColors.text,
-            fontSize: 16,
+        Expanded(
+          child: Text(
+            HobbyConstant.hobbyTextList[hobbyIndexI][hobbyIndexJ],
+            style: const TextStyle(
+              color: MyColors.text,
+              fontSize: 16,
+            ),
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ],
