@@ -66,7 +66,7 @@ class MainController extends GetxController {
   void updateItem(int key, Item item) {
     itemBox.value.put(key, item);
     generateRecurringTask();
-    Future.microtask(() => itemBox.refresh());  // 异步触发刷新，避免阻塞UI
+    Future.microtask(() => itemBox.refresh()); // 异步触发刷新，避免阻塞UI
   }
 
   /// 删除任务

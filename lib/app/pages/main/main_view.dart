@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
 import 'package:to_do/app/pages/todo/todo_view.dart';
 import 'package:to_do/app/pages/life/life_view.dart';
+import 'package:to_do/app/pages/core/core_view.dart';
 import 'package:to_do/app/pages/main/widgets/navigation_bar_button.dart';
 import 'package:to_do/app/pages/todo/widgets/item_popup.dart';
 
@@ -20,6 +21,7 @@ class MainView extends StatelessWidget {
   final List<Widget> pages = [
     const TodoView(),
     const LifeView(),
+    const CoreView(),
   ];
 
   @override
@@ -38,6 +40,12 @@ class MainView extends StatelessWidget {
             ToLifeIntent: CallbackAction<ToLifeIntent>(
               onInvoke: (intent) {
                 mainController.currentIndex.value = 1;
+                return null;
+              },
+            ),
+            ToCoreIntent: CallbackAction<ToCoreIntent>(
+              onInvoke: (intent) {
+                mainController.currentIndex.value = 2;
                 return null;
               },
             ),
@@ -72,6 +80,12 @@ class MainView extends StatelessWidget {
                           label: 'Life',
                           isActive: mainController.currentIndex.value == 1,
                           onTap: () => mainController.currentIndex.value = 1,
+                        ),
+                        NavigationBarButton(
+                          icon: Icons.code,
+                          label: 'Core',
+                          isActive: mainController.currentIndex.value == 2,
+                          onTap: () => mainController.currentIndex.value = 2,
                         ),
                       ],
                     ),

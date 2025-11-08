@@ -6,6 +6,8 @@ import 'package:to_do/app/pages/main/main_binding.dart';
 import 'package:to_do/app/pages/main/main_view.dart';
 import 'package:to_do/app/pages/todo/todo_binding.dart';
 import 'package:to_do/app/pages/todo/todo_view.dart';
+import 'package:to_do/app/pages/core/core_binding.dart';
+import 'package:to_do/app/pages/core/core_view.dart';
 
 import 'package:to_do/app/routes/route_path.dart';
 
@@ -25,6 +27,11 @@ class RoutePages {
       name: RoutePath.life,
       page: () => const LifeView(),
       binding: LifeBinding(),
+    ),
+    GetPage(
+      name: RoutePath.core,
+      page: () => const CoreView(),
+      binding: CoreBinding(),
     ),
   ];
 }

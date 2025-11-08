@@ -4,4 +4,5 @@ class RoutePath {
   static const String main = '/main'; // 主页面
   static const String todo = '/todo'; // 待办事项页面
   static const String life = '/life'; // 生活页面
+  static const String core = '/core'; // 核心页面（按时间列出所有任务）
 }
