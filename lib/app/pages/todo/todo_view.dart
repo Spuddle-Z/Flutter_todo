@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:to_do/app/pages/todo/todo_controller.dart';
 import 'package:to_do/app/pages/todo/widgets/my_calendar.dart';
 import 'package:to_do/app/pages/todo/widgets/hobby_list.dart';
+import 'package:to_do/app/pages/todo/widgets/routine_list.dart';
 import 'package:to_do/app/shared/widgets/item_list.dart';
 import 'package:to_do/app/shared/widgets/recessed_panel.dart';
 import 'package:to_do/core/theme.dart';
@@ -29,7 +30,9 @@ class TodoView extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
+                // 今日任务列表
                 Expanded(
+                  flex: 3,
                   child: RecessedPanel(
                     child: Column(
                       children: [
@@ -54,8 +57,34 @@ class TodoView extends StatelessWidget {
                     ),
                   ),
                 ),
+                // 日程列表
+                Expanded(
+                  flex: 2,
+                  child: RecessedPanel(
+                    child: const Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Routine',
+                            style: TextStyle(
+                              color: MyColors.primary,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Expanded(
+                          child: const RoutineList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 // 习惯列表
                 Expanded(
+                  flex: 2,
                   child: RecessedPanel(
                     child: const Row(
                       children: [

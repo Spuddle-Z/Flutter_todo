@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'package:to_do/app/data/models/item_model.dart';
+import 'package:to_do/app/data/models/routine_model.dart';
 import 'package:to_do/app/routes/route_pages.dart';
 import 'package:to_do/app/routes/route_path.dart';
 
@@ -14,6 +15,7 @@ void main() async {
   Hive.init("data");
   Hive.registerAdapter(ItemAdapter());
   await Hive.openBox<Item>('Items');
+  await Hive.openBox<Routine>('Routines');
   await Hive.openBox<bool>('Sports');
   await Hive.openBox<bool>('Relax');
   await Hive.openBox<bool>('Rise');

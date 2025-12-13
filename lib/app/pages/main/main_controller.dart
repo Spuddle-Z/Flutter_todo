@@ -4,10 +4,12 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:to_do/app/data/models/item_model.dart';
+import 'package:to_do/app/data/models/routine_model.dart';
 
 class MainController extends GetxController {
   // 状态变量
   final Rx<Box<Item>> itemBox = Hive.box<Item>('Items').obs; // 任务盒
+  final Rx<Box<Routine>> routineBox = Hive.box<Routine>('Routines').obs; // 日程盒
   final List<List<Rx<Box<bool>>>> hobbyBoxes = [
     [Hive.box<bool>('Rise').obs, Hive.box<bool>('Sleep').obs], // 早睡早起盒
     [Hive.box<bool>('Sports').obs], // 运动盒

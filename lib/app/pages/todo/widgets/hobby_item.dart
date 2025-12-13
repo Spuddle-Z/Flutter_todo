@@ -19,16 +19,15 @@ class HobbyItemController extends GetxController {
   final MainController mainController = Get.find<MainController>();
 
   /// 获取兴趣爱好状态
-  bool getHobbyState() {
-    return mainController.hobbyBoxes[hobbyIndexI][hobbyIndexJ].value
-            .get(formatDate(date, [yyyy, mm, dd])) !=
-        null;
-  }
+  bool get hobbyState =>
+      mainController.hobbyBoxes[hobbyIndexI][hobbyIndexJ].value
+          .get(formatDate(date, [yyyy, mm, dd])) !=
+      null;
 
-  // 更新单元格状态
+  /// 更新兴趣爱好状态
   void toggleHobbyState() {
     String key = formatDate(date, [yyyy, mm, dd]);
-    if (getHobbyState()) {
+    if (hobbyState) {
       mainController.hobbyBoxes[hobbyIndexI][hobbyIndexJ].value.delete(key);
     } else {
       mainController.hobbyBoxes[hobbyIndexI][hobbyIndexJ].value.put(key, true);
@@ -66,7 +65,7 @@ class HobbyItem extends StatelessWidget {
       children: [
         Obx(() {
           return MyCheckbox(
-            done: hobbyItemController.getHobbyState(),
+            done: hobbyItemController.hobbyState,
             color: MyColors.textDark,
             activeColor: HobbyConstant.hobbyColorList[hobbyIndexI],
             scale: 1,
