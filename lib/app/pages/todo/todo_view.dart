@@ -6,6 +6,8 @@ import 'package:to_do/app/pages/todo/widgets/hobby_list.dart';
 import 'package:to_do/app/pages/todo/widgets/routine_list.dart';
 import 'package:to_do/app/shared/widgets/item_list.dart';
 import 'package:to_do/app/shared/widgets/recessed_panel.dart';
+import 'package:to_do/app/shared/widgets/my_text_button.dart';
+import 'package:to_do/app/pages/todo/widgets/item_popup.dart';
 import 'package:to_do/core/theme.dart';
 
 class TodoView extends StatelessWidget {
@@ -61,22 +63,50 @@ class TodoView extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: RecessedPanel(
-                    child: const Column(
+                    child: Column(
                       children: [
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'Routine',
-                            style: TextStyle(
-                              color: MyColors.primary,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Spacer(),
+                            const Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Routine',
+                                  style: TextStyle(
+                                    color: MyColors.primary,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    MyTextButton(
+                                      icon: Icons.edit_note,
+                                      text: 'Edit',
+                                      onPressed: () {
+                                        Get.dialog(
+                                          const ItemPopup(),
+                                        );
+                                      },
+                                      color: MyColors.text,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 8),
-                        Expanded(
-                          child: const RoutineList(),
+                        const SizedBox(height: 8),
+                        const Expanded(
+                          child: RoutineList(),
                         ),
                       ],
                     ),
