@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:to_do/app/pages/todo/todo_controller.dart';
 import 'package:to_do/app/pages/todo/widgets/my_calendar.dart';
 import 'package:to_do/app/pages/todo/widgets/hobby_list.dart';
+import 'package:to_do/app/pages/todo/widgets/routine_edit_popup.dart';
 import 'package:to_do/app/pages/todo/widgets/routine_list.dart';
 import 'package:to_do/app/shared/widgets/item_list.dart';
 import 'package:to_do/app/shared/widgets/recessed_panel.dart';
 import 'package:to_do/app/shared/widgets/my_text_button.dart';
-import 'package:to_do/app/pages/todo/widgets/item_popup.dart';
 import 'package:to_do/core/theme.dart';
 
 class TodoView extends StatelessWidget {
@@ -93,7 +93,7 @@ class TodoView extends StatelessWidget {
                                       text: 'Edit',
                                       onPressed: () {
                                         Get.dialog(
-                                          const ItemPopup(),
+                                          const RoutineEditPopup(),
                                         );
                                       },
                                       color: MyColors.text,

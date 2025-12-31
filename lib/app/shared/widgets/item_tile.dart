@@ -5,6 +5,7 @@ import 'package:to_do/app/pages/main/main_controller.dart';
 import 'package:to_do/app/pages/todo/widgets/item_detail_popup.dart';
 import 'package:to_do/app/pages/todo/widgets/item_popup.dart';
 import 'package:to_do/app/shared/constants/item_constant.dart';
+import 'package:to_do/app/shared/widgets/border_top_tile.dart';
 import 'package:to_do/app/shared/widgets/my_checkbox.dart';
 import 'package:to_do/app/shared/widgets/my_icon_button.dart';
 import 'package:to_do/core/theme.dart';
@@ -29,7 +30,7 @@ class ItemTileController extends GetxController {
   void onInit() {
     super.onInit();
     _cachedItem = mainController.itemBox.value.get(itemKey)!.obs;
-    
+
     // 监听 itemBox 变化，只更新当前 item
     ever(mainController.itemBox, (_) {
       final newItem = mainController.itemBox.value.get(itemKey);
@@ -100,154 +101,143 @@ class ItemTile extends StatelessWidget {
     return Obx(() {
       final item = itemTileController.item;
       final color = itemTileController.color;
-      
-      return Padding(
-        padding: EdgeInsets.all(isMiniTile ? 2 : 4),
-        child: Container(
-          decoration: BoxDecoration(
-            color: color.withAlpha(0x33),
-            borderRadius: BorderRadius.circular(isMiniTile ? 4 : 8),
-            border: Border(
-              top: BorderSide(
-                color: color,
-                width: isMiniTile ? 2 : 3,
-              ),
-            ),
-          ),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  // 勾选框
-                  MyCheckbox(
-                    done: item.done,
-                    color: color,
-                    activeColor: color,
-                    scale: isMiniTile ? 0.6 : 1,
-                    onChanged: itemTileController.onTaskToggled,
-                  ),
 
-                  // 任务内容
-                  Expanded(
-                    child: Text(
-                      item.content,
-                      style: TextStyle(
-                        color: color,
-                        fontSize: isMiniTile ? 12 : 16,
-                        decoration: item.done
-                            ? TextDecoration.lineThrough
-                            : TextDecoration.none,
-                        decorationColor: color,
-                        decorationThickness: 2,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                  ),
+      return BorderTopTile(
+        color: color,
+        isMini: isMiniTile,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                // 勾选框
+                MyCheckbox(
+                  done: item.done,
+                  color: color,
+                  activeColor: color,
+                  scale: isMiniTile ? 0.6 : 1,
+                  onChanged: itemTileController.onTaskToggled,
+                ),
 
-                  // 超时天数
-                  if (color == MyColors.textActive)
-                    Container(
-                      padding: EdgeInsets.all(isMiniTile ? 1 : 2),
-                      decoration: BoxDecoration(
-                        color: MyColors.textActive,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        "${-item.date!.difference(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)).inDays}天前",
-                        style: TextStyle(
-                          color: MyColors.background.withAlpha(0xaa),
-                          fontSize: isMiniTile ? 8 : 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-
-                  // 展开备注按钮
-                  if (!isMiniTile && item.note.isNotEmpty)
-                    Obx(() {
-                      return MyIconButton(
-                        icon: AnimatedRotation(
-                            duration: const Duration(milliseconds: 300),
-                            turns: itemTileController.isExpanded.value ? 0.5 : 0,
-                            child: const Icon(Icons.keyboard_arrow_down)),
-                        color: color,
-                        onPressed: () {
-                          itemTileController.isExpanded.value =
-                              !itemTileController.isExpanded.value;
-                        },
-                      );
-                    }),
-
-                  // 编辑按钮
-                  if (!isMiniTile)
-                    MyIconButton(
-                      icon: const Icon(Icons.edit),
+                // 任务内容
+                Expanded(
+                  child: Text(
+                    item.content,
+                    style: TextStyle(
                       color: color,
-                      onPressed: () => {
+                      fontSize: isMiniTile ? 12 : 16,
+                      decoration: item.done
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
+                      decorationColor: color,
+                      decorationThickness: 2,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+
+                // 超时天数
+                if (color == MyColors.textActive)
+                  Container(
+                    padding: EdgeInsets.all(isMiniTile ? 1 : 2),
+                    decoration: BoxDecoration(
+                      color: MyColors.textActive,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      "${-item.date!.difference(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)).inDays}天前",
+                      style: TextStyle(
+                        color: MyColors.background.withAlpha(0xaa),
+                        fontSize: isMiniTile ? 8 : 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+
+                // 展开备注按钮
+                if (!isMiniTile && item.note.isNotEmpty)
+                  Obx(() {
+                    return MyIconButton(
+                      icon: AnimatedRotation(
+                          duration: const Duration(milliseconds: 300),
+                          turns: itemTileController.isExpanded.value ? 0.5 : 0,
+                          child: const Icon(Icons.keyboard_arrow_down)),
+                      color: color,
+                      onPressed: () {
+                        itemTileController.isExpanded.value =
+                            !itemTileController.isExpanded.value;
+                      },
+                    );
+                  }),
+
+                // 编辑按钮
+                if (!isMiniTile)
+                  MyIconButton(
+                    icon: const Icon(Icons.edit),
+                    color: color,
+                    onPressed: () => {
+                      Get.dialog(
+                        ItemPopup(itemKey: itemKey),
+                      )
+                    },
+                  ),
+
+                // 删除按钮
+                if (!isMiniTile)
+                  MyIconButton(
+                    icon: const Icon(Icons.close),
+                    color: color,
+                    onPressed: itemTileController.onTaskDelete,
+                  ),
+
+                // 更多按钮
+                if (isMiniTile)
+                  SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: IconButton(
+                      icon: const Icon(Icons.more_vert),
+                      color: color,
+                      iconSize: 12,
+                      padding: const EdgeInsets.all(0),
+                      onPressed: () {
                         Get.dialog(
-                          ItemPopup(itemKey: itemKey),
-                        )
+                          ItemDetailPopUp(itemKey: itemKey),
+                        );
                       },
                     ),
+                  ),
+              ],
+            ),
 
-                  // 删除按钮
-                  if (!isMiniTile)
-                    MyIconButton(
-                      icon: const Icon(Icons.close),
-                      color: color,
-                      onPressed: itemTileController.onTaskDelete,
+            // 备注内容
+            if (!isMiniTile)
+              Obx(() {
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
+                  height: itemTileController.isExpanded.value ? null : 0,
+                  padding: const EdgeInsets.all(4),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: MyColors.backgroundDark,
+                      borderRadius: BorderRadius.circular(4),
                     ),
-
-                  // 更多按钮
-                  if (isMiniTile)
-                    SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: IconButton(
-                        icon: const Icon(Icons.more_vert),
-                        color: color,
-                        iconSize: 12,
-                        padding: const EdgeInsets.all(0),
-                        onPressed: () {
-                          Get.dialog(
-                            ItemDetailPopUp(itemKey: itemKey),
-                          );
-                        },
-                      ),
-                    ),
-                ],
-              ),
-
-              // 备注内容
-              if (!isMiniTile)
-                Obx(() {
-                  return AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeOut,
-                    height: itemTileController.isExpanded.value ? null : 0,
-                    padding: const EdgeInsets.all(4),
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: MyColors.backgroundDark,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: SelectableText(
-                          item.note,
-                          style: const TextStyle(
-                            color: MyColors.text,
-                            fontSize: 12,
-                          ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: SelectableText(
+                        item.note,
+                        style: const TextStyle(
+                          color: MyColors.text,
+                          fontSize: 12,
                         ),
                       ),
                     ),
-                  );
-                }),
-            ],
-          ),
+                  ),
+                );
+              }),
+          ],
         ),
       );
     });

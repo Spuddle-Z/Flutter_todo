@@ -149,6 +149,20 @@ class MainController extends GetxController {
     return taskB.difficulty!.compareTo(taskA.difficulty!);
   }
 
+  /// 添加日程
+  void addRoutine(Routine routine) {
+    routineBox.value.add(routine);
+    print('Added routine: ${routine.content}');
+    routineBox.refresh();
+    print('Current routines: ${routineBox.value.values.toList()}');
+  }
+
+  /// 删除日程
+  void deleteRoutine(int key) {
+    routineBox.value.delete(key);
+    routineBox.refresh();
+  }
+
   /// 切换全屏/窗口化（通过 F11 快捷键调用）
   Future<void> toggleFullScreen() async {
     final isCurrentlyFullScreen = await windowManager.isFullScreen();

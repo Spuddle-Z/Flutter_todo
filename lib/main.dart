@@ -14,6 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Hive.init("data");
   Hive.registerAdapter(ItemAdapter());
+  Hive.registerAdapter(RoutineAdapter());
   await Hive.openBox<Item>('Items');
   await Hive.openBox<Routine>('Routines');
   await Hive.openBox<bool>('Sports');
