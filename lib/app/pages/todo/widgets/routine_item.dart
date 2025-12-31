@@ -14,15 +14,20 @@ class RoutineItemController extends GetxController {
   final MainController mainController = Get.find<MainController>();
 
   /// 计算变量
-  String get routineContent => mainController.routineBox.value.get(routineKey)!.content;
-  bool get routineState => mainController.routineBox.value.get(routineKey)!.date == mainController.today.value;
+  String get routineContent =>
+      mainController.routineBox.value.get(routineKey)!.content;
+  bool get routineState =>
+      mainController.routineBox.value.get(routineKey)!.date ==
+      mainController.today.value;
 
   /// 更新日程状态
   void toggleRoutineState() {
     if (routineState) {
       mainController.routineBox.value.get(routineKey)!.updateDate(null);
     } else {
-      mainController.routineBox.value.get(routineKey)!.updateDate(mainController.today.value);
+      mainController.routineBox.value
+          .get(routineKey)!
+          .updateDate(mainController.today.value);
     }
     mainController.routineBox.refresh();
   }
@@ -51,7 +56,7 @@ class RoutineItem extends StatelessWidget {
           return MyCheckbox(
             done: routineItemController.routineState,
             color: MyColors.textDark,
-            activeColor: MyColors.text,
+            activeColor: MyColors.primary,
             scale: 1,
             onChanged: (_) => routineItemController.toggleRoutineState(),
           );

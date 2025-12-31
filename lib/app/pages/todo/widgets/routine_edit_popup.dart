@@ -28,7 +28,7 @@ class RoutineEditPopup extends StatelessWidget {
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Container(
-        width: Get.width * 0.25,
+        width: Get.width * 0.2,
         height: Get.height * 0.4,
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
@@ -61,54 +61,61 @@ class RoutineEditPopup extends StatelessWidget {
             ),
             const SizedBox(height: 16.0),
             Expanded(
-              child: Obx(() {
-                return ListView.builder(
-                  itemCount: routineEditPopupController.keys.length,
-                  itemBuilder: (context, index) {
-                    final key = routineEditPopupController.keys[index];
-                    final routine = routineEditPopupController
-                        .mainController.routineBox.value
-                        .get(key)!;
-                    return Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: BorderTopTile(
-                        color: MyColors.text,
-                        isMini: false,
-                        child: Row(
-                          children: [
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                routine.content,
-                                style: const TextStyle(
-                                  color: MyColors.text,
-                                  fontSize: 16,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: MyColors.backgroundDark,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Obx(() {
+                  return ListView.builder(
+                    itemCount: routineEditPopupController.keys.length,
+                    itemBuilder: (context, index) {
+                      final key = routineEditPopupController.keys[index];
+                      final routine = routineEditPopupController
+                          .mainController.routineBox.value
+                          .get(key)!;
+                      return Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: BorderTopTile(
+                          color: MyColors.text,
+                          isMini: false,
+                          child: Row(
+                            children: [
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  routine.content,
+                                  style: const TextStyle(
+                                    color: MyColors.text,
+                                    fontSize: 16,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                 ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
                               ),
-                            ),
-                            MyIconButton(
-                              icon: const Icon(Icons.close),
-                              color: MyColors.text,
-                              onPressed: () {
-                                routineEditPopupController.mainController
-                                    .deleteRoutine(key);
-                              },
-                            ),
-                          ],
+                              MyIconButton(
+                                icon: const Icon(Icons.close),
+                                color: MyColors.text,
+                                onPressed: () {
+                                  routineEditPopupController.mainController
+                                      .deleteRoutine(key);
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                );
-              }),
+                      );
+                    },
+                  );
+                }),
+              ),
             ),
+            const SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 MyTextButton(
-                  icon: Icons.add_circle_outline,
+                  icon: Icons.add,
                   text: 'Add Routine',
                   color: MyColors.text,
                   onPressed: () {

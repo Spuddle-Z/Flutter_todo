@@ -30,7 +30,10 @@ class RoutineList extends StatelessWidget {
         itemCount: routineListController.keys.length,
         itemBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            padding: EdgeInsets.symmetric(
+              horizontal: Get.width * 0.02,
+              vertical: 4,
+            ),
             child: RoutineItem(
               routineKey: routineListController.keys[index],
             ),
