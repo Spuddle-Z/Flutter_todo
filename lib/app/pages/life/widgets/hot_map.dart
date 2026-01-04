@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:to_do/app/pages/life/widgets/hot_map_day_cell.dart';
 import 'package:to_do/app/shared/constants/hobby_constant.dart';
 import 'package:to_do/core/theme.dart';
@@ -39,7 +40,7 @@ class HotMap extends StatelessWidget {
         // 热力图主体
         SizedBox(
           width: double.infinity,
-          height: 120,
+          height: Get.width * 0.08,
           child: Row(
             children: [
               // 星期几表头

@@ -36,7 +36,8 @@ class HotMapDayCellController extends GetxController {
   List<Color> get isHobbyActive {
     // 获取当前单元格日期对应的爱好状态
     return mainController.hobbyBoxes[hobbyIndex].map((box) {
-      return box.value.get(formatDate(cellDate, [yyyy, mm, dd])) != null
+      return box.value.get(formatDate(cellDate, [yyyy, mm, dd])) != null &&
+              isCurrentYear
           ? HobbyConstant.hobbyColorList[hobbyIndex]
           : Colors.transparent;
     }).toList();
@@ -71,7 +72,8 @@ class HotMapDayCell extends StatelessWidget {
                   : MyColors.background
               : MyColors.backgroundDark,
           border: Border.all(
-            color: hotMapDayCellController.isToday
+            color: hotMapDayCellController.isCurrentYear &&
+                    hotMapDayCellController.isToday
                 ? MyColors.textActive
                 : Colors.transparent,
           ),
