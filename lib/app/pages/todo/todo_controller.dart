@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:to_do/app/data/models/item_model.dart';
 
 import 'package:to_do/app/pages/main/main_controller.dart';
+import 'package:to_do/core/utils.dart';
 
 import 'package:to_do/app/shared/constants/calendar_constant.dart';
 
@@ -58,6 +59,6 @@ class TodoController extends GetxController {
     if (!item.isTask) return false; // 只处理任务类型
     DateTime date = item.date!;
     return ((!item.done && date.isBefore(mainController.today.value)) ||
-        date.isAtSameMomentAs(mainController.today.value));
+        isSameDay(date, mainController.today.value));
   }
 }

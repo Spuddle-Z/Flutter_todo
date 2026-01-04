@@ -6,6 +6,7 @@ import 'package:to_do/app/pages/main/main_controller.dart';
 import 'package:to_do/app/shared/widgets/item_tile.dart';
 import 'package:to_do/app/pages/todo/todo_controller.dart';
 import 'package:to_do/core/theme.dart';
+import 'package:to_do/core/utils.dart';
 
 class CalendarDayCellController extends GetxController {
   final int index;
@@ -19,12 +20,13 @@ class CalendarDayCellController extends GetxController {
 
   // 计算变量
   DateTime get cellDate => todoController.getCellDate(index); // 本单元格对应日期
-  bool get isToday => cellDate == mainController.today.value; // 本单元格日期是否为今天
+  bool get isToday =>
+      isSameDay(cellDate, mainController.today.value); // 本单元格日期是否为今天
   bool get isCurrentMonth =>
       cellDate.month == todoController.viewMonth.value.month; // 本单元格日期是否处于当前月份内
   bool get isWeekend =>
       cellDate.weekday == 7 || cellDate.weekday == 6; // 本单元格日期是否为周末
-  
+
   // 缓存的键列表
   final RxList<dynamic> _cachedKeys = <dynamic>[].obs;
 
@@ -72,9 +74,9 @@ class CalendarDayCellController extends GetxController {
     if (!item.isTask) return false; // 只显示任务类型的条目
     if (isToday) {
       return ((!item.done && item.date!.isBefore(cellDate)) ||
-          item.date!.isAtSameMomentAs(cellDate));
+          isSameDay(item.date, cellDate));
     }
-    return item.date!.isAtSameMomentAs(cellDate);
+    return isSameDay(item.date, cellDate);
   }
 }
 
@@ -130,8 +132,8 @@ class CalendarDayCell extends StatelessWidget {
             Expanded(
               child: Obx(() {
                 return ScrollConfiguration(
-                  behavior:
-                      const MaterialScrollBehavior().copyWith(scrollbars: false),
+                  behavior: const MaterialScrollBehavior()
+                      .copyWith(scrollbars: false),
                   child: ListView.builder(
                     itemCount: dayCellController.keys.length,
                     itemBuilder: (context, index) {

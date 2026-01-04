@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
+import 'package:to_do/core/utils.dart';
 import 'package:to_do/app/shared/widgets/my_checkbox.dart';
+import 'package:to_do/app/data/models/routine_model.dart';
 import 'package:to_do/core/theme.dart';
 
 class RoutineItemController extends GetxController {
@@ -14,22 +16,17 @@ class RoutineItemController extends GetxController {
   final MainController mainController = Get.find<MainController>();
 
   /// 计算变量
-  String get routineContent =>
-      mainController.routineBox.value.get(routineKey)!.content;
-  bool get routineState =>
-      mainController.routineBox.value.get(routineKey)!.date ==
-      mainController.today.value;
+  Routine get routine =>
+      mainController.routineBox.value.get(routineKey)!; // 获取日程数据
+  String get routineContent => routine.content;
+
+  bool get routineState => isSameDay(routine.date, mainController.today.value);
 
   /// 更新日程状态
-  void toggleRoutineState() {
-    if (routineState) {
-      mainController.routineBox.value.get(routineKey)!.updateDate(null);
-    } else {
-      mainController.routineBox.value
-          .get(routineKey)!
-          .updateDate(mainController.today.value);
-    }
-    mainController.routineBox.refresh();
+  void onRoutineToggled() {
+    final updatedRoutine = Routine.copy(routine);
+    updatedRoutine.date = routineState ? null : mainController.today.value;
+    mainController.updateRoutine(routineKey, updatedRoutine);
   }
 }
 
@@ -58,7 +55,7 @@ class RoutineItem extends StatelessWidget {
             color: MyColors.textDark,
             activeColor: MyColors.primary,
             scale: 1,
-            onChanged: (_) => routineItemController.toggleRoutineState(),
+            onChanged: (_) => routineItemController.onRoutineToggled(),
           );
         }),
         Expanded(

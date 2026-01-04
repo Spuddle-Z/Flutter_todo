@@ -13,7 +13,7 @@ class Routine {
     this.date,
   });
 
-  void updateDate(DateTime? date) {
-    this.date = date;
-  }
+  Routine.copy(Routine routine)
+      : content = routine.content,
+        date = routine.date;
 }

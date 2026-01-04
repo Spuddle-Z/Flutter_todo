@@ -152,9 +152,13 @@ class MainController extends GetxController {
   /// 添加日程
   void addRoutine(Routine routine) {
     routineBox.value.add(routine);
-    print('Added routine: ${routine.content}');
     routineBox.refresh();
-    print('Current routines: ${routineBox.value.values.toList()}');
+  }
+
+  /// 更新日程
+  void updateRoutine(int key, Routine routine) {
+    routineBox.value.put(key, routine);
+    routineBox.refresh();
   }
 
   /// 删除日程
