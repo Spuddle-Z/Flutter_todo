@@ -37,31 +37,20 @@ class RoutineEditPopup extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Stack(
-              children: [
-                const Center(
-                  child: Text(
-                    'Manage Routines',
-                    style: TextStyle(
-                      color: MyColors.primary,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+            const Center(
+              child: Text(
+                'Manage Routines',
+                style: TextStyle(
+                  color: MyColors.primary,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: MyIconButton(
-                    icon: const Icon(Icons.close),
-                    color: MyColors.text,
-                    onPressed: () => Get.back(),
-                  ),
-                ),
-              ],
+              ),
             ),
             const SizedBox(height: 16.0),
             Expanded(
               child: Container(
+                padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   color: MyColors.backgroundDark,
                   borderRadius: BorderRadius.circular(8),

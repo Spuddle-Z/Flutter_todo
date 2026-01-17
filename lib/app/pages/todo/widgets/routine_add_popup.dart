@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do/app/data/models/routine_model.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
-import 'package:to_do/app/shared/widgets/my_icon_button.dart';
 import 'package:to_do/app/shared/widgets/my_text_button.dart';
 import 'package:to_do/app/shared/widgets/my_text_field.dart';
 import 'package:to_do/core/theme.dart';
@@ -57,27 +56,15 @@ class RoutineAddPopup extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Stack(
-              children: [
-                const Center(
-                  child: Text(
-                    'Add Routine',
-                    style: TextStyle(
-                      color: MyColors.primary,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+            const Center(
+              child: Text(
+                'Add Routine',
+                style: TextStyle(
+                  color: MyColors.primary,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: MyIconButton(
-                    icon: const Icon(Icons.close),
-                    color: MyColors.text,
-                    onPressed: () => Get.back(),
-                  ),
-                ),
-              ],
+              ),
             ),
             const SizedBox(height: 8),
             MyTextField(

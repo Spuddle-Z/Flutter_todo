@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do/app/data/models/item_model.dart';
 import 'package:to_do/app/pages/main/main_controller.dart';
-import 'package:to_do/app/shared/widgets/my_icon_button.dart';
 import 'package:to_do/app/shared/widgets/my_text_button.dart';
 import 'package:to_do/app/shared/widgets/my_text_field.dart';
 import 'package:to_do/app/shared/widgets/date_text_field.dart';
@@ -171,29 +170,17 @@ class ItemPopup extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Stack(
-              children: [
-                Center(
-                  child: Obx(() {
-                    return Text(
-                      itemPopupController.popupTitle,
-                      style: const TextStyle(
-                        color: MyColors.primary,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    );
-                  }),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: MyIconButton(
-                    icon: const Icon(Icons.close),
-                    color: MyColors.text,
-                    onPressed: () => Get.back(),
+            Center(
+              child: Obx(() {
+                return Text(
+                  itemPopupController.popupTitle,
+                  style: const TextStyle(
+                    color: MyColors.primary,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
-                ),
-              ],
+                );
+              }),
             ),
             const SizedBox(height: 8),
             MyTextField(
